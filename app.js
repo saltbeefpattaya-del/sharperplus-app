@@ -538,8 +538,81 @@
     return page;
   };
 
+  // ---------------------------------------------------------------- STAFF WAGES
+  builders.stafflist = function () {
+    var s = data.settings;
+    var page = pageTop('STAFF WAGES');
+    page.appendChild(el('div', 'note', 'Type each member of staff and their daily wage. ' +
+      'The hourly rate is the daily wage \u00f7 8, and recipes use it for labour.'));
+    var list = el('div', 'staff'); page.appendChild(list);
+    var add = el('button', 'soft wide', '+ ADD STAFF'); page.appendChild(add);
+    var total = el('div', 'card'); page.appendChild(total);
+    var rates = [];
+
+    function plain(v) { var n = num(v); return n ? String(n) : String(v || '').trim(); }
+    function draw() {
+      list.innerHTML = ''; rates = [];
+      s.staff = s.staff || [];
+      if (!s.staff.length) s.staff.push(['', '', '']);
+      s.staff.forEach(function (p, i) {
+        while (p.length < 3) p.push('');
+        var box = el('div', 'person');
+        var head = el('div', 'personhead');
+        var name = el('input', 'cream name'); name.placeholder = 'STAFF NAME'; name.value = p[0];
+        name.oninput = function () { p[0] = name.value; save(); sums(); };
+        head.appendChild(name);
+        var del = el('button', 'del', '\u2715'); del.setAttribute('aria-label', 'Remove');
+        del.onclick = function () {
+          notice('REMOVE STAFF', ['Remove ' + (p[0] || 'this line') + '?'], ['REMOVE', 'CANCEL']).then(function (a) {
+            if (a !== 0) return; s.staff.splice(i, 1); save(); draw(); });
+        };
+        head.appendChild(del); box.appendChild(head);
+        var grid = el('div', 'wages');
+        [['DAILY WAGE', 1], ['MONTHLY WAGE', 2]].forEach(function (w) {
+          var cell = el('label', 'wage');
+          cell.appendChild(el('span', 'lbl', w[0]));
+          var input = el('input', 'cream'); input.inputMode = 'decimal';
+          var show = function () { input.value = num(p[w[1]]) ? SP.money(num(p[w[1]])) : (p[w[1]] || ''); };
+          show();
+          input.onfocus = function () { input.value = plain(p[w[1]]); };
+          input.onblur = show;
+          input.oninput = function () { p[w[1]] = plain(input.value); save(); sums(); };
+          cell.appendChild(input); grid.appendChild(cell);
+        });
+        var rateCell = el('div', 'wage');
+        rateCell.appendChild(el('span', 'lbl', 'HOURLY RATE'));
+        var rate = el('span', 'calc'); rateCell.appendChild(rate); grid.appendChild(rateCell);
+        rates.push([p, rate]);
+        box.appendChild(grid); list.appendChild(box);
+      });
+      sums();
+    }
+    function sums() {
+      SP.setUnits(s);
+      rates.forEach(function (r) {
+        r[1].textContent = String(r[0][0] || '').trim() ? SP.money(SP.hourlyRate(num(r[0][1]))) : '';
+      });
+      var named = s.staff.filter(function (p) { return String(p[0] || '').trim(); });
+      total.innerHTML = '';
+      var row = el('div', 'row'); row.appendChild(el('span', 'lbl', 'STAFF COST PER DAY (' + named.length + ' STAFF)'));
+      var v = el('span', 'calc strong', SP.money(named.reduce(function (a, p) { return a + num(p[1]); }, 0)));
+      row.appendChild(v); total.appendChild(row);
+    }
+    add.onclick = function () {
+      s.staff.push(['', '', '']); save(); draw();
+      var names = list.querySelectorAll('input.name'); names[names.length - 1].focus();
+    };
+    refreshers.stafflist = function () {
+      s.staff = (s.staff || []).filter(function (p, i, all) {
+        return String(p[0] || '').trim() || String(p[1] || '').trim() || String(p[2] || '').trim() || i === all.length - 1;
+      });
+      draw();
+    };
+    return page;
+  };
+
   // ---------------------------------------------------------------- the menu
-  var targets = { 'MASTER COSTINGS': 'master' };
+  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist' };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');
