@@ -1508,6 +1508,9 @@
     picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); draw(); };
     pickRowM.appendChild(picker); top.appendChild(pickRowM);
     var makes = el('div', 'makes'); top.appendChild(makes);
+    var toCost = el('button', 'gobtn', '\u25c0  RECIPE COSTING');
+    toCost.onclick = function () { save(); if (screens.recipe) refreshers.recipe(); show('recipe'); };
+    top.appendChild(toCost);
     var tb = el('div', 'btnrow');
     var fromPhoto = el('button', 'soft', '📷 METHOD FROM PHOTO');
     var sendBtn = el('button', 'soft', '📤 SEND OR PRINT');
@@ -1520,6 +1523,18 @@
     var stepList = el('div', ''); stepCard.appendChild(stepList);
     var addRow = el('div', 'btnrow'); var addStep = el('button', 'soft', '+ ADD STEP'); addRow.appendChild(addStep);
     stepCard.appendChild(addRow); page.appendChild(stepCard);
+    // what to do next, so the method leads into the costing
+    var next = el('div', 'nexttab');
+    next.appendChild(el('div', 'nexthead', '\u2605  NEXT STEP'));
+    next.appendChild(el('div', 'nextwords', 'You have your method \u2013 now add your cooking costs.'));
+    next.appendChild(el('div', 'nextsmall', 'Remember, you can fill out your Master Costings and add your staff to get the most out of SharperPlus Premium.'));
+    var nb = el('div', 'nextbtns');
+    [['RECIPE COSTING', 'recipe', 'gobtn'], ['MASTER COSTINGS', 'master', 'soft'], ['STAFF', 'stafflist', 'soft']].forEach(function (b) {
+      var x = el('button', b[2], b[0]);
+      x.onclick = function () { save(); if (refreshers[b[1]] && screens[b[1]]) refreshers[b[1]](); show(b[1]); };
+      nb.appendChild(x);
+    });
+    next.appendChild(nb); page.appendChild(next);
 
     function cur() {            // tidy each step in place, so open boxes stay tied to their step
       var r = recipeNow(); r.method = r.method || [];
