@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="SharperPlus">
+<title>SharperPlus</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#A66600;         /* sheet background, as the desktop */
+  --cell:#BE7F02;       /* gold cells */
+  --soft:#F2B705;       /* the small round buttons */
+  --line:#4A2E00;       /* tile edges */
+  --ink:#1B1B1B;
+  --top:#E8A812;        /* menu letters: gold at the top ... */
+  --bottom:#62BCE8;     /* ... fading to blue at the bottom */
+  --press:#C98A0A;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+.banner{background:#000 url(banner-phone.png) center/cover no-repeat;aspect-ratio:850/200;width:100%;
+  padding-top:env(safe-area-inset-top)}
+.wrap{padding:14px 16px 28px;max-width:560px;margin:0 auto}
+.tools{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 14px}
+.soft{background:var(--soft);color:var(--ink);font-weight:bold;font-size:16px;border:0;border-radius:12px;
+  padding:10px 14px;line-height:1.15;text-align:center;box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.soft:active{transform:translateY(1px);box-shadow:none}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:96px;
+  border:2px solid var(--line);background:var(--bg);padding:8px 6px;width:100%;
+  font:bold clamp(19px,5.4vw,26px)/1.12 Arial,Helvetica,sans-serif;cursor:pointer}
+.tile span{display:block;background:linear-gradient(180deg,var(--top) 22%,var(--bottom) 88%);-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+.tile:active{background:var(--press)}
+.title{cursor:default;min-height:72px;margin:0 auto 14px;width:72%}
+.title:active{background:var(--bg)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.centre{width:60%;margin:14px auto 0}
+.foot{display:flex;justify-content:center;margin-top:18px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:#FFFFCC;color:var(--ink);border:3px solid var(--soft);border-radius:14px;padding:14px 20px;
+  font-weight:bold;font-size:18px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.35);opacity:0;
+  pointer-events:none;transition:opacity .25s;width:max-content;max-width:88vw}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="banner" role="img" aria-label="SharperPlus"></div>
+<div class="wrap">
+  <div class="tools">
+    <button class="soft" data-soon="LANGUAGE">ENGLISH</button>
+    <button class="soft" data-soon="CHANGE APPEARANCE">CHANGE<br>APPEARANCE</button>
+  </div>
+
+  <div class="tile title"><span>MAIN MENU</span></div>
+
+  <div class="grid">
+    <button class="tile" data-soon="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
+    <button class="tile" data-soon="ADD RECIPE FROM PHOTO"><span>ADD RECIPE</span><span>FROM PHOTO</span></button>
+    <button class="tile" data-soon="STAFF"><span>STAFF</span></button>
+    <button class="tile" data-soon="ADD RECIPE"><span>ADD RECIPE</span></button>
+    <button class="tile" data-soon="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
+    <button class="tile" data-soon="DASHBOARD"><span>DASHBOARD</span></button>
+  </div>
+
+  <button class="tile centre" data-soon="DATA STORE"><span>DATA STORE</span></button>
+
+  <div class="foot"><button class="soft" data-soon="USER GUIDE">USER<br>GUIDE</button></div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+  var toast=document.getElementById('toast'), timer;
+  function say(words){
+    toast.textContent=words; toast.classList.add('on');
+    clearTimeout(timer); timer=setTimeout(function(){toast.classList.remove('on');},1800);
+  }
+  document.querySelectorAll('[data-soon]').forEach(function(b){
+    b.addEventListener('click',function(){ say(b.getAttribute('data-soon')+' – coming next'); });
+  });
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+  }
+})();
+</script>
+</body>
+</html>
