@@ -146,6 +146,34 @@ select.cream{text-align-last:center}
 .remindhead{font:bold 15px Arial,sans-serif;color:#A66600;margin-bottom:6px}
 .remindwords{font:bold 19px/1.3 Arial,sans-serif;color:#1B1B1B}
 .remindnever{background:none;border:0;font:bold 14px Arial,sans-serif;color:#A66600;margin-top:10px}
+.tile.premium{width:100%;margin:0 0 12px;min-height:92px;background:linear-gradient(180deg,#F7C948,#D69A05);
+  border:3px solid #000;border-radius:14px;box-shadow:0 4px 0 #6E4200}
+.tile.premium span{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#1B1B1B;
+  font-size:clamp(22px,6.4vw,30px);letter-spacing:1px}
+.tile.premium span:first-child{font-size:clamp(15px,4.2vw,19px);letter-spacing:3px}
+.badge{display:inline-block;margin-left:10px;background:linear-gradient(180deg,#F7C948,#D69A05);border:2px solid #000;
+  border-radius:10px;padding:3px 9px;font-size:14px;vertical-align:middle}
+.makes{font:bold 17px Arial,sans-serif;padding:8px 12px;text-align:center}
+.ticklist{display:flex;flex-direction:column;gap:8px;padding:10px}
+.tick{display:flex;align-items:center;gap:12px;background:#FFFFCC;border:2px solid #5A3600;border-radius:10px;padding:10px;
+  font:bold 17px Arial,sans-serif;color:var(--ink);text-align:left}
+.tick .box{width:30px;height:30px;flex-shrink:0;border:2px solid #000;border-radius:6px;background:#fff;color:#0a8a0a;
+  font:bold 22px/26px Arial,sans-serif;text-align:center}
+.tick .qty{min-width:70px;text-align:right}
+.tick.done{opacity:.55;text-decoration:line-through}
+.step{background:#EEAF12;border:2px solid var(--line);border-radius:12px;margin:10px;overflow:hidden}
+.stephead{display:flex;gap:8px;align-items:center;background:#000;padding:8px}
+.stepno{flex:1;color:#FFCC66;font:bold 22px Arial,sans-serif;padding-left:6px}
+.mv{background:#FFCC66;border:0;border-radius:8px;width:42px;height:36px;font:bold 16px Arial,sans-serif}
+.mv:disabled{opacity:.35}
+.steptext{display:block;width:calc(100% - 20px);max-width:none;margin:10px;min-height:90px;text-align:left;font-size:17px;line-height:1.4;resize:vertical}
+.stepfields{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px;padding:0 10px 8px;align-items:end}
+.soft.uses{font-size:14px;padding:10px 6px;min-height:46px}
+.tiprow .tip{width:68%;max-width:none;text-align:left}
+.soft.share{font-size:18px}
+.soft.share.wa{background:#25D366;color:#fff}.soft.share.line{background:#06C755;color:#fff}
+.soft.share.mail{background:#FFD36B}.soft.share.more{background:#0084FF;color:#fff}.soft.share.print{background:#FFCC66}
+.notice-body.ticklist{max-height:55vh;overflow:auto;padding:0}
 [hidden]{display:none !important}
 </style>
 </head>
@@ -160,11 +188,13 @@ select.cream{text-align-last:center}
 
   <div class="tile title"><span>MAIN MENU</span></div>
 
+  <button class="tile premium" data-go="PREMIUM"><span>SHARPERPLUS</span><span>PREMIUM</span></button>
+
   <div class="grid">
     <button class="tile" data-go="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
-    <button class="tile" data-go="ADD RECIPE FROM PHOTO"><span>ADD RECIPE</span><span>FROM PHOTO</span></button>
+    <button class="tile" data-go="ADD RECIPE FROM PHOTO"><span>TAKE A PHOTO</span><span>OF RECIPE</span></button>
     <button class="tile" data-go="STAFF"><span>STAFF</span></button>
-    <button class="tile" data-go="ADD RECIPE"><span>ADD RECIPE</span></button>
+    <button class="tile" data-go="ADD RECIPE"><span>ADD A</span><span>RECIPE</span></button>
     <button class="tile" data-go="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
     <button class="tile" data-go="DASHBOARD"><span>DASHBOARD</span></button>
   </div>

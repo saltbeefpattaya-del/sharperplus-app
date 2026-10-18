@@ -717,6 +717,7 @@
     pickRow.appendChild(picker); top.appendChild(pickRow);
     var tb = el('div', 'btnrow');
     var addBtn = el('button', 'soft', '+ ADD RECIPE'); addBtn.onclick = newRecipe; tb.appendChild(addBtn);
+    var howBtn = el('button', 'soft', 'HOW TO MAKE IT \u2605'); howBtn.onclick = function () { save(); show('method'); }; tb.appendChild(howBtn);
     top.appendChild(tb);
     page.appendChild(top);
     function fillPicker() {
@@ -1302,13 +1303,14 @@
       img.src = url;
     });
   }
-  function readPhoto(image) {       // the reader gets busy: quietly try again, like the desktop
+  function readPhoto(image) { return readPhotoWith(image, []); }
+  function readPhotoWith(image, names) {       // the reader gets busy: quietly try again, like the desktop
     var busy = /high demand|overloaded|try again later|unavailable|resource exhausted|rate limit|503|429/i;
     var waits = [0, 5000, 10000, 20000];
     function attempt(n) {
       return new Promise(function (r) { setTimeout(r, waits[n]); }).then(function () {
         return fetch(READ_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-                                 body: JSON.stringify({ image: image, names: [] }) });
+                                 body: JSON.stringify({ image: image, names: names || [] }) });
       }).then(function (res) { return res.json(); }, function () {
         throw new Error('No internet connection. Please check your connection and try again.');
       }).then(function (answer) {
@@ -1409,8 +1411,278 @@
     }).then(function (n) { return n; });
   }
 
+  // ---------------------------------------------------------------- HOW TO MAKE IT (SHARPERPLUS PREMIUM)
+  function methodStep(st) {
+    st = st || {};
+    return { text: String(st.text || ''), minutes: String(st.minutes || ''), temp: String(st.temp || ''),
+             tip: String(st.tip || ''), uses: Array.isArray(st.uses) ? st.uses.map(String) : [] };
+  }
+  function methodKept(steps) {
+    return (steps || []).map(methodStep).filter(function (s) {
+      return [s.text, s.minutes, s.temp, s.tip].some(function (v) { return v.trim(); });
+    });
+  }
+  function methodQty(q) {
+    var v = num(q); if (!v) return String(q || '').trim();
+    var r = function (x, p) { return String(Math.round(x * Math.pow(10, p)) / Math.pow(10, p)); };
+    if (SP.US) return v >= 16 ? r(v / 16, 2) + ' lb' : r(v, 2) + ' oz';
+    return v >= 1000 ? r(v / 1000, 3) + ' kg' : r(v, 1) + ' g';
+  }
+  function methodMakes(r) {
+    var batch = String(r.batch_size || '').trim(), size = String(r.product_size || '').trim();
+    if (!batch) return '';
+    if (r.made_by === 'UNITS') return 'MAKES ' + batch;
+    var t = 'BATCH ' + methodQty(batch);
+    if (num(size) > 1) t += '   ·   PORTION ' + methodQty(size) + '   ·   MAKES ' + (Math.round(num(batch) / num(size) * 10) / 10);
+    return t;
+  }
+  function shareText(r, note) {
+    var deg = SP.US ? '°F' : '°C';
+    var lines = ['*' + String(r.recipe_name || 'RECIPE').toUpperCase() + '*'];
+    var makes = methodMakes(r); if (makes) lines.push(makes);
+    if (note && note.trim()) lines.push('', '📌 ' + note.trim());
+    var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
+    if (rows.length) {
+      lines.push('', '*INGREDIENTS*');
+      rows.forEach(function (x) { var q = String(x[1] || '').trim() ? methodQty(x[1]) : ''; lines.push('• ' + (q ? q + '  ' : '') + String(x[0]).trim()); });
+    }
+    var kept = methodKept(r.method);
+    if (kept.length) {
+      lines.push('', '*HOW TO MAKE IT*');
+      kept.forEach(function (st, i) {
+        lines.push((i + 1) + '. ' + st.text.split(/\s+/).join(' ').trim());
+        var bits = [];
+        if (st.minutes.trim()) bits.push('⏱ ' + st.minutes.trim() + ' MIN');
+        if (st.temp.trim()) bits.push('🌡 ' + st.temp.trim() + deg);
+        if (bits.length) lines.push('    ' + bits.join('  ·  '));
+        if (st.tip.trim()) lines.push('    💡 CHEF\'S TIP: ' + st.tip.trim());
+      });
+    }
+    lines.push('', '— Sent from SharperPlus');
+    return lines.join('\n');
+  }
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function cardHtml(r) {          // the kitchen card, as the desktop prints it
+    var deg = SP.US ? '°F' : '°C';
+    var ing = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); }).map(function (x) {
+      return '<tr><td class="q">' + esc(String(x[1] || '').trim() ? methodQty(x[1]) : '') + '</td><td>' + esc(x[0]) + '</td></tr>';
+    }).join('');
+    var steps = methodKept(r.method).map(function (st) {
+      var bits = [];
+      if (st.minutes.trim()) bits.push('⏱ ' + esc(st.minutes) + ' MIN');
+      if (st.temp.trim()) bits.push('🌡 ' + esc(st.temp) + deg);
+      if (st.uses.length) bits.push(esc(st.uses.join(', ')));
+      return '<li><div class="t">' + esc(st.text).replace(/\n/g, '<br>') + '</div>' +
+        (bits.length ? '<div class="m">' + bits.join(' &nbsp;·&nbsp; ') + '</div>' : '') +
+        (st.tip.trim() ? '<div class="tip">CHEF\'S TIP: ' + esc(st.tip) + '</div>' : '') + '</li>';
+    }).join('');
+    var logo = new URL('banner-phone.png', location.href).href;
+    return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<title>' + esc(r.recipe_name || 'RECIPE') + ' - KITCHEN CARD</title><style>' +
+      '*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f4efe6;color:#1b1b1b}' +
+      '.card{max-width:900px;margin:12px auto;background:#fff;border:3px solid #1b1b1b;padding:20px 24px}' +
+      '.logo{display:block;width:calc(100% + 48px);margin:-20px -24px 14px}' +
+      '.top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px;border-bottom:4px solid #1b1b1b;padding-bottom:8px}' +
+      'h1{font-size:30px;margin:0}.mk{font-size:16px;font-weight:bold}' +
+      '.grid{display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-top:18px}@media (max-width:600px){.grid{grid-template-columns:1fr}}' +
+      'h2{font-size:18px;margin:0 0 8px;background:#1b1b1b;color:#fff;padding:6px 10px}' +
+      'table{width:100%;border-collapse:collapse;font-size:17px}td{border-bottom:1px solid #ccc;padding:6px 4px}td.q{font-weight:bold;white-space:nowrap;width:1%;padding-right:12px}' +
+      'ol{margin:0;padding-left:28px;font-size:18px}li{margin:0 0 14px}li::marker{font-weight:bold}.t{line-height:1.45}' +
+      '.m{font-size:14px;font-weight:bold;color:#555;margin-top:4px}.tip{margin-top:6px;font-size:15px;font-weight:bold;color:#8a4b00;border-left:4px solid #8a4b00;padding-left:8px}' +
+      '.foot{margin-top:20px;border-top:2px solid #1b1b1b;padding-top:6px;font-size:13px;color:#555;display:flex;justify-content:space-between}' +
+      '.btn{display:block;margin:14px auto 0;font-size:20px;font-weight:bold;padding:12px 30px}' +
+      '@page{size:' + (SP.US ? 'letter' : 'A4') + ';margin:12mm}@media print{body{background:#fff}.card{margin:0;border:0;max-width:none}.btn{display:none}.grid{grid-template-columns:1fr 2fr}}' +
+      '</style></head><body><button class="btn" onclick="window.print()">PRINT / SAVE AS PDF</button>' +
+      '<div class="card"><img class="logo" src="' + logo + '" alt="SharperPlus"><div class="top"><h1>' + esc(r.recipe_name || 'RECIPE') + '</h1><div class="mk">' + esc(methodMakes(r)) + '</div></div>' +
+      '<div class="grid"><div><h2>INGREDIENTS</h2><table>' + (ing || '<tr><td></td></tr>') + '</table></div><div><h2>HOW TO MAKE IT</h2><ol>' + steps + '</ol></div></div>' +
+      '<div class="foot"><span>KITCHEN CARD</span><span>SharperPlus</span></div></div></body></html>';
+  }
+
+  var ticks = {};
+  builders.method = function () {
+    var page = pageTop('HOW TO MAKE IT');
+    var badge = el('span', 'badge', '★ PREMIUM'); page.querySelector('.pagetitle').appendChild(badge);
+    var top = el('div', 'card');
+    var pickRowM = el('label', 'row'); pickRowM.appendChild(el('span', 'lbl', 'RECIPE'));
+    var picker = el('select', 'cream'); picker.style.width = '62%'; picker.style.maxWidth = 'none';
+    picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); draw(); };
+    pickRowM.appendChild(picker); top.appendChild(pickRowM);
+    var makes = el('div', 'makes'); top.appendChild(makes);
+    var tb = el('div', 'btnrow');
+    var fromPhoto = el('button', 'soft', '📷 METHOD FROM PHOTO');
+    var sendBtn = el('button', 'soft', '📤 SEND OR PRINT');
+    tb.appendChild(fromPhoto); tb.appendChild(sendBtn); top.appendChild(tb);
+    page.appendChild(top);
+
+    var ingCard = el('div', 'card'); ingCard.appendChild(el('div', 'cardhead', 'INGREDIENTS – TICK THEM OFF AS YOU PREP'));
+    var ingList = el('div', 'ticklist'); ingCard.appendChild(ingList); page.appendChild(ingCard);
+    var stepCard = el('div', 'card'); stepCard.appendChild(el('div', 'cardhead', 'METHOD'));
+    var stepList = el('div', ''); stepCard.appendChild(stepList);
+    var addRow = el('div', 'btnrow'); var addStep = el('button', 'soft', '+ ADD STEP'); addRow.appendChild(addStep);
+    stepCard.appendChild(addRow); page.appendChild(stepCard);
+
+    function cur() {            // tidy each step in place, so open boxes stay tied to their step
+      var r = recipeNow(); r.method = r.method || [];
+      r.method.forEach(function (st, i) {
+        if (!st || typeof st !== 'object') { r.method[i] = methodStep(st); return; }
+        var t = methodStep(st); Object.keys(t).forEach(function (k) { if (k === 'uses' ? !Array.isArray(st.uses) : typeof st[k] !== 'string') st[k] = t[k]; });
+      });
+      return r;
+    }
+    function names() { return (cur().rows || []).map(function (x) { return String(x[0] || '').trim(); }).filter(Boolean); }
+
+    function draw() {
+      var r = cur(); SP.setUnits(data.settings);
+      picker.innerHTML = '';
+      data.recipes.forEach(function (x, i) { var o = el('option', '', x.recipe_name || '(NO NAME)'); o.value = i; picker.appendChild(o); });
+      picker.value = data.current;
+      makes.textContent = methodMakes(r); makes.hidden = !makes.textContent;
+      // ingredients to tick
+      ingList.innerHTML = '';
+      var key = 'r' + data.current; ticks[key] = ticks[key] || {};
+      var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
+      if (!rows.length) ingList.appendChild(el('div', 'empty', 'No ingredients yet. Add them on the recipe page.'));
+      rows.forEach(function (x) {
+        var n = String(x[0]).trim();
+        var b = el('button', 'tick' + (ticks[key][n] ? ' done' : ''));
+        b.appendChild(el('span', 'box', ticks[key][n] ? '✔' : ''));
+        b.appendChild(el('span', 'qty', String(x[1] || '').trim() ? methodQty(x[1]) : ''));
+        b.appendChild(el('span', 'nm', n));
+        b.onclick = function () { ticks[key][n] = !ticks[key][n]; draw(); };
+        ingList.appendChild(b);
+      });
+      // steps
+      stepList.innerHTML = '';
+      if (!r.method.length) stepList.appendChild(el('div', 'empty', 'No steps yet. Press + ADD STEP, or METHOD FROM PHOTO.'));
+      r.method.forEach(function (st, i) {
+        var box = el('div', 'step');
+        var head = el('div', 'stephead');
+        head.appendChild(el('span', 'stepno', String(i + 1)));
+        var up = el('button', 'mv', '▲'), dn = el('button', 'mv', '▼'), del = el('button', 'del', '✕');
+        up.disabled = i === 0; dn.disabled = i === r.method.length - 1;
+        up.onclick = function () { var m = r.method; m.splice(i - 1, 0, m.splice(i, 1)[0]); save(); draw(); };
+        dn.onclick = function () { var m = r.method; m.splice(i + 1, 0, m.splice(i, 1)[0]); save(); draw(); };
+        del.onclick = function () {
+          notice('REMOVE STEP', ['Remove step ' + (i + 1) + '?'], ['REMOVE', 'CANCEL']).then(function (a) {
+            if (a !== 0) return; r.method.splice(i, 1); save(); draw(); });
+        };
+        head.appendChild(up); head.appendChild(dn); head.appendChild(del); box.appendChild(head);
+        var text = el('textarea', 'cream steptext'); text.value = st.text; text.placeholder = 'What to do in this step';
+        text.oninput = function () { st.text = text.value; save(); };
+        box.appendChild(text);
+        var row = el('div', 'stepfields');
+        [['TIME (MIN)', 'minutes'], [SP.US ? '°F' : '°C', 'temp']].forEach(function (f) {
+          var l = el('label', 'wage'); l.appendChild(el('span', 'lbl', f[0]));
+          var inp = el('input', 'cream'); inp.inputMode = 'decimal'; inp.value = st[f[1]];
+          inp.oninput = function () { st[f[1]] = inp.value; save(); };
+          l.appendChild(inp); row.appendChild(l);
+        });
+        var usesBtn = el('button', 'soft uses', st.uses.length ? 'USES ' + st.uses.length + ' INGREDIENT' + (st.uses.length > 1 ? 'S' : '') : 'PICK INGREDIENTS');
+        usesBtn.onclick = function () { pickUses(st); };
+        row.appendChild(usesBtn); box.appendChild(row);
+        var tipRow = el('label', 'row tiprow'); tipRow.appendChild(el('span', 'lbl', 'CHEF\'S TIP'));
+        var tip = el('input', 'cream tip'); tip.value = st.tip; tip.oninput = function () { st.tip = tip.value; save(); };
+        tipRow.appendChild(tip); box.appendChild(tipRow);
+        stepList.appendChild(box);
+      });
+    }
+    function pickUses(st) {
+      var all = names();
+      var shade = el('div', 'shade'), box = el('div', 'notice');
+      box.appendChild(el('div', 'notice-head', 'WHICH INGREDIENTS?'));
+      var body = el('div', 'notice-body ticklist');
+      if (!all.length) body.appendChild(el('div', '', 'No ingredients on this recipe yet.'));
+      var chosen = st.uses.slice();
+      all.forEach(function (n) {
+        var b = el('button', 'tick' + (chosen.indexOf(n) >= 0 ? ' done' : ''));
+        var bx = el('span', 'box', chosen.indexOf(n) >= 0 ? '✔' : ''); b.appendChild(bx); b.appendChild(el('span', 'nm', n));
+        b.onclick = function () {
+          var k = chosen.indexOf(n); if (k >= 0) chosen.splice(k, 1); else chosen.push(n);
+          b.classList.toggle('done', k < 0); bx.textContent = k < 0 ? '✔' : '';
+        };
+        body.appendChild(b);
+      });
+      box.appendChild(body);
+      var row = el('div', 'notice-btns'); var ok = el('button', 'soft', 'DONE');
+      ok.onclick = function () { st.uses = all.filter(function (n) { return chosen.indexOf(n) >= 0; }); document.body.removeChild(shade); save(); draw(); };
+      row.appendChild(ok); box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+    }
+    addStep.onclick = function () {
+      cur().method.push(methodStep()); save(); draw();
+      var t = stepList.querySelectorAll('textarea'); if (t.length) t[t.length - 1].focus();
+    };
+    fromPhoto.onclick = function () {
+      var input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
+      input.onchange = function () {
+        if (!input.files || !input.files[0]) return;
+        waiting(true);
+        var r = cur();
+        shrink(input.files[0]).then(function (img) {
+          return readPhotoWith(img, names());
+        }).then(function (answer) {
+          waiting(false);
+          var steps = (answer.steps || []).filter(function (s) { return String(s.text || '').trim(); });
+          var ns = names();
+          steps = steps.map(function (s) {
+            var st = methodStep(s);
+            st.uses = st.uses.map(function (u) {
+              var k = u.trim().toLowerCase();
+              return ns.filter(function (n) { return n.toLowerCase() === k; })[0] ||
+                (function (h) { return h ? ns.filter(function (n) { return n.toLowerCase() === h; })[0] : null; })(closeMatch(k, ns.map(function (n) { return n.toLowerCase(); })));
+            }).filter(function (u, i, a) { return u && a.indexOf(u) === i; });
+            return st;
+          });
+          if (!r.rows.some(function (x) { return String(x[0] || '').trim(); }) && answer.ingredients) {
+            r.rows = answer.ingredients.filter(function (x) { return String(x.name || '').trim(); }).slice(0, 31).map(function (x) {
+              var n = String(x.name).trim(); return [n, typeof x.grams === 'number' ? String(x.grams) : '', tidyPrice(lastPrice(data.ingredient_history, n)), '', ''];
+            });
+          }
+          if (!steps.length) { notice('NOTICE', ['No method steps were found in that photo.']); return; }
+          var have = methodKept(r.method);
+          var go = have.length ? notice('YOU ALREADY HAVE STEPS', ['The photo has ' + steps.length + ' steps.'], ['REPLACE MINE', 'ADD AFTER MINE', 'CANCEL'])
+                               : Promise.resolve(0);
+          go.then(function (a) {
+            if (a === 2) return;
+            r.method = (a === 0 ? [] : have).concat(steps); save(); draw();
+            notice('METHOD READ', [steps.length + ' steps read from your photo.', '', 'Check the steps against your photo.']);
+          });
+        }).catch(function (err) { waiting(false); notice('THE PHOTO COULD NOT BE READ', [err.message || 'Please try again.']); });
+      };
+      input.click();
+    };
+    sendBtn.onclick = function () {
+      var r = cur();
+      if (!methodKept(r.method).length) { notice('NOTICE', ['Add at least one step first.']); return; }
+      var shade = el('div', 'shade'), box = el('div', 'notice');
+      box.appendChild(el('div', 'notice-head', 'SEND OR PRINT'));
+      var body = el('div', 'notice-body');
+      body.appendChild(el('div', '', 'Send the recipe and method to your team.'));
+      var note = el('input', 'cream'); note.placeholder = 'NOTE FOR THE TEAM (OPTIONAL)'; body.appendChild(note);
+      box.appendChild(body);
+      var row = el('div', 'notice-btns col');
+      function close() { document.body.removeChild(shade); }
+      function open(url) { close(); window.location.href = url; }
+      var subject = (r.recipe_name || 'RECIPE') + ' - HOW TO MAKE IT';
+      var apps = [['WHATSAPP', 'wa', function () { open('https://wa.me/?text=' + encodeURIComponent(shareText(r, note.value))); }],
+        ['LINE', 'line', function () { open('https://line.me/R/share?text=' + encodeURIComponent(shareText(r, note.value))); }],
+        ['EMAIL', 'mail', function () { open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(shareText(r, note.value).replace(/\*/g, ''))); }]];
+      if (navigator.share) apps.push(['MORE APPS (MESSENGER AND OTHERS)', 'more', function () {
+        navigator.share({ title: subject, text: shareText(r, note.value).replace(/\*/g, '') }).catch(function () {}); close(); }]);
+      apps.push(['PRINT / SAVE AS PDF', 'print', function () {
+        close(); var w = window.open('', '_blank');
+        if (!w) { notice('NOTICE', ['Please allow pop-ups to print.']); return; }
+        w.document.open(); w.document.write(cardHtml(r)); w.document.close();
+      }]);
+      apps.push(['CLOSE', '', close]);
+      apps.forEach(function (a) { var b = el('button', 'soft share ' + a[1], a[0]); b.onclick = a[2]; row.appendChild(b); });
+      box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+    };
+    refreshers.method = draw;
+    return page;
+  };
+
   // ---------------------------------------------------------------- the menu
-  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard' };
+  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method' };
   var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
