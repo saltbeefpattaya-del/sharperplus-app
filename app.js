@@ -83,13 +83,13 @@
       box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
     });
   }
-  function ask(title, lines, hint) {
+  function ask(title, lines, hint, start) {
     return new Promise(function (done) {
       var shade = el('div', 'shade'), box = el('div', 'notice');
       box.appendChild(el('div', 'notice-head', title));
       var body = el('div', 'notice-body');
       lines.forEach(function (l) { body.appendChild(el('div', '', l)); });
-      var input = el('input', 'cream'); input.placeholder = hint || ''; body.appendChild(input);
+      var input = el('input', 'cream'); input.placeholder = hint || ''; input.value = start || ''; body.appendChild(input);
       box.appendChild(body);
       var row = el('div', 'notice-btns');
       [['OK', true], ['CANCEL', false]].forEach(function (p) {
@@ -778,6 +778,15 @@
 
     // ---- ingredients
     var ing = card('INGREDIENTS');
+    // the price reminder, only for a recipe read from a photo (as the desktop)
+    var remind = el('div', 'remind'); remind.hidden = true;
+    remind.appendChild(el('div', 'remindhead', 'PRICE REMINDER'));
+    var remindWords = el('div', 'remindwords'); remind.appendChild(remindWords);
+    var never = el('button', 'remindnever', '\u2610  Don\'t show me again');
+    never.onclick = function () {
+      data.settings['hide_price_' + remind.kind] = 'YES'; save(); calc();
+    };
+    remind.appendChild(never); ing.appendChild(remind);
     var noPrice = el('div', 'note red'); noPrice.hidden = true; ing.appendChild(noPrice);
     ingList = el('div', 'ings'); ing.appendChild(ingList);
     var addIng = el('div', 'btnrow'); var addIngBtn = el('button', 'soft', '+ ADD INGREDIENT');
@@ -1102,6 +1111,13 @@
       put('sub', m(out.sub)); vatRow.firstChild.textContent = 'VAT AT ' + (out.vat_percent || 0) + '%';
       put('vat', m(out.vat)); put('total', m(out.total));
       var missing = r.rows.filter(function (x) { return String(x[0] || '').trim() && num(x[2]) <= 0; }).length;
+      var fromPhoto = photoRecipes[data.current];
+      remind.kind = missing ? 'add' : 'check';
+      var words = !fromPhoto ? '' : missing ? 'Please Update Prices, to compleate your recipe costing'
+        : fromPhoto.prices ? 'If one of your ingredients has had a price increase, please update the price in your recipe. ' +
+          'This could affect other recipes with the same ingredients.' : '';
+      if (words && data.settings['hide_price_' + remind.kind] === 'YES') words = '';
+      remindWords.textContent = words; remind.hidden = !words;
       noPrice.hidden = !missing;
       noPrice.textContent = missing > 1 ? missing + ' INGREDIENTS HAVE NO PRICE' : '1 INGREDIENT HAS NO PRICE';
       labourOuts.forEach(function (o, i) {
@@ -1129,6 +1145,9 @@
       alert.textContent = warn || 'NO ALERTS'; alert.classList.toggle('red', !!warn);
     }
 
+    page.querySelector('.bar .barbtn:nth-child(2)').addEventListener('click', function () {
+      var f = photoRecipes[data.current]; if (f) { f.prices = false; calc(); }   // SAVE answers the check
+    });
     refreshers.recipe = function () {
       var r = recipeNow();
       SP.setUnits(s);
@@ -1264,9 +1283,135 @@
     return page;
   };
 
+  // ---------------------------------------------------------------- ADD RECIPE FROM PHOTO
+  var READ_URL = 'https://sharperplus.com/wp-json/sp/v1/read-app';
+  var photoRecipes = {};        // recipes made from a photo this session: they get the price reminder
+
+  function shrink(file) {          // a phone photo is big: make it 1600 wide, as the desktop does
+    return new Promise(function (done, fail) {
+      var img = new Image(), url = URL.createObjectURL(file);
+      img.onload = function () {
+        var scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        done(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); fail(new Error('That photo could not be opened. Please try another photo.')); };
+      img.src = url;
+    });
+  }
+  function readPhoto(image) {       // the reader gets busy: quietly try again, like the desktop
+    var busy = /high demand|overloaded|try again later|unavailable|resource exhausted|rate limit|503|429/i;
+    var waits = [0, 5000, 10000, 20000];
+    function attempt(n) {
+      return new Promise(function (r) { setTimeout(r, waits[n]); }).then(function () {
+        return fetch(READ_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                 body: JSON.stringify({ image: image, names: [] }) });
+      }).then(function (res) { return res.json(); }, function () {
+        throw new Error('No internet connection. Please check your connection and try again.');
+      }).then(function (answer) {
+        if (answer && answer.ok) return answer;
+        var why = (answer && (answer.error || answer.message)) || 'The photo could not be read.';
+        if (busy.test(why) && n < waits.length - 1) return attempt(n + 1);
+        throw new Error(busy.test(why) ? 'The photo reader is very busy right now. Please wait a minute and try again.' : why);
+      });
+    }
+    return attempt(0);
+  }
+  function waiting(on) {
+    var w = document.getElementById('waitbox');
+    if (!w) {
+      w = el('div', 'shade'); w.id = 'waitbox';
+      var box = el('div', 'notice');
+      box.appendChild(el('div', 'notice-head', 'Reading your recipe...'));
+      var body = el('div', 'notice-body');
+      body.appendChild(el('div', 'spinner'));
+      body.appendChild(el('div', '', 'Handwriting can take a little longer.'));
+      box.appendChild(body); w.appendChild(box);
+    }
+    if (on) document.body.appendChild(w); else if (w.parentNode) w.parentNode.removeChild(w);
+  }
+  function photoClicked() {
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'ADD RECIPE FROM PHOTO'));
+    var body = el('div', 'notice-body');
+    body.appendChild(el('div', '', 'Take a clear photo of your recipe sheet, straight on and in good light.'));
+    box.appendChild(body);
+    var row = el('div', 'notice-btns col');
+    function pick(camera) {
+      var input = document.createElement('input');
+      input.type = 'file'; input.accept = 'image/*';
+      if (camera) input.setAttribute('capture', 'environment');
+      input.onchange = function () { if (input.files && input.files[0]) gotPhoto(input.files[0]); };
+      document.body.removeChild(shade); input.click();
+    }
+    [['📷  TAKE PHOTO', function () { pick(true); }],
+     ['🖼  CHOOSE FROM PHOTOS', function () { pick(false); }],
+     ['CANCEL', function () { document.body.removeChild(shade); }]].forEach(function (b) {
+      var x = el('button', 'soft', b[0]); x.onclick = b[1]; row.appendChild(x); });
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+  }
+  function gotPhoto(file) {
+    waiting(true);
+    shrink(file).then(readPhoto).then(function (answer) {
+      waiting(false);
+      var ings = (answer.ingredients || []).filter(function (i) { return String(i.name || '').trim(); });
+      var steps = (answer.steps || []).filter(function (st) { return String(st.text || '').trim(); });
+      if (!ings.length && !steps.length) {
+        notice('NOTICE', ['No ingredients or method were found in that photo.', '', 'Try a clearer, brighter photo.']);
+        return;
+      }
+      var start = String(answer.recipe || '').toUpperCase().slice(0, 60);
+      askName(start).then(function (name) {
+        if (!name) return;
+        var r = SP.blankRecipe(); r.recipe_name = name;
+        var history = data.ingredient_history;
+        r.rows = ings.slice(0, 31).map(function (i) {
+          var nm = String(i.name).trim();
+          var g = typeof i.grams === 'number' ? String(i.grams) : (num(i.grams) ? String(num(i.grams)) : '');
+          return [nm, g, tidyPrice(lastPrice(history, nm)), '', ''];
+        });
+        if (answer.batch) { r.batch_size = String(answer.batch); r.made_by = 'GRAMS'; }
+        var names = r.rows.map(function (x) { return x[0]; });
+        r.method = steps.map(function (st) {
+          var uses = (st.uses || []).map(function (u) {
+            var k = String(u).trim().toLowerCase();
+            var hit = names.filter(function (n) { return n.toLowerCase() === k; })[0] || closeMatch(k, names.map(function (n) { return n.toLowerCase(); }));
+            return hit ? names.filter(function (n) { return n.toLowerCase() === String(hit).toLowerCase(); })[0] : null;
+          }).filter(function (u, i, all) { return u && all.indexOf(u) === i; });
+          return { text: String(st.text || ''), minutes: String(st.minutes || ''), temp: String(st.temp || ''),
+                   tip: String(st.tip || ''), uses: uses };
+        });
+        data.recipes.push(r); data.current = data.recipes.length - 1;
+        photoRecipes[data.current] = { prices: r.rows.some(function (x) { return num(x[2]) > 0; }) };
+        save();
+        if (screens.recipe) refreshers.recipe();
+        show('recipe');
+        notice('RECIPE READ', [ings.length + ' ingredient' + (ings.length === 1 ? '' : 's') +
+          (steps.length ? ' and ' + steps.length + ' method step' + (steps.length === 1 ? '' : 's') : '') + ' read from your photo.', '',
+          'Please check them against your photo, then add your prices.']);
+      });
+    }).catch(function (err) {
+      waiting(false);
+      notice('THE PHOTO COULD NOT BE READ', [err.message || 'Please try again.']);
+    });
+  }
+  function askName(start) {
+    return ask('NAME OF THE NEW RECIPE', ['Check the name read from your photo'], 'RECIPE NAME', start).then(function (name) {
+      if (name == null) return null;
+      name = String(name).trim();
+      if (!name) return null;
+      name = name.toUpperCase();
+      if (nameTaken(name)) { return notice('NOTICE', ['RECIPE ALREADY EXISTS.', '', 'Please pick another name.']).then(function () { return askName(name + ' 2'); }); }
+      return name;
+    }).then(function (n) { return n; });
+  }
+
   // ---------------------------------------------------------------- the menu
   var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard' };
-  var actions = { 'ADD RECIPE': newRecipe };
+  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');
