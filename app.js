@@ -769,6 +769,8 @@
     pickRow2(prod, 'PRODUCT MADE BY UNITS OR GRAMS', function () {
       return SP.US ? [['UNITS', 'UNITS'], ['GRAMS', 'OZ'], ['LB', 'LB']] : [['UNITS', 'UNITS'], ['GRAMS', 'GRAMS']];
     }, function () { return recipeNow().made_by || 'UNITS'; }, function (v) { recipeNow().made_by = v; });
+    prod.appendChild(el('div', 'note', 'WE RECOMMEND YOU ADD YOUR INGREDIENTS FIRST, SO YOU CAN GET YOUR BATCH SIZE'));
+    outRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', 'weight');
     inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
     inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
     outRow(prod, 'TOTAL PRODUCTS', 'products');
@@ -822,7 +824,9 @@
         var price = cell('UNIT PRICE ' + (SP.US ? 'PER LB' : 'PER KILO'), tidyPrice(row[2]), function (v) { row[2] = v; watch.pulled = null; });
         price.onfocus = function () { watch.wasPrice = price.value; };
         price.onblur = function () { setTimeout(function () { priceLeft(watch, price); }, 60); };
-        cell(SP.US ? 'WASTE IN OZ' : 'WASTE IN GRAMS', row[3], function (v) { row[3] = v; });
+        var waste = cell(SP.US ? 'WASTE (OZ OR %)' : 'WASTE (GRAMS OR %)', row[3], function (v) { row[3] = v; });
+        waste.inputMode = 'text';
+        waste.onblur = function () { wastePercent(row); waste.value = row[3]; calc(); save(); };
         box.appendChild(grid);
         var o = el('div', 'ingouts');
         function small(label) { var d = el('div', 'mini'); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
@@ -1063,14 +1067,24 @@
     outRow(pr, 'PROFIT DROP', 'min_profit');
     var alert = el('div', 'note'); pr.appendChild(alert);
 
+    // waste typed as a percentage (70%) becomes grams of the quantity (700 g of 1000 g)
+    function wastePercent(row) {
+      var t = String(row[3] || '').trim();
+      if (t.slice(-1) !== '%') return;
+      var q = num(row[1]), pc = num(t.slice(0, -1));
+      if (q > 0 && pc >= 0 && pc < 100) row[3] = String(Math.round(q * pc / 100 * 100) / 100);
+    }
     function put(key, text, cls) { var o = outs[key]; if (!o) return; o.textContent = text; o.classList.toggle('neg', cls === 'neg'); }
     function calc() {
       SP.setUnits(s);
       var r = recipeNow();
+      r.rows.forEach(wastePercent);
       var out = SP.costEverything(r, s);
       var m = SP.money;
       put('products', SP.commas(out.products, 2).replace(/\.?0+$/, '') || '0');
       put('portion', m(out.portion));
+      var usable = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
+      put('weight', SP.US ? SP.commas(usable, 2) + ' oz' : SP.commas(Math.round(usable), 0) + ' g');
       ingOuts.forEach(function (o, i) {
         var row = r.rows[i] || [];
         var any = row.some(function (c) { return String(c || '').trim(); });
