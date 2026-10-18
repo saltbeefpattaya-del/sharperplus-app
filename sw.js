@@ -1,5 +1,5 @@
 // SharperPlus phone app: newest version when online, the saved copy when offline.
-const CACHE = 'sharperplus-m2';
+const CACHE = 'sharperplus-m3';
 const FILES = ['./', 'index.html', 'engine.js', 'app.js', 'manifest.webmanifest', 'banner-phone.png',
                'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {
@@ -11,7 +11,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
-  e.respondWith(fetch(e.request).then(r => {
+  e.respondWith(fetch(e.request, { cache: 'no-store' }).then(r => {
     const copy = r.clone();
     caches.open(CACHE).then(c => c.put(e.request, copy));
     return r;
