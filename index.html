@@ -49,46 +49,85 @@ body{min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
   font-weight:bold;font-size:18px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.35);opacity:0;
   pointer-events:none;transition:opacity .25s;width:max-content;max-width:88vw}
 .toast.on{opacity:1}
+
+/* ---- pages */
+.page{padding:0 12px 40px;max-width:640px;margin:0 auto}
+.bar{position:sticky;top:0;z-index:5;display:flex;gap:10px;padding:10px 0;background:var(--bg)}
+.barbtn{background:var(--cell);color:var(--ink);border:2px solid var(--line);border-radius:10px;
+  font:bold 17px Arial,sans-serif;padding:10px 14px}
+.barbtn.saved{background:#3FA535;color:#fff}
+.pagetitle{font:bold 22px/1.2 Arial,sans-serif;margin:6px 2px 14px;color:var(--ink)}
+.card{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:0 0 10px;margin:0 0 16px;overflow:hidden}
+.cardhead{background:#EEAF12;color:var(--ink);font:bold 18px Arial,sans-serif;padding:12px 14px;border-bottom:2px solid var(--line)}
+.row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid rgba(0,0,0,.18)}
+.row[hidden]{display:none}
+.lbl{flex:1;font:bold 15px/1.25 Arial,sans-serif;color:var(--ink)}
+.cream{background:#FFFFCC;color:var(--ink);border:2px solid #5A3600;border-radius:9px;font:bold 18px Arial,sans-serif;
+  padding:9px 10px;width:42%;max-width:190px;text-align:center}
+select.cream{text-align-last:center}
+.suffix{font:bold 17px Arial,sans-serif;margin-left:-4px}
+.calc{min-width:42%;max-width:190px;text-align:center;background:#FFCC66;border-radius:9px;padding:9px 8px;
+  font:bold 17px Arial,sans-serif;color:var(--ink);min-height:40px}
+.calc.strong{background:#FFFF00}
+.calc.neg,.months .calc.neg{background:#FF0000;color:#fff}
+.hint{font:bold 14px Arial,sans-serif;text-align:right;padding:0 12px 6px;color:var(--ink)}
+.hint:empty{display:none}
+.sub{font:bold 15px Arial,sans-serif;padding:12px 12px 4px;color:var(--ink)}
+.note{background:#FFCC66;margin:10px 12px 4px;border-radius:10px;padding:10px;font:bold 15px/1.3 Arial,sans-serif;text-align:center}
+.note.red{background:#FF0000;color:#fff}
+.small{font:bold 14px/1.35 Arial,sans-serif;padding:10px 12px 0}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px;justify-content:center}
+.btnrow .soft{flex:1;min-width:40%}
+.soft.on{background:#FFCC66;outline:3px solid var(--ink)}
+.flames{display:flex;gap:10px;padding:6px 12px}
+.flame{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;background:#EEAF12;border:2px solid var(--line);
+  border-radius:12px;padding:10px 4px;font:bold 15px/1.2 Arial,sans-serif;color:var(--ink)}
+.flame .tick{width:38px;height:38px;background:#fff;border:2px solid var(--ink);border-radius:8px;
+  font:bold 26px/34px Arial,sans-serif;color:#0a8a0a}
+.months{padding:6px 10px 0}
+.month{background:#EEAF12;border:2px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden}
+.monthhead{display:flex;justify-content:space-between;align-items:center;background:#000;color:#FFCC66;
+  font:bold 18px Arial,sans-serif;padding:10px 12px}
+.del{background:#FF0000;color:#fff;border:0;border-radius:8px;font:bold 18px Arial,sans-serif;width:40px;height:36px}
+.row.mark .cream{background:#FF6600;color:#fff}
+.empty{font:bold 15px/1.35 Arial,sans-serif;padding:12px;text-align:center}
+.shade{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.notice{background:#D69A05;border:4px solid #FFCC66;border-radius:14px;width:100%;max-width:440px;padding:16px}
+.notice-head{background:#FFCC66;border:2px solid #000;text-align:center;font:bold 21px Arial,sans-serif;padding:10px;margin-bottom:12px}
+.notice-body{font:bold 17px/1.35 Arial,sans-serif;color:#1B1B1B;text-align:center}
+.notice-body .cream{width:100%;max-width:none;margin-top:12px}
+.notice-btns{display:flex;gap:12px;justify-content:center;margin-top:16px}
+.notice-btns .soft{min-width:110px}
+[hidden]{display:none !important}
 </style>
 </head>
 <body>
 <div class="banner" role="img" aria-label="SharperPlus"></div>
-<div class="wrap">
+<div id="app">
+<div class="wrap" id="menu">
   <div class="tools">
-    <button class="soft" data-soon="LANGUAGE">ENGLISH</button>
-    <button class="soft" data-soon="CHANGE APPEARANCE">CHANGE<br>APPEARANCE</button>
+    <button class="soft" data-go="LANGUAGE">ENGLISH</button>
+    <button class="soft" data-go="CHANGE APPEARANCE">CHANGE<br>APPEARANCE</button>
   </div>
 
   <div class="tile title"><span>MAIN MENU</span></div>
 
   <div class="grid">
-    <button class="tile" data-soon="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
-    <button class="tile" data-soon="ADD RECIPE FROM PHOTO"><span>ADD RECIPE</span><span>FROM PHOTO</span></button>
-    <button class="tile" data-soon="STAFF"><span>STAFF</span></button>
-    <button class="tile" data-soon="ADD RECIPE"><span>ADD RECIPE</span></button>
-    <button class="tile" data-soon="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
-    <button class="tile" data-soon="DASHBOARD"><span>DASHBOARD</span></button>
+    <button class="tile" data-go="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
+    <button class="tile" data-go="ADD RECIPE FROM PHOTO"><span>ADD RECIPE</span><span>FROM PHOTO</span></button>
+    <button class="tile" data-go="STAFF"><span>STAFF</span></button>
+    <button class="tile" data-go="ADD RECIPE"><span>ADD RECIPE</span></button>
+    <button class="tile" data-go="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
+    <button class="tile" data-go="DASHBOARD"><span>DASHBOARD</span></button>
   </div>
 
-  <button class="tile centre" data-soon="DATA STORE"><span>DATA STORE</span></button>
+  <button class="tile centre" data-go="DATA STORE"><span>DATA STORE</span></button>
 
-  <div class="foot"><button class="soft" data-soon="USER GUIDE">USER<br>GUIDE</button></div>
+  <div class="foot"><button class="soft" data-go="USER GUIDE">USER<br>GUIDE</button></div>
+</div>
 </div>
 <div class="toast" id="toast"></div>
-<script>
-(function(){
-  var toast=document.getElementById('toast'), timer;
-  function say(words){
-    toast.textContent=words; toast.classList.add('on');
-    clearTimeout(timer); timer=setTimeout(function(){toast.classList.remove('on');},1800);
-  }
-  document.querySelectorAll('[data-soon]').forEach(function(b){
-    b.addEventListener('click',function(){ say(b.getAttribute('data-soon')+' – coming next'); });
-  });
-  if('serviceWorker' in navigator){
-    window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
-  }
-})();
-</script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
