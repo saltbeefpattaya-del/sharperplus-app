@@ -1523,18 +1523,34 @@
     var stepList = el('div', ''); stepCard.appendChild(stepList);
     var addRow = el('div', 'btnrow'); var addStep = el('button', 'soft', '+ ADD STEP'); addRow.appendChild(addStep);
     stepCard.appendChild(addRow); page.appendChild(stepCard);
-    // what to do next, so the method leads into the costing
-    var next = el('div', 'nexttab');
-    next.appendChild(el('div', 'nexthead', '\u2605  NEXT STEP'));
-    next.appendChild(el('div', 'nextwords', 'You have your method \u2013 now add your cooking costs.'));
-    next.appendChild(el('div', 'nextsmall', 'Remember, you can fill out your Master Costings and add your staff to get the most out of SharperPlus Premium.'));
-    var nb = el('div', 'nextbtns');
-    [['RECIPE COSTING', 'recipe', 'gobtn'], ['MASTER COSTINGS', 'master', 'soft'], ['STAFF', 'stafflist', 'soft']].forEach(function (b) {
-      var x = el('button', b[2], b[0]);
-      x.onclick = function () { save(); if (refreshers[b[1]] && screens[b[1]]) refreshers[b[1]](); show(b[1]); };
-      nb.appendChild(x);
-    });
-    next.appendChild(nb); page.appendChild(next);
+    // what to do next: bright until done, then faded with a small UPDATE
+    var next = el('div', 'nexttab'); page.appendChild(next);
+    function drawNext() {
+      next.innerHTML = '';
+      var st = setupDone();
+      next.appendChild(el('div', 'nexthead', '\u2605  NEXT STEP'));
+      if (st.recipe && st.master && st.staff) {
+        next.appendChild(el('div', 'nextwords', 'All set up \u2013 you are getting the most out of SharperPlus Premium.'));
+      } else {
+        next.appendChild(el('div', 'nextwords', 'You have your method \u2013 now add your cooking costs.'));
+        next.appendChild(el('div', 'nextsmall', 'Remember, you can fill out your Master Costings and add your staff to get the most out of SharperPlus Premium.'));
+      }
+      [['RECIPE COSTING', 'recipe', 'c-green', st.recipe],
+       ['MASTER COSTINGS', 'master', 'c-blue', st.master],
+       ['STAFF', 'stafflist', 'c-purple', st.staff]].forEach(function (b) {
+        var go = function () { save(); show(b[1]); };
+        var box = el('div', 'stepbox ' + b[2] + (b[3] ? ' done' : ''));
+        if (b[3]) {
+          box.appendChild(el('span', 'stepname', '\u2714  ' + b[0]));
+          var up = el('button', 'upd', 'UPDATE'); up.onclick = go; box.appendChild(up);
+        } else {
+          var big = el('button', 'stepgo', b[0]); big.onclick = go; box.appendChild(big);
+          if (b[1] === 'master' && st.recipe)
+            box.appendChild(el('div', 'stepnote', 'You\u2019ve set up your recipe. Want your true prices? Go to Master Costings.'));
+        }
+        next.appendChild(box);
+      });
+    }
 
     function cur() {            // tidy each step in place, so open boxes stay tied to their step
       var r = recipeNow(); r.method = r.method || [];
@@ -1692,9 +1708,33 @@
       apps.forEach(function (a) { var b = el('button', 'soft share ' + a[1], a[0]); b.onclick = a[2]; row.appendChild(b); });
       box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
     };
-    refreshers.method = draw;
+    refreshers.method = function () { draw(); drawNext(); };
     return page;
   };
+
+  // ---------------------------------------------------------------- what the user has set up
+  function setupDone() {
+    derive(data.settings);
+    var r = data.recipes[data.current] || {}, c = data.settings.costs || {};
+    var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
+    return {
+      recipe: rows.length > 0 && rows.every(function (x) { return num(x[2]) > 0; }),
+      master: [c.elec_bill, c.work_days, c.work_hours].every(function (v) { return String(v || '').trim(); }),
+      staff: (data.settings.staff || []).some(function (p) { return String(p[0] || '').trim() && num(p[1]) > 0; })
+    };
+  }
+  function billReminder() {          // once a month, after Master Costings is filled out
+    if (!setupDone().master) return;
+    var day = 86400000, now = Date.now(), last = data.settings.bills_checked;
+    if (!last) { data.settings.bills_checked = now; save(); return; }
+    if (now - last < 30 * day) return;
+    notice('MONTHLY REMINDER', ['Have you updated your electric and gas bill this month?', '',
+      'Keeping them up to date keeps every recipe cost right.'], ['UPDATE NOW', 'ALREADY DONE', 'REMIND ME LATER'])
+      .then(function (i) {
+        data.settings.bills_checked = i === 2 ? now - 23 * day : now; save();
+        if (i === 0) show('master');
+      });
+  }
 
   // ---------------------------------------------------------------- the menu
   var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method' };
@@ -1707,6 +1747,7 @@
   });
   var start = location.hash.replace('#', '');
   if (start && builders[start]) show(start);
+  setTimeout(billReminder, 800);
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) { reg.update(); }).catch(function () {}); });
