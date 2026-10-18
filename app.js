@@ -828,9 +828,9 @@
         cell('WASTE %', wastePct(row), function (v) { row[4] = String(v).replace('%', '').trim(); wasteGrams(row); });
         box.appendChild(grid);
         var o = el('div', 'ingouts');
-        function small(label) { var d = el('div', 'mini'); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
+        function small(label, cls) { var d = el('div', 'mini' + (cls ? ' ' + cls : '')); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
         var outsRow = { gross: small('GROSS COST'), nett: small(SP.US ? 'YIELD (oz)' : 'YIELD (g)'),
-                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO')), total: small('TOTAL COST') };
+                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO'), 'netcost'), total: small('TOTAL COST') };
         box.appendChild(o);
         ingOuts.push(outsRow);
         ingList.appendChild(box);
