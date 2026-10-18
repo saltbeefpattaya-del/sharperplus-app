@@ -1,5 +1,5 @@
 // SharperPlus phone app: newest version when online, the saved copy when offline.
-const CACHE = 'sharperplus-m6';
+const CACHE = 'sharperplus-m7';
 const FILES = ['./', 'index.html', 'engine.js', 'app.js', 'manifest.webmanifest', 'banner-phone.png',
                'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'];
 self.addEventListener('install', e => {

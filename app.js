@@ -797,6 +797,7 @@
       if (!r.rows.length) r.rows.push(['', '', '', '']);
       r.rows.forEach(function (row, i) {
         while (row.length < 4) row.push('');
+        if (row[4] == null) row[4] = wastePct(row);
         var box = el('div', 'ing');
         var head = el('div', 'inghead');
         head.appendChild(el('span', 'ingno', String(i + 1)));
@@ -820,13 +821,11 @@
           input.oninput = function () { set(input.value); save(); calc(); };
           c2.appendChild(input); grid.appendChild(c2); return input;
         }
-        cell(SP.US ? 'QUANTITY (oz)' : 'QUANTITY (g)', row[1], function (v) { row[1] = v; });
+        cell(SP.US ? 'QUANTITY (oz)' : 'QUANTITY (g)', row[1], function (v) { row[1] = v; wasteGrams(row); });
         var price = cell('UNIT PRICE ' + (SP.US ? 'PER LB' : 'PER KILO'), tidyPrice(row[2]), function (v) { row[2] = v; watch.pulled = null; });
         price.onfocus = function () { watch.wasPrice = price.value; };
         price.onblur = function () { setTimeout(function () { priceLeft(watch, price); }, 60); };
-        var waste = cell(SP.US ? 'WASTE (OZ OR %)' : 'WASTE (GRAMS OR %)', row[3], function (v) { row[3] = v; });
-        waste.inputMode = 'text';
-        waste.onblur = function () { wastePercent(row); waste.value = row[3]; calc(); save(); };
+        cell('WASTE %', wastePct(row), function (v) { row[4] = String(v).replace('%', '').trim(); wasteGrams(row); });
         box.appendChild(grid);
         var o = el('div', 'ingouts');
         function small(label) { var d = el('div', 'mini'); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
@@ -1067,18 +1066,24 @@
     outRow(pr, 'PROFIT DROP', 'min_profit');
     var alert = el('div', 'note'); pr.appendChild(alert);
 
-    // waste typed as a percentage (70%) becomes grams of the quantity (700 g of 1000 g)
-    function wastePercent(row) {
-      var t = String(row[3] || '').trim();
-      if (t.slice(-1) !== '%') return;
-      var q = num(row[1]), pc = num(t.slice(0, -1));
-      if (q > 0 && pc >= 0 && pc < 100) row[3] = String(Math.round(q * pc / 100 * 100) / 100);
+    // waste is typed as a % of the quantity (70% of 1000 g = 700 g). The grams are kept
+    // in the 4th box, as the desktop keeps them; the % is kept beside it.
+    function wastePct(row) {
+      if (row[4] != null && String(row[4]).trim() !== '') return row[4];
+      var q = num(row[1]), w = num(row[3]);
+      return q > 0 && w > 0 ? String(Math.round(w / q * 10000) / 100) : '';
+    }
+    function wasteGrams(row) {
+      if (row[4] == null || String(row[4]).trim() === '') return;
+      var pc = Math.max(0, Math.min(99.99, num(row[4])));
+      var g = num(row[1]) * pc / 100;
+      row[3] = g ? String(Math.round(g * 100) / 100) : '';
     }
     function put(key, text, cls) { var o = outs[key]; if (!o) return; o.textContent = text; o.classList.toggle('neg', cls === 'neg'); }
     function calc() {
       SP.setUnits(s);
       var r = recipeNow();
-      r.rows.forEach(wastePercent);
+      r.rows.forEach(wasteGrams);
       var out = SP.costEverything(r, s);
       var m = SP.money;
       put('products', SP.commas(out.products, 2).replace(/\.?0+$/, '') || '0');
