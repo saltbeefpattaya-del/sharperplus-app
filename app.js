@@ -830,7 +830,7 @@
         var o = el('div', 'ingouts');
         function small(label, cls) { var d = el('div', 'mini' + (cls ? ' ' + cls : '')); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
         var outsRow = { gross: small('GROSS COST'), nett: small(SP.US ? 'YIELD (oz)' : 'YIELD (g)'),
-                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO'), 'netcost'), total: small('TOTAL COST') };
+                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO')), total: small('TOTAL COST', 'netcost') };
         box.appendChild(o);
         ingOuts.push(outsRow);
         ingList.appendChild(box);
@@ -1143,8 +1143,129 @@
     return page;
   };
 
+  // ---------------------------------------------------------------- DASHBOARD
+  function openRecipe(i) { data.current = i; save(); if (screens.recipe) refreshers.recipe(); show('recipe'); }
+  function copyRecipe() {
+    var src = data.recipes[data.current];
+    if (!src) return;
+    ask('NAME OF THE COPY', ['Type the name of the new recipe'], 'RECIPE NAME').then(function (name) {
+      name = String(name || '').trim();
+      if (!name) return;
+      if (nameTaken(name)) { notice('NOTICE', ['RECIPE ALREADY EXISTS.']); return; }
+      var r = JSON.parse(JSON.stringify(src)); r.recipe_name = name.toUpperCase();
+      data.recipes.push(r); save(); refreshers.dashboard();
+      notice('RECIPE CREATED', ["'" + name.toUpperCase() + "' CREATED SUCCESSFULLY."]);
+    });
+  }
+  function deleteRecipe(i) {
+    var name = String(data.recipes[i].recipe_name || '(NO NAME)').toUpperCase();
+    notice('DELETE RECIPE', ['Are you sure you want to DELETE the recipe:', '', name, '',
+      'This will permanently delete the recipe sheet and remove it from the directory.', '',
+      'THIS CANNOT BE UNDONE!'], ['OK', 'CANCEL']).then(function (a) {
+      if (a !== 0) return;
+      return notice('FINAL WARNING', [name, '', 'Once this has been deleted the deletion cannot be undone!'], ['OK', 'CANCEL'])
+        .then(function (b) {
+          if (b !== 0) return;
+          data.recipes.splice(i, 1);
+          if (!data.recipes.length) data.recipes.push(SP.blankRecipe());
+          if (data.current >= data.recipes.length || data.current === i) data.current = 0;
+          else if (data.current > i) data.current--;
+          save(); refreshers.dashboard();
+        });
+    });
+  }
+  function confirmPrice(i) {
+    var r = data.recipes[i], c = r.costs, out = SP.costEverything(r, data.settings);
+    var lines = [r.recipe_name, '', 'Ingredient price changed:  ' + (c.price_check || ''), '',
+                 'Cost per portion now:  ' + SP.money(out.total_portion)];
+    if (out.price) lines.push('Selling price:  ' + SP.money(out.price), 'Profit margin:  ' + (out.margin * 100).toFixed(2) + '%');
+    lines.push('', 'Keep this selling price?', '', 'YES  =  keep it', 'NO   =  type a new price in QUICK UPDATED PRICE');
+    notice('CONFIRM SELLING PRICE', lines, ['YES', 'NO']).then(function (a) {
+      if (a !== 0) return; c.price_check = ''; save(); refreshers.dashboard();
+    });
+  }
+  function quickPrice(i, value) {
+    var p = num(value); if (p <= 0) return;
+    var c = data.recipes[i].costs, d = new Date();
+    c.selling_price = String(p);
+    c.price_updated = ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
+    c.price_check = '';
+    save(); refreshers.dashboard();
+    say('NEW SELLING PRICE SAVED');
+  }
+
+  builders.dashboard = function () {
+    var page = pageTop('DASHBOARD');
+    var tools = el('div', 'card');
+    var findRow = el('label', 'row'); findRow.appendChild(el('span', 'lbl', 'FIND RECIPE'));
+    var find = el('input', 'cream'); find.placeholder = 'NAME'; find.oninput = function () { draw(); };
+    findRow.appendChild(find); tools.appendChild(findRow);
+    var tb = el('div', 'btnrow');
+    [['CLEAR SEARCH', function () { find.value = ''; draw(); }], ['+ ADD RECIPE', newRecipe],
+     ['COPY LAST OPENED RECIPE', copyRecipe]].forEach(function (b) {
+      var x = el('button', 'soft', b[0]); x.onclick = b[1]; tb.appendChild(x); });
+    tools.appendChild(tb); page.appendChild(tools);
+    var list = el('div', ''); page.appendChild(list);
+
+    function draw() {
+      var s = data.settings; SP.setUnits(s);
+      list.innerHTML = '';
+      var want = find.value.trim().toUpperCase();
+      var order = data.recipes.map(function (r, i) { return [i, r]; }).reverse();
+      order.sort(function (a, b) { return (!a[1].costs || !a[1].costs.price_check) - (!b[1].costs || !b[1].costs.price_check); });
+      var shown = 0;
+      order.forEach(function (pair) {
+        var i = pair[0], r = pair[1];
+        r.costs = Object.assign(SP.recipeCosts(), r.costs || {});
+        var name = r.recipe_name || '(NO NAME)';
+        if (want && name.toUpperCase().indexOf(want) < 0) return;
+        shown++;
+        var out = SP.costEverything(r, s), c = r.costs;
+        var box = el('div', 'dash');
+        box.appendChild(el('div', 'dashhead', name));
+        var grid = el('div', 'dashgrid');
+        function fig(label, value, cls) {
+          var d = el('div', 'mini' + (cls ? ' ' + cls : '')); d.appendChild(el('span', '', label));
+          d.appendChild(el('b', '', value)); grid.appendChild(d); return d;
+        }
+        fig('UNITS', SP.commas(out.products, 2).replace(/\.?0+$/, '') || '0');
+        fig('COST PER PORTION', SP.money(out.total_portion), 'netcost');
+        fig('SELLING PRICE', out.price ? SP.money(out.price) : '');
+        fig('PROFIT MARGIN %', (out.margin * 100).toFixed(2) + '%');
+        fig('PROFIT MARGIN', SP.money(out.profit));
+        var missing = (r.rows || []).filter(function (x) { return String(x[0] || '').trim() && num(x[2]) <= 0; }).length;
+        var status;
+        if (c.price_check) {
+          status = el('button', 'status orange', 'PRICE CHANGED ' + c.price_check + ' – CONFIRM PRICE');
+          status.onclick = function () { confirmPrice(i); };
+        } else if (missing) {
+          status = el('div', 'status orange', missing + (missing > 1 ? ' INGREDIENTS WITH NO PRICE' : ' INGREDIENT WITH NO PRICE'));
+        } else if (out.alert || !out.price) {
+          status = el('div', 'status red', 'RECIPE PRICE NEED AMENDING');
+        } else {
+          status = el('div', 'status ok', 'MARGIN ALERT AT ' + num(c.lowest_margin) + '%');
+        }
+        box.appendChild(grid); box.appendChild(status);
+        var q = el('div', 'quick');
+        q.appendChild(el('span', 'lbl', 'ADD QUICK UPDATED PRICE'));
+        var qi = el('input', 'cream'); qi.inputMode = 'decimal'; qi.placeholder = out.price ? String(out.price) : '';
+        var qb = el('button', 'soft', 'SET'); qb.onclick = function () { quickPrice(i, qi.value); };
+        q.appendChild(qi); q.appendChild(qb); box.appendChild(q);
+        if (c.price_updated) box.appendChild(el('div', 'small', 'LAST PRICE UPDATE: ' + c.price_updated));
+        var btns = el('div', 'btnrow');
+        var open = el('button', 'soft', 'OPEN RECIPE'); open.onclick = function () { openRecipe(i); };
+        var del = el('button', 'soft danger', 'DELETE'); del.onclick = function () { deleteRecipe(i); };
+        btns.appendChild(open); btns.appendChild(del); box.appendChild(btns);
+        list.appendChild(box);
+      });
+      if (!shown) list.appendChild(el('div', 'empty', want ? 'No recipe matches that name.' : 'No recipes yet. Press + ADD RECIPE.'));
+    }
+    refreshers.dashboard = draw;
+    return page;
+  };
+
   // ---------------------------------------------------------------- the menu
-  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist' };
+  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard' };
   var actions = { 'ADD RECIPE': newRecipe };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
