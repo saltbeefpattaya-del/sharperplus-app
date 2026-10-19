@@ -2051,7 +2051,10 @@
     ['[data-guide="RENT"]', 'RENT COSTS', ['Your daily rent is taken automatically from the details entered in MASTER COSTINGS.',
       'Enter a percentage in MARK UP % to include an allowance for rent in this recipe.',
       'SharperPlus calculates the allowance and adds it to the cost of each portion, helping you account for rent when setting your selling price.']],
-    ['[data-guide="COST & SELLING PRICE"]', 'COST & SELLING PRICE', 'Your full cost per portion, with everything added. Type your selling price to see your profit. Set your lowest margin, and any dish below it is highlighted on the Dashboard.']
+    ['[data-guide="COST & SELLING PRICE"]', 'COST & SELLING PRICE', ['Here you\u2019ll see your total cost per portion, based on the ingredients and other costs you\u2019ve entered.',
+      'Enter your SELLING PRICE to see your profit per portion and profit margin.',
+      'Set the lowest profit margin you\u2019re happy to accept. Any dish below this level is highlighted on your DASHBOARD, helping you spot costs or prices that need reviewing.',
+      'When you\u2019ve finished entering your figures, tap SAVE to keep your changes.']]
   ];
   var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR };
   function pageGuide(key) {
