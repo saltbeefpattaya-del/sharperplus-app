@@ -1508,9 +1508,6 @@
     picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); draw(); };
     pickRowM.appendChild(picker); top.appendChild(pickRowM);
     var makes = el('div', 'makes'); top.appendChild(makes);
-    var toCost = el('button', 'gobtn', '\u25c0  RECIPE COSTING');
-    toCost.onclick = function () { save(); if (screens.recipe) refreshers.recipe(); show('recipe'); };
-    top.appendChild(toCost);
     var tb = el('div', 'btnrow');
     var fromPhoto = el('button', 'soft', '📷 METHOD FROM PHOTO');
     var sendBtn = el('button', 'soft', '📤 SEND OR PRINT');
@@ -1524,7 +1521,7 @@
     var addRow = el('div', 'btnrow'); var addStep = el('button', 'soft', '+ ADD STEP'); addRow.appendChild(addStep);
     stepCard.appendChild(addRow); page.appendChild(stepCard);
     // what to do next: bright until done, then faded with a small UPDATE
-    var next = el('div', 'nexttab'); page.appendChild(next);
+    var next = el('div', 'nexttab'); page.insertBefore(next, top);
     function drawNext() {
       next.innerHTML = '';
       var st = setupDone();
