@@ -1447,11 +1447,17 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
   function photoClicked() {
+    if (data.settings.guide_photo !== 'SEEN') photoGuide(photoPopup); else photoPopup();
+  }
+  function photoPopup() {
     var shade = el('div', 'shade'), box = el('div', 'notice');
     box.appendChild(el('div', 'notice-head', 'ADD RECIPE FROM PHOTO'));
     var body = el('div', 'notice-body');
     body.appendChild(el('div', '', 'Take a clear photo of your recipe sheet, straight on and in good light.'));
     box.appendChild(body);
+    var how = el('button', 'guidebtn', '\u2753  HOW TO TAKE A GOOD PHOTO');
+    how.onclick = function () { document.body.removeChild(shade); photoGuide(photoPopup); };
+    box.appendChild(how);
     var row = el('div', 'notice-btns col');
     function pick(camera) {
       var input = document.createElement('input');
@@ -1988,6 +1994,17 @@
     ['.addstaff', '+ ADD STAFF', 'Tap here to add the next person. The \u2715 at the top of a name removes someone who has left.'],
     ['[data-guide="STAFF TOTAL"]', 'STAFF COST PER DAY', 'What your whole team costs you each day. When you build a recipe, you pick who makes it, and their time is costed into the dish.']
   ];
+  var PHOTO_TOUR = [
+    ['', 'WRITE IT YOUR WAY', 'Write your recipe the way you always do: the name of the dish, the ingredients with their weights, then the method. SharperPlus reads handwriting and printed sheets.'],
+    ['', 'A GOOD PHOTO', 'Lay the sheet flat in good light and hold your phone straight above it. Get the whole sheet in the photo, one recipe per photo. You need the internet for a few seconds while it is read.'],
+    ['', 'CHECK IT', 'SharperPlus fills in the ingredients, the weights and the method for you. Handwriting is not always read perfectly, so check every line against your sheet.'],
+    ['', 'ADD YOUR PRICES', 'Any ingredient you have used before gets its last price. Add the prices for the rest, and your dish is costed.']
+  ];
+  function photoGuide(after) {
+    data.settings.guide_photo = 'SEEN'; save();
+    runTour(PHOTO_TOUR, function () { return null; }, after || function () {},
+      'You can watch this again at any time: tap HOW TO TAKE A GOOD PHOTO.', after);
+  }
   var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR };
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
@@ -2003,7 +2020,7 @@
     show('menu');
     runTour(TOUR, function (s) { return document.querySelector('#menu [data-go="' + s[0] + '"]'); }, thankYou);
   }
-  function runTour(TOUR, find, done, laterText) {
+  function runTour(TOUR, find, done, laterText, onEnd) {
     var at = 0, lit = null;
     var shade = el('div', 'tourshade');
     var sheet = el('div', 'toursheet');
@@ -2052,7 +2069,7 @@
       if (at < TOUR.length - 1) { at++; paint(); return; }
       stop(); done();
     };
-    end.onclick = stop;
+    end.onclick = function () { stop(); if (onEnd) onEnd(); };
     shade.onclick = function () {};
     setTimeout(paint, 30);
   }
