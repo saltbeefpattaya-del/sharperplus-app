@@ -2043,7 +2043,10 @@
       'Enter how long your batch takes to cook using electrical equipment, in hours and minutes.',
       'SharperPlus uses these details to estimate the electricity cost for the batch and include it in the cost of each portion.',
       'Once you have entered 12 months of bills, you can choose the average across those months instead.']],
-    ['[data-guide="GAS"]', 'GAS', 'Type how long it cooks on gas. The cost comes from your gas set up in Master Costings.'],
+    ['[data-guide="GAS"]', 'GAS COSTS', ['Enter how long your batch takes to cook using gas, in hours and minutes.',
+      'SharperPlus uses the gas details saved in MASTER COSTINGS to estimate the gas cost for your batch and include it in the cost of each portion.',
+      'You can add or update your gas details in MASTER COSTINGS.',
+      'If this recipe doesn\u2019t use gas, leave both time fields at 0.']],
     ['[data-guide="PACKAGING"]', 'PACKAGING', 'If you sell it in a box or tub, type the cost of the packaging and how many units it holds.'],
     ['[data-guide="RENT"]', 'RENT', 'Your rent per day comes from Master Costings. The mark up shares a fair part of it to this dish.'],
     ['[data-guide="COST & SELLING PRICE"]', 'COST & SELLING PRICE', 'Your full cost per portion, with everything added. Type your selling price to see your profit. Set your lowest margin, and any dish below it is highlighted on the Dashboard.']
