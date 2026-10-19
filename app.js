@@ -109,8 +109,13 @@
 
   // ---------------------------------------------------------------- screens
   var screens = { menu: document.getElementById('menu') };
+  var fromDash = false;          // opened a recipe from the dashboard: offer the way back
   function show(name) {
+    var now = Object.keys(screens).filter(function (k) { return !screens[k].hidden; })[0];
+    if (now === 'dashboard' && (name === 'recipe' || name === 'method')) fromDash = true;
+    if (name !== 'recipe' && name !== 'method') fromDash = false;
     if (!screens[name] && builders[name]) screens[name] = builders[name]();
+    document.querySelectorAll('.backdash').forEach(function (b) { b.hidden = !fromDash; });
     if (!screens[name]) { say(name.toUpperCase() + ' – coming next'); return; }
     Object.keys(screens).forEach(function (k) { screens[k].hidden = k !== name; });
     if (refreshers[name]) refreshers[name]();
@@ -135,6 +140,9 @@
       else say('Could not save on this phone.');
     };
     bar.appendChild(menuBtn); bar.appendChild(saveBtn);
+    var back = el('button', 'barbtn backdash', '\u25c0 DASHBOARD'); back.hidden = true;
+    back.onclick = function () { save(); show('dashboard'); };
+    bar.appendChild(back);
     page.appendChild(bar);
     page.appendChild(el('h1', 'pagetitle', title));
     document.getElementById('app').appendChild(page);
