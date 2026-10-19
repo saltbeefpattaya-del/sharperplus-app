@@ -410,3 +410,11 @@ Einmal zahlen, für immer Ihres
 JETZT AUFWERTEN
 PREMIUM KAUFEN
 Gekauft? Kommen Sie zurück und tippen Sie auf SCHLÜSSEL ERNEUT PRÜFEN.
+Ihr Schlüssel ist schon auf 2 Handys
+Ihr Schlüssel ist schon auf einem anderen Handy
+Ein neues Handy?
+Holen Sie SharperPlus auf dieses Handy. Ihr anderes Handy öffnet SharperPlus dann nicht mehr.
+SHARPERPLUS AUF DIESES HANDY HOLEN
+Ihr Schlüssel wurde in den letzten {0} Tagen schon umgezogen und kann noch nicht wieder umziehen. Schreiben Sie an support@sharperplus.com, wir helfen Ihnen.
+SharperPlus auf zwei Handys?
+SEHEN, WAS PREMIUM BIETET

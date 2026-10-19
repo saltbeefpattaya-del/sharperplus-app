@@ -410,3 +410,11 @@ Un solo pago, suyo para siempre
 PASAR A PREMIUM
 COMPRAR PREMIUM
 ¿Ya lo compró? Vuelva y toque COMPROBAR MI CLAVE.
+Su clave ya está en 2 teléfonos
+Su clave ya está en otro teléfono
+¿Teléfono nuevo?
+Pase SharperPlus a este teléfono. Su otro teléfono dejará de abrir SharperPlus.
+PASAR SHARPERPLUS A ESTE TELÉFONO
+Su clave cambió de teléfono en los últimos {0} días y aún no puede cambiar otra vez. Escriba a support@sharperplus.com y le ayudaremos.
+¿Quiere SharperPlus en dos teléfonos?
+VER LO QUE LE DA PREMIUM

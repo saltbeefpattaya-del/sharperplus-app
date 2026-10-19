@@ -410,3 +410,11 @@ Satu bayaran, milik anda selamanya
 NAIK TARAF SEKARANG
 BELI PREMIUM
 Sudah beli? Kembali dan ketik SEMAK KUNCI SEMULA.
+Kunci anda sudah ada pada 2 telefon
+Kunci anda sudah ada pada telefon lain
+Dapat telefon baharu?
+Pindahkan SharperPlus ke telefon ini. Telefon lain anda tidak akan membuka SharperPlus lagi.
+PINDAHKAN SHARPERPLUS KE TELEFON INI
+Kunci anda telah dipindahkan dalam {0} hari lepas, jadi belum boleh dipindah lagi. Sila e-mel support@sharperplus.com dan kami akan bantu.
+Mahu SharperPlus pada dua telefon?
+LIHAT APA YANG PREMIUM BERI

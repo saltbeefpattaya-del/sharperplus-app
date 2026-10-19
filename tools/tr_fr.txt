@@ -410,3 +410,11 @@ Un seul paiement, à vous pour toujours
 PASSER EN PREMIUM
 ACHETER PREMIUM
 Acheté ? Revenez et touchez VÉRIFIER MA CLÉ.
+Votre clé est déjà sur 2 téléphones
+Votre clé est déjà sur un autre téléphone
+Nouveau téléphone ?
+Passez SharperPlus sur ce téléphone. Votre autre téléphone n'ouvrira plus SharperPlus.
+PASSER SHARPERPLUS SUR CE TÉLÉPHONE
+Votre clé a changé de téléphone dans les {0} derniers jours, elle ne peut pas encore changer à nouveau. Écrivez à support@sharperplus.com et nous vous aiderons.
+SharperPlus sur deux téléphones ?
+VOIR CE QUE PREMIUM VOUS DONNE

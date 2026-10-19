@@ -410,3 +410,11 @@ Un solo pagamento, tuo per sempre
 PASSA A PREMIUM
 ACQUISTA PREMIUM
 Acquistato? Torna qui e tocca CONTROLLA DI NUOVO LA CHIAVE.
+La tua chiave è già su 2 telefoni
+La tua chiave è già su un altro telefono
+Telefono nuovo?
+Sposta SharperPlus su questo telefono. L'altro telefono non aprirà più SharperPlus.
+SPOSTA SHARPERPLUS SU QUESTO TELEFONO
+La tua chiave è stata spostata negli ultimi {0} giorni, quindi non può spostarsi ancora. Scrivi a support@sharperplus.com e ti aiuteremo.
+Vuoi SharperPlus su due telefoni?
+SCOPRI COSA TI DÀ PREMIUM
