@@ -311,6 +311,8 @@
     var s = data.settings, c = s.costs;
     var page = pageTop('OVERHEADS & COSTING FACTORS');
     guideButton(page, 'master');
+    var helperBtn = el('button', 'guidebtn helperbtn', '\u270e  SET-UP HELPER: ANSWER A FEW QUESTIONS');
+    helperBtn.onclick = function () { setupHelper(); }; page.appendChild(helperBtn);
     jumpBox(page, MASTER_HEADS);
     var outs = {}, inputs = [];
 
@@ -2226,7 +2228,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
@@ -2372,9 +2374,127 @@
       'Tap DELETE to remove a recipe you no longer need. Check that you\u2019ve selected the correct one, as deleting a recipe is permanent and cannot be undone.']]
   ];
   var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR, dashboard: DASH_TOUR };
+  // ---------------------------------------------------------------- SET-UP HELPER (the desktop's 13 plain questions)
+  var SKIP_HELP = 'If you do not know, tap SKIP. You can come back any time.';
+  var SETUP_STEPS = [
+    { key: 'currency', kind: 'choice', ask: 'Which money do you use?', help: 'Tap one.',
+      choices: [['THB', '\u0e3f  Thai Baht'], ['USD', '$  US Dollar'], ['GBP', '\u00a3  British Pound'], ['EUR', '\u20ac  Euro'], ['RMB', '\u00a5  Chinese Yuan']] },
+    { key: 'weights', kind: 'choice', ask: 'How do you weigh your food?', help: 'Tap one.',
+      choices: [['G / KG', 'Grams and kilos'], ['OZ / LB', 'Ounces and pounds']] },
+    { key: 'vat', kind: 'number', ask: 'What is your sales tax (VAT)?', after: '%', help: 'Type the number only.   Example:  7\nIf you do not charge tax, type 0.' },
+    { key: 'work_days', kind: 'number', ask: 'How many days are you open each month?', after: 'days', help: 'Type the number only.   Example:  26' },
+    { key: 'work_hours', kind: 'number', ask: 'How many hours are you open each day?', after: 'hours', help: 'Type the number only.   Example:  10' },
+    { key: 'rent_cost', kind: 'number', ask: 'How much rent do you pay each month?', after: '', help: 'Type the number only.\nIf you pay no rent, leave it empty.' },
+    { key: 'elec_bill', kind: 'number', ask: 'How much was your last electric bill?', after: '', help: 'Type the total you paid.\n' + SKIP_HELP },
+    { key: 'elec_kwh', kind: 'number', ask: 'How many units did that electric bill say you used?', after: 'units', help: 'Look on your bill for this number.   Example:  2700\n' + SKIP_HELP },
+    { key: 'elec_baseline', kind: 'number', ask: 'What is the lowest electric bill you normally get?', after: '', help: 'This is the least you expect to pay in a quiet month.\n' + SKIP_HELP },
+    { key: 'overhead_percent', kind: 'number', ask: 'How much of your electric is for lights, air con and fridges, and not for cooking?', after: '%',
+      short: 'How much electric is for lights, air con and fridges?', help: 'Type the number only.\nIf you are not sure, leave it at 25.' },
+    { key: 'gas_type', kind: 'choice', ask: 'How do you buy your gas?', help: 'Tap one.', choices: [['GAS CANISTER', 'Gas bottles'], ['METERED', 'Gas from a meter']] },
+    { key: 'gas_canister_cost', kind: 'number', when: 'GAS CANISTER', ask: 'How much does one gas bottle cost?', after: '', help: 'Type the number only.\n' + SKIP_HELP },
+    { key: 'gas_canister_kg', kind: 'number', when: 'GAS CANISTER', ask: 'How big is the gas bottle?', after: 'WEIGHT', help: 'The size is printed on the bottle.   Example:  48\n' + SKIP_HELP },
+    { key: 'gas_month_bill', kind: 'number', when: 'METERED', ask: 'How much was your last gas bill?', after: '', help: 'Type the total you paid.\n' + SKIP_HELP },
+    { key: 'gas_month_units', kind: 'number', when: 'METERED', ask: 'How many units did that gas bill say you used?', after: 'units', help: 'Look on your bill for this number.\n' + SKIP_HELP }
+  ];
+  function setupHelper() {            // nothing is changed until FINISH is pressed
+    var s = data.settings, c = s.costs, lines = months(s);
+    var mi = -1; for (var k = 0; k < lines.length; k++) if (String(lines[k][0] || '').trim()) { mi = k; break; }
+    var line = mi >= 0 ? lines[mi] : null;
+    var answers = { currency: s.currency || 'THB', weights: s.weights === 'OZ / LB' ? 'OZ / LB' : 'G / KG', vat: s.vat_percent || '',
+      work_days: c.work_days || '', work_hours: c.work_hours || '', rent_cost: c.rent_cost || '',
+      elec_bill: line ? line[3] || '' : '', elec_kwh: line ? line[2] || '' : '',
+      overhead_percent: c.overhead_percent || '', elec_baseline: c.elec_baseline || '', gas_type: s.gas_type === 'METERED' ? 'METERED' : 'GAS CANISTER',
+      gas_canister_cost: c.gas_canister_cost || '', gas_canister_kg: c.gas_canister_kg || '',
+      gas_month_bill: mi >= 0 ? s.gas_history[mi] || '' : '', gas_month_units: mi >= 0 ? s.gas_units_history[mi] || '' : '' };
+    var steps = [], at = 0;
+    function choose() { steps = SETUP_STEPS.filter(function (st) { return !st.when || st.when === answers.gas_type; }); }
+    choose();
+    var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox setupbox');
+    var head = el('div', 'welcomehead'); box.appendChild(head);
+    var body = el('div', 'setupbody'); box.appendChild(body);
+    var warn = el('div', 'setupwarn'); box.appendChild(warn);
+    var row = el('div', 'setupbtns'); box.appendChild(row);
+    shade.appendChild(box); document.body.appendChild(shade);
+    var input = null;
+    function afterWords(st) { return st.after === 'WEIGHT' ? (answers.weights === 'OZ / LB' ? 'lb' : 'kg') : (st.after || ''); }
+    function keep() {
+      var st = steps[at];
+      if (st && st.kind === 'number' && input) {
+        var t = input.value.trim().replace(/,/g, '');
+        if (t && isNaN(parseFloat(t))) return false;
+        answers[st.key] = t;
+      }
+      return true;
+    }
+    function go(move) {
+      if (move > 0 && !keep()) { warn.textContent = 'PLEASE TYPE A NUMBER ONLY, LIKE  26'; warn.hidden = false; return; }
+      if (move < 0) keep();
+      at = Math.max(0, Math.min(steps.length, at + move)); draw();
+    }
+    function btn(text, cls, fn) { var b = el('button', cls, text); b.onclick = fn; row.appendChild(b); return b; }
+    function finish() {
+      s.vat_percent = answers.vat;
+      ['work_days', 'work_hours', 'rent_cost', 'overhead_percent', 'elec_baseline', 'gas_canister_cost', 'gas_canister_kg'].forEach(function (k2) { c[k2] = answers[k2]; });
+      var typedMonth = ['elec_bill', 'elec_kwh', 'gas_month_bill', 'gas_month_units'].some(function (k2) { return String(answers[k2]).trim(); });
+      if (typedMonth && mi < 0) { var d = new Date(); monthLine(s, d.getFullYear(), d.getMonth() + 1); lines = months(s); mi = 0; line = lines[0]; }
+      if (line) {
+        line[3] = answers.elec_bill; line[2] = answers.elec_kwh;
+        if (answers.gas_type === 'METERED') { s.gas_history[mi] = answers.gas_month_bill; s.gas_units_history[mi] = answers.gas_month_units; }
+      }
+      s.gas_type = answers.gas_type; s.weights = answers.weights; s.currency = answers.currency;
+      save(); document.body.removeChild(shade);
+      if (refreshers.master) refreshers.master();
+      window.scrollTo(0, 0);
+    }
+    function draw() {
+      body.innerHTML = ''; row.innerHTML = ''; warn.hidden = true; input = null;
+      if (at >= steps.length) {
+        head.textContent = 'ALL DONE';
+        body.appendChild(el('div', 'setupask', 'Here is what you told us.'));
+        steps.forEach(function (st) {
+          var v = answers[st.key];
+          if (st.kind === 'choice') { var hit = st.choices.filter(function (ch) { return ch[0] === v; })[0]; v = hit ? hit[1] : v; }
+          else if (v) v = v + (afterWords(st) ? '  ' + afterWords(st) : '');
+          var r = el('div', 'setupsum'); r.appendChild(el('span', '', st.short || st.ask)); r.appendChild(el('b', '', v || '(not answered)'));
+          body.appendChild(r);
+        });
+        body.appendChild(el('div', 'setuphelp', 'You can change any of these at any time on this page.'));
+        btn('BACK', 'soft', function () { go(-1); }); btn('FINISH', 'gobtn', finish);
+        return;
+      }
+      var st = steps[at];
+      head.textContent = SPT.T('SET-UP HELPER     QUESTION {} OF {}').replace('{}', at + 1).replace('{}', steps.length);
+      body.appendChild(el('div', 'setupask', st.ask));
+      st.help.split('\n').forEach(function (h) { body.appendChild(el('div', 'setuphelp', h)); });
+      if (st.kind === 'choice') {
+        st.choices.forEach(function (ch) {
+          var on = answers[st.key] === ch[0];
+          var b = el('button', 'setupchoice' + (on ? ' on' : ''), (on ? '\u2714  ' : '') + ch[1]);
+          b.onclick = function () { answers[st.key] = ch[0]; choose(); go(1); };
+          body.appendChild(b);
+        });
+      } else {
+        var line2 = el('div', 'setupline');
+        input = el('input', 'cream setupin'); input.inputMode = 'decimal'; input.value = answers[st.key] || '';
+        input.onkeydown = function (e) { if (e.key === 'Enter') go(1); };
+        line2.appendChild(input);
+        if (afterWords(st)) line2.appendChild(el('span', 'setupafter', afterWords(st)));
+        body.appendChild(line2);
+        setTimeout(function () { if (input) input.focus(); }, 50);
+      }
+      if (at) btn('BACK', 'soft', function () { go(-1); });
+      btn('SKIP THIS QUESTION', 'soft', function () { at = Math.min(steps.length, at + 1); draw(); });
+      if (st.kind === 'number') btn('NEXT', 'gobtn', function () { go(1); });
+      var close = el('button', 'tourend', 'CLOSE WITHOUT SAVING'); close.onclick = function () { document.body.removeChild(shade); };
+      row.appendChild(close);
+    }
+    draw();
+  }
+
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
-    runTour(PAGE_TOURS[key], function (st) { return st[0] && screens[key] ? screens[key].querySelector(st[0]) : null; }, function () {},
+    runTour(PAGE_TOURS[key], function (st) { return st[0] && screens[key] ? screens[key].querySelector(st[0]) : null; },
+      key === 'master' ? function () { setTimeout(setupHelper, 300); } : function () {},
       key === 'master' ? 'To open this guide again, tap USER GUIDE FOR THIS PAGE at the top.' :
       key === 'dashboard' ? 'You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.' :
       key === 'recipe' ? 'Need a reminder? You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.'
