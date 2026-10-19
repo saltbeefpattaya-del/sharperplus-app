@@ -1857,6 +1857,48 @@
 
   // ---------------------------------------------------------------- the menu
   var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method' };
+  // ---------------------------------------------------------------- CHANGE APPEARANCE (the same ten looks as the computer)
+  var LOOKS = ["Classic", "Warm cream", "Soft stone", "Light grey", "Pale sage", "Mist blue", "Slate", "Charcoal", "Deep navy", "Dark olive"];
+  var THEMES = {"Warm cream":{"mode":"light","page":"#F1EBDD","surface":"#FFFCF5","label":"#E9DFC8","text":"#383026","muted":"#655A4B","divider":"#D9CEB8","control":"#8A795F","input":"#FFFFFF","calculated":"#F8F2E6","primary":"#715331","on-primary":"#FFFFFF","primary-hover":"#5E4428","primary-pressed":"#4D3721","selected":"#EBDFC7","on-selected":"#383026","focus":"#6C4D2B"},"Soft stone":{"mode":"light","page":"#EAE7E2","surface":"#FAF9F6","label":"#DFDAD2","text":"#33302C","muted":"#625D55","divider":"#D0C8BD","control":"#817566","input":"#FFFFFF","calculated":"#F0EDE8","primary":"#655C50","on-primary":"#FFFFFF","primary-hover":"#534B40","primary-pressed":"#453D34","selected":"#E0D8CC","on-selected":"#33302C","focus":"#5B5144"},"Light grey":{"mode":"light","page":"#E8EBEE","surface":"#F8FAFC","label":"#DAE1E7","text":"#25313B","muted":"#50616F","divider":"#C8D1D9","control":"#6E8091","input":"#FFFFFF","calculated":"#EEF2F6","primary":"#405E75","on-primary":"#FFFFFF","primary-hover":"#344E63","primary-pressed":"#2A4052","selected":"#D6E1EB","on-selected":"#25313B","focus":"#365B78"},"Pale sage":{"mode":"light","page":"#E7EEE3","surface":"#F7F9F5","label":"#DCE7D5","text":"#243329","muted":"#4C6052","divider":"#C4D1BD","control":"#6B7D63","input":"#FFFFFF","calculated":"#EDF3E9","primary":"#3D6247","on-primary":"#FFFFFF","primary-hover":"#31523B","primary-pressed":"#284531","selected":"#D2E2CB","on-selected":"#243329","focus":"#305D3D"},"Mist blue":{"mode":"light","page":"#E4EEF5","surface":"#F6FAFD","label":"#D4E4EF","text":"#233B4B","muted":"#496478","divider":"#C1D4E2","control":"#657F93","input":"#FFFFFF","calculated":"#EAF3F9","primary":"#2D627F","on-primary":"#FFFFFF","primary-hover":"#245169","primary-pressed":"#1C4257","selected":"#CFE3EF","on-selected":"#233B4B","focus":"#245B7C"},"Slate":{"mode":"dark","page":"#343F4B","surface":"#404D5B","label":"#4A5A69","text":"#F4F7FA","muted":"#CED7E0","divider":"#5A6B7D","control":"#B8CADE","input":"#29343E","calculated":"#394755","primary":"#9EBBD3","on-primary":"#142737","primary-hover":"#B2CBDF","primary-pressed":"#8FABCA","selected":"#536E85","on-selected":"#FFFFFF","focus":"#BFD9ED"},"Charcoal":{"mode":"dark","page":"#25282C","surface":"#30343A","label":"#3C434A","text":"#F4F5F6","muted":"#C3CAD1","divider":"#505A65","control":"#A0AEBC","input":"#1D2125","calculated":"#2B3238","primary":"#BAC4CE","on-primary":"#212B35","primary-hover":"#D0D8DF","primary-pressed":"#A6B3BF","selected":"#485766","on-selected":"#FFFFFF","focus":"#D2DCE5"},"Deep navy":{"mode":"dark","page":"#172331","surface":"#223346","label":"#2D4359","text":"#F2F6FA","muted":"#C5D4E3","divider":"#425B73","control":"#93ABC1","input":"#101C28","calculated":"#1C2C3E","primary":"#8FB8DE","on-primary":"#122A40","primary-hover":"#AACDEB","primary-pressed":"#78A4CB","selected":"#355877","on-selected":"#FFFFFF","focus":"#B5D9F7"},"Dark olive":{"mode":"dark","page":"#2B3027","surface":"#363E30","label":"#45503C","text":"#F3F5ED","muted":"#CBD3C0","divider":"#56634A","control":"#B0C399","input":"#21271E","calculated":"#303A2A","primary":"#B5C59D","on-primary":"#26351D","primary-hover":"#CBD8B6","primary-pressed":"#A1B389","selected":"#526644","on-selected":"#FFFFFF","focus":"#D3E2BD"}};
+  var RECOMMENDED_LOOK = "Pale sage";
+  var LOOK_VARS = { '--bg': 'page', '--cell': 'surface', '--bright': 'label', '--light': 'calculated', '--input': 'input',
+    '--edge': 'divider', '--line': 'control', '--ink': 'text', '--soft': 'primary', '--on-soft': 'on-primary',
+    '--headbg': 'primary', '--headink': 'on-primary', '--notice': 'surface', '--strong': 'selected',
+    '--top': 'primary', '--bottom': 'primary', '--press': 'selected' };
+  function useLook(name) {
+    var t = THEMES[name], st = document.documentElement.style;
+    Object.keys(LOOK_VARS).forEach(function (v) { if (t) st.setProperty(v, t[LOOK_VARS[v]]); else st.removeProperty(v); });
+    document.documentElement.setAttribute('data-mode', t ? t.mode : 'classic');
+  }
+  function pickLook() {
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'CHANGE APPEARANCE'));
+    box.appendChild(el('div', 'notice-body', 'Tap a look and the whole of SharperPlus changes straight away.'));
+    var list = el('div', 'looks');
+    var now = data.settings.look || 'Classic';
+    LOOKS.forEach(function (name) {
+      var t = THEMES[name];
+      var b = el('button', 'look' + (name === now ? ' on' : ''));
+      var sw = el('span', 'swatch');
+      sw.style.background = t ? t.page : '#A66600';
+      [t ? t.surface : '#BE7F02', t ? t.calculated : '#FFCC66', t ? t.primary : '#F2B705'].forEach(function (c) {
+        var dot = el('span', 'dot'); dot.style.background = c; sw.appendChild(dot); });
+      b.appendChild(sw);
+      var nm = el('span', 'lookname', name + (name === RECOMMENDED_LOOK ? '  \u2605' : '')); nm.setAttribute('data-notr', '');
+      b.appendChild(nm);
+      b.onclick = function () {
+        data.settings.look = name; save(); useLook(name);
+        list.querySelectorAll('.look').forEach(function (x) { x.classList.remove('on'); }); b.classList.add('on');
+      };
+      list.appendChild(b);
+    });
+    box.appendChild(list);
+    var row = el('div', 'notice-btns');
+    var close = el('button', 'soft', 'CLOSE'); close.onclick = function () { document.body.removeChild(shade); };
+    row.appendChild(close); box.appendChild(row);
+    shade.appendChild(box); document.body.appendChild(shade);
+  }
+
   // ---------------------------------------------------------------- LANGUAGE (the same nine as the computer)
   function useLang(name) {
     SPT.setLang(name);
@@ -1890,13 +1932,14 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage };
+  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage, 'CHANGE APPEARANCE': pickLook };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');
       if (actions[name]) actions[name](); else if (targets[name]) show(targets[name]); else say(name + ' – coming next');
     });
   });
+  useLook(data.settings.look || 'Classic');
   useLang(data.settings.language || 'ENGLISH'); SPT.start();
   var start = location.hash.replace('#', '');
   if (start && builders[start]) show(start);
