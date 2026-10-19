@@ -2263,14 +2263,35 @@
     ['DASHBOARD', 'DASHBOARD', 'All your recipes in one place. Search for a dish, change a price, or open its full recipe sheet. Any dish that falls below the lowest margin you set is highlighted.']
   ];
   var MASTER_TOUR = [
-    ['[data-guide="YOUR SETTINGS"]', 'YOUR SETTINGS', 'Pick your currency and your weights, and type your local VAT rate. You only do this once, and every recipe follows it.'],
-    ['[data-guide="RENT & WORKING TIME"]', 'RENT & WORKING TIME', 'Type how many days you work each month, your hours per day and your monthly rent. SharperPlus works out your rent per day and shares it across every dish.'],
-    ['[data-guide="STAFF"]', 'STAFF', 'Type each member of staff and their monthly wage. SharperPlus works out their daily and hourly cost, ready to pick when you build a recipe.'],
-    ['[data-guide="MONTHLY UNITS"]', 'MONTHLY UNITS', 'Every time you change the batch on a recipe, it is added to UNITS PRODUCED for this month by itself. For UNITS SOLD, upload the sales CSV from your till, or type it in. This is how your bills are shared fairly across each dish.'],
-    ['[data-guide="ELECTRIC COSTING BLOCK"]', 'ELECTRIC', 'Tap TYPE YOUR BILL HERE to add your electric bill. The split tells SharperPlus how much of your bill is cooking, and how much is lights, AC and fridges.'],
-    ['[data-guide="MONTHLY GAS COSTING"]', 'GAS', 'Choose canister or metered gas and type your cost. Then tick the flames you cook on, and every recipe gets a true gas cost per minute.'],
-    ['[data-guide="ELECTRIC & GAS MONTHS"]', 'YOUR MONTHS', 'Add your bills here each month. A red figure means you went over your planned bill. After 12 months you can use the yearly average.'],
-    ['[data-guide="COST PER DAY"]', 'COST PER DAY', 'Everything added up: what it costs you to open your doors each day. Nothing here is compulsory. Fill in what you have, and come back as your bills arrive.']
+    ['[data-guide="YOUR SETTINGS"]', 'YOUR SETTINGS', ['We recommend doing this before adding your first recipe.',
+      'Choose your currency, the units you use to weigh ingredients and your VAT percentage.',
+      'SharperPlus uses these settings for every recipe. This saves you entering the same details again and helps avoid mistakes with money and weights.']],
+    ['[data-guide="RENT & WORKING TIME"]', 'RENT & WORKING TIME', ['Your selling prices need to help pay the rent as well as cover your ingredients. Including rent helps you see more of the cost of making each dish.',
+      'Enter your monthly rent, how many days you work each month and how many hours you work each day.',
+      'SharperPlus works out your rent per day, ready to include a share of it in your recipe costs.']],
+    ['[data-guide="STAFF"]', 'STAFF', ['The time spent making a dish costs money too. Leaving this out can make a dish look cheaper to make than it really is.',
+      'Add each staff member\u2019s name and monthly pay. SharperPlus works out their daily and hourly cost.',
+      'When costing a recipe, we recommend including everyone who helps prepare it so their time is counted.']],
+    ['[data-guide="MONTHLY UNITS"]', 'MONTHLY UNITS', ['See how many items or portions your kitchen makes each month.',
+      { h: 'Understand your costs' },
+      'SharperPlus shares the monthly costs you enter across the items you make. This shows how much each item needs to contribute towards your bills.',
+      'For example, \u0e3f10,000 in bills shared across 1,000 items means \u0e3f10 per item towards those bills.',
+      { h: 'Set a monthly target' },
+      'Enter how many items you want your kitchen to make this month.',
+      'SharperPlus compares this with how many you have made. You can see whether you are below, on or above your target.',
+      'We recommend recording every batch in its recipe sheet. Each batch is added to your monthly total. This helps you stay in control of your costs and how much your kitchen produces.']],
+    ['[data-guide="ELECTRIC COSTING BLOCK"]', 'ELECTRIC', ['Your electricity bill pays for cooking, but also for lights, air conditioning and fridges. These all cost money to run.',
+      'Tap TYPE YOUR BILL HERE and enter your bill amount. Then choose how much is used for cooking and how much is used for everything else.',
+      'This helps SharperPlus estimate the electricity cost to include in your dishes. We recommend keeping your bills updated so the figures reflect what you pay.']],
+    ['[data-guide="MONTHLY GAS COSTING"]', 'GAS', ['Gas is another cost of cooking your food. Including it helps you allow for that cost when setting your selling prices.',
+      'Choose canister or metered gas, then enter how much you pay. Tick the flames you use when cooking.',
+      'We recommend choosing the flames you normally use. This helps SharperPlus estimate a gas cost per minute that matches how you cook.']],
+    ['[data-guide="ELECTRIC & GAS MONTHS"]', 'YOUR MONTHS', ['Bills change throughout the year. We recommend adding them each month so you can see when your costs rise.',
+      'A red figure means a bill is higher than the amount you planned, helping you spot costs that need attention.',
+      'After entering 12 months of bills, you can use the average monthly cost. This reduces the effect of one unusually high or low month on your costing.']],
+    ['[data-guide="COST PER DAY"]', 'COST PER DAY', ['This brings together the costs you have entered and shows what they add up to each day.',
+      'It helps you understand the running costs your sales need to cover.',
+      'We recommend adding as many of your costs as you can, so you get a fuller picture. You do not have to complete everything now. Start with what you know and add the rest as your bills arrive.']]
   ];
   var STAFF_TOUR = [
     ['.person', 'NAME & MONTHLY WAGE', 'Type the name of each member of staff and their monthly wage, as you pay it.'],
@@ -2354,6 +2375,7 @@
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
     runTour(PAGE_TOURS[key], function (st) { return st[0] && screens[key] ? screens[key].querySelector(st[0]) : null; }, function () {},
+      key === 'master' ? 'To open this guide again, tap USER GUIDE FOR THIS PAGE at the top.' :
       key === 'dashboard' ? 'You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.' :
       key === 'recipe' ? 'Need a reminder? You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.'
                        : 'You can watch this again at any time: tap USER GUIDE FOR THIS PAGE at the top.');
