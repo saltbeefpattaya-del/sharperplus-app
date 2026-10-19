@@ -2076,7 +2076,9 @@
       'ORANGE: A price is missing or has changed. Open the recipe to check its figures.',
       'RED: Your selling price needs reviewing. Check your costs and adjust the selling price if needed.']],
     ['.dash .quick', 'QUICK PRICE UPDATE', 'Change your selling price here and tap SET, without opening the full recipe.'],
-    ['.dash .btnrow', 'OPEN OR DELETE', 'OPEN RECIPE takes you to the full recipe sheet. DELETE removes the recipe for good.']
+    ['.dash .btnrow', 'OPEN OR DELETE A RECIPE', ['Tap OPEN RECIPE to view the full recipe sheet, make changes to your ingredients or quantities, and update your costs.',
+      'Tap DELETE to remove a recipe you no longer need.',
+      'Deleting a recipe is permanent and cannot be undone. Check that you\u2019ve selected the correct recipe before deleting it.']]
   ];
   var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR, dashboard: DASH_TOUR };
   function pageGuide(key) {
