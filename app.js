@@ -2275,7 +2275,7 @@
     ['[data-guide="MONTHLY UNITS"]', 'MONTHLY UNITS', ['See how many items or portions your kitchen makes each month.',
       { h: 'Understand your costs' },
       'SharperPlus shares the monthly costs you enter across the items you make. This shows how much each item needs to contribute towards your bills.',
-      'For example, \u0e3f10,000 in bills shared across 1,000 items means \u0e3f10 per item towards those bills.',
+      'For example, {CUR}10,000 in bills shared across 1,000 items means {CUR}10 per item towards those bills.',
       { h: 'Set a monthly target' },
       'Enter how many items you want your kitchen to make this month.',
       'SharperPlus compares this with how many you have made. You can see whether you are below, on or above your target.',
@@ -2430,7 +2430,7 @@
       words.innerHTML = '';
       if (Array.isArray(s[2])) s[2].forEach(function (t) {
         if (t && t.h) { words.appendChild(el('div', 'tourhead2', t.h)); return; }
-        if (!Array.isArray(t)) { words.appendChild(el('p', 'tourpara', t)); return; }
+        if (!Array.isArray(t)) { SP.setUnits(data.settings); words.appendChild(el('p', 'tourpara', String(t).replace(/\{CUR\}/g, SP.SYMBOL))); return; }
         var para = el('p', 'tourpara'); para.appendChild(document.createTextNode(t[0]));
         var a = el('a', 'tourlink', t[1]); a.href = t[2]; a.target = '_blank'; a.rel = 'noopener';
         para.appendChild(a); para.appendChild(document.createTextNode(t[3] || '')); words.appendChild(para);
