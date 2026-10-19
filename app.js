@@ -711,13 +711,13 @@
     nameIn.oninput = function () { recipeNow().recipe_name = nameIn.value.toUpperCase(); save(); };
     nameIn.onblur = function () { nameIn.value = recipeNow().recipe_name; fillPicker(); };
     nameRow.appendChild(nameIn); top.appendChild(nameRow);
-    var pickRow = el('label', 'row'); pickRow.appendChild(el('span', 'lbl', 'OPEN RECIPE'));
+    var pickRow = el('label', 'row'); pickRow.appendChild(el('span', 'lbl', 'SELECT RECIPE'));
     var picker = el('select', 'cream'); picker.style.width = '62%'; picker.style.maxWidth = 'none';
     picker.onchange = function () { save(); data.current = parseInt(picker.value, 10); save(); refreshers.recipe(); window.scrollTo(0, 0); };
     pickRow.appendChild(picker); top.appendChild(pickRow);
     var tb = el('div', 'btnrow');
-    var addBtn = el('button', 'soft', '+ ADD RECIPE'); addBtn.onclick = newRecipe; tb.appendChild(addBtn);
-    var howBtn = el('button', 'soft', 'HOW TO MAKE IT \u2605'); howBtn.onclick = function () { save(); show('method'); }; tb.appendChild(howBtn);
+    var addBtn = el('button', 'soft', '+ ADD RECIPE'); addBtn.onclick = addChoice; tb.appendChild(addBtn);
+    var howBtn = el('button', 'soft howbtn', 'HOW TO MAKE IT \u2605'); howBtn.onclick = function () { save(); show('method'); }; tb.appendChild(howBtn);
     top.appendChild(tb);
     page.appendChild(top);
     function fillPicker() {
@@ -1221,7 +1221,7 @@
     var find = el('input', 'cream'); find.placeholder = 'NAME'; find.oninput = function () { draw(); };
     findRow.appendChild(find); tools.appendChild(findRow);
     var tb = el('div', 'btnrow');
-    [['CLEAR SEARCH', function () { find.value = ''; draw(); }], ['+ ADD RECIPE', newRecipe],
+    [['CLEAR SEARCH', function () { find.value = ''; draw(); }], ['+ ADD RECIPE', addChoice],
      ['COPY LAST OPENED RECIPE', copyRecipe]].forEach(function (b) {
       var x = el('button', 'soft', b[0]); x.onclick = b[1]; tb.appendChild(x); });
     tools.appendChild(tb); page.appendChild(tools);
@@ -1334,6 +1334,23 @@
       box.appendChild(body); w.appendChild(box);
     }
     if (on) document.body.appendChild(w); else if (w.parentNode) w.parentNode.removeChild(w);
+  }
+  function addChoice() {          // Premium: photo (recipe, or recipe and method together) or type it in
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'ADD A RECIPE'));
+    var body = el('div', 'notice-body');
+    body.appendChild(el('div', '', 'How would you like to add your recipe?'));
+    body.appendChild(el('div', '', ' '));
+    body.appendChild(el('div', '', 'If your photo has the method on it too, the recipe and the method are both added.'));
+    box.appendChild(body);
+    var row = el('div', 'notice-btns col');
+    [['\ud83d\udcf7  TAKE A PHOTO OF RECIPE', photoClicked],
+     ['\u270f\ufe0f  TYPE IN A RECIPE', newRecipe],
+     ['CANCEL', null]].forEach(function (b) {
+      var x = el('button', 'soft', b[0]);
+      x.onclick = function () { document.body.removeChild(shade); if (b[1]) b[1](); };
+      row.appendChild(x); });
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
   function photoClicked() {
     var shade = el('div', 'shade'), box = el('div', 'notice');
