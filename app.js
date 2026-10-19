@@ -753,6 +753,17 @@
     return data.recipes.some(function (r) { return String(r.recipe_name).trim().toUpperCase() === name.toUpperCase(); });
   }
   function newRecipe() {
+    if (data.settings.guide_addrecipe !== 'SEEN') {
+      data.settings.guide_addrecipe = 'SEEN'; save();
+      runTour(ADD_TOUR, function () { return null; }, newRecipeBox, ' ', newRecipeBox);
+      return;
+    }
+    newRecipeBox();
+  }
+  var ADD_TOUR = [
+    ['', 'ADD A RECIPE', ['Enter the name of your recipe.', 'Your new recipe sheet then opens, ready for your ingredients.']]
+  ];
+  function newRecipeBox() {
     ask('ADD NEW RECIPE', ['Type the name of the recipe'], 'RECIPE NAME').then(function (name) {
       name = String(name || '').trim();
       if (!name) return;
@@ -2062,7 +2073,7 @@
       if (Array.isArray(s[2])) s[2].forEach(function (t) { words.appendChild(el('p', 'tourpara', t)); });
       else words.textContent = s[2];
       stepNo.hidden = TOUR.length === 1;
-      later.hidden = at !== 0;
+      later.hidden = at !== 0 || !later.textContent.trim();
       back.style.visibility = at === 0 ? 'hidden' : 'visible';
       next.textContent = at === TOUR.length - 1 ? 'FINISH' : 'NEXT';
       end.hidden = at === TOUR.length - 1;
