@@ -299,7 +299,7 @@
     var flameBtns = {};
     [['LOW', 'flame_low'], ['MEDIUM', 'flame_medium'], ['HIGH', 'flame_high']].forEach(function (f) {
       var b = el('button', 'flame');
-      b.innerHTML = '<span class="tick"></span><span>' + f[0] + '<br>FLAME</span>';
+      b.innerHTML = '<span class="tick"></span><span>' + f[0] + ' FLAME</span>';
       b.onclick = function () { c[f[1]] = c[f[1]] === 'YES' ? 'NO' : 'YES'; save(); refresh(); flameSay(); };
       flames.appendChild(b); flameBtns[f[1]] = b;
     });
@@ -774,7 +774,7 @@
     nameIn.onblur = function () { nameIn.value = recipeNow().recipe_name; fillPicker(); };
     nameRow.appendChild(nameIn); top.appendChild(nameRow);
     var pickRow = el('label', 'row'); pickRow.appendChild(el('span', 'lbl', 'SELECT RECIPE'));
-    var picker = el('select', 'cream'); picker.style.width = '62%'; picker.style.maxWidth = 'none';
+    var picker = el('select', 'cream'); picker.setAttribute('data-names', ''); picker.style.width = '62%'; picker.style.maxWidth = 'none';
     picker.onchange = function () { save(); data.current = parseInt(picker.value, 10); save(); refreshers.recipe(); window.scrollTo(0, 0); };
     pickRow.appendChild(picker); top.appendChild(pickRow);
     var tb = el('div', 'btnrow');
@@ -1069,7 +1069,7 @@
         var box = el('div', 'slot');
         box.appendChild(el('div', 'slothead', 'STAFF ' + (i + 1)));
         var row = el('label', 'row'); row.appendChild(el('span', 'lbl', 'STAFF'));
-        var sel = el('select', 'cream');
+        var sel = el('select', 'cream'); sel.setAttribute('data-names', '');
         names.forEach(function (n) { var o = el('option', '', n || '— PICK —'); o.value = n; sel.appendChild(o); });
         if (slot[0] && names.indexOf(slot[0]) < 0) { var o2 = el('option', '', slot[0]); o2.value = slot[0]; sel.appendChild(o2); }
         sel.value = slot[0] || '';
@@ -1546,45 +1546,45 @@
   function shareText(r, note) {
     var deg = SP.US ? '°F' : '°C';
     var lines = ['*' + String(r.recipe_name || 'RECIPE').toUpperCase() + '*'];
-    var makes = methodMakes(r); if (makes) lines.push(makes);
+    var T = SPT.T, makes = T(methodMakes(r)); if (makes) lines.push(makes);
     if (note && note.trim()) lines.push('', '📌 ' + note.trim());
     var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
     if (rows.length) {
-      lines.push('', '*INGREDIENTS*');
+      lines.push('', '*' + T('INGREDIENTS') + '*');
       rows.forEach(function (x) { var q = String(x[1] || '').trim() ? methodQty(x[1]) : ''; lines.push('• ' + (q ? q + '  ' : '') + String(x[0]).trim()); });
     }
     var kept = methodKept(r.method);
     if (kept.length) {
-      lines.push('', '*HOW TO MAKE IT*');
+      lines.push('', '*' + T('HOW TO MAKE IT') + '*');
       kept.forEach(function (st, i) {
         lines.push((i + 1) + '. ' + st.text.split(/\s+/).join(' ').trim());
         var bits = [];
-        if (st.minutes.trim()) bits.push('⏱ ' + st.minutes.trim() + ' MIN');
+        if (st.minutes.trim()) bits.push('⏱ ' + st.minutes.trim() + ' ' + T('MIN'));
         if (st.temp.trim()) bits.push('🌡 ' + st.temp.trim() + deg);
         if (bits.length) lines.push('    ' + bits.join('  ·  '));
-        if (st.tip.trim()) lines.push('    💡 CHEF\'S TIP: ' + st.tip.trim());
+        if (st.tip.trim()) lines.push('    💡 ' + T('CHEF\'S TIP') + ': ' + st.tip.trim());
       });
     }
-    lines.push('', '— Sent from SharperPlus');
+    lines.push('', T('— SENT FROM SHARPERPLUS'));
     return lines.join('\n');
   }
   function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function cardHtml(r) {          // the kitchen card, as the desktop prints it
-    var deg = SP.US ? '°F' : '°C';
+    var deg = SP.US ? '°F' : '°C', T = SPT.T;
     var ing = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); }).map(function (x) {
       return '<tr><td class="q">' + esc(String(x[1] || '').trim() ? methodQty(x[1]) : '') + '</td><td>' + esc(x[0]) + '</td></tr>';
     }).join('');
     var steps = methodKept(r.method).map(function (st) {
       var bits = [];
-      if (st.minutes.trim()) bits.push('⏱ ' + esc(st.minutes) + ' MIN');
+      if (st.minutes.trim()) bits.push('⏱ ' + esc(st.minutes) + ' ' + esc(T('MIN')));
       if (st.temp.trim()) bits.push('🌡 ' + esc(st.temp) + deg);
       if (st.uses.length) bits.push(esc(st.uses.join(', ')));
       return '<li><div class="t">' + esc(st.text).replace(/\n/g, '<br>') + '</div>' +
         (bits.length ? '<div class="m">' + bits.join(' &nbsp;·&nbsp; ') + '</div>' : '') +
-        (st.tip.trim() ? '<div class="tip">CHEF\'S TIP: ' + esc(st.tip) + '</div>' : '') + '</li>';
+        (st.tip.trim() ? '<div class="tip">' + esc(T('CHEF\'S TIP')) + ': ' + esc(st.tip) + '</div>' : '') + '</li>';
     }).join('');
     var logo = new URL('banner-phone.png', location.href).href;
-    return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    return '<!doctype html><html lang="' + document.documentElement.lang + '" dir="' + document.documentElement.dir + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>' + esc(r.recipe_name || 'RECIPE') + ' - KITCHEN CARD</title><style>' +
       '*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f4efe6;color:#1b1b1b}' +
       '.card{max-width:900px;margin:12px auto;background:#fff;border:3px solid #1b1b1b;padding:20px 24px}' +
@@ -1599,10 +1599,10 @@
       '.foot{margin-top:20px;border-top:2px solid #1b1b1b;padding-top:6px;font-size:13px;color:#555;display:flex;justify-content:space-between}' +
       '.btn{display:block;margin:14px auto 0;font-size:20px;font-weight:bold;padding:12px 30px}' +
       '@page{size:' + (SP.US ? 'letter' : 'A4') + ';margin:12mm}@media print{body{background:#fff}.card{margin:0;border:0;max-width:none}.btn{display:none}.grid{grid-template-columns:1fr 2fr}}' +
-      '</style></head><body><button class="btn" onclick="window.print()">PRINT / SAVE AS PDF</button>' +
-      '<div class="card"><img class="logo" src="' + logo + '" alt="SharperPlus"><div class="top"><h1>' + esc(r.recipe_name || 'RECIPE') + '</h1><div class="mk">' + esc(methodMakes(r)) + '</div></div>' +
-      '<div class="grid"><div><h2>INGREDIENTS</h2><table>' + (ing || '<tr><td></td></tr>') + '</table></div><div><h2>HOW TO MAKE IT</h2><ol>' + steps + '</ol></div></div>' +
-      '<div class="foot"><span>KITCHEN CARD</span><span>SharperPlus</span></div></div></body></html>';
+      '</style></head><body><button class="btn" onclick="window.print()">' + esc(T('PRINT / SAVE AS PDF')) + '</button>' +
+      '<div class="card"><img class="logo" src="' + logo + '" alt="SharperPlus"><div class="top"><h1>' + esc(r.recipe_name || 'RECIPE') + '</h1><div class="mk">' + esc(T(methodMakes(r))) + '</div></div>' +
+      '<div class="grid"><div><h2>' + esc(T('INGREDIENTS')) + '</h2><table>' + (ing || '<tr><td></td></tr>') + '</table></div><div><h2>' + esc(T('HOW TO MAKE IT')) + '</h2><ol>' + steps + '</ol></div></div>' +
+      '<div class="foot"><span>' + esc(T('KITCHEN CARD')) + '</span><span>SharperPlus</span></div></div></body></html>';
   }
 
   var ticks = {};
@@ -1611,7 +1611,7 @@
     var badge = el('span', 'badge', '★ PREMIUM'); page.querySelector('.pagetitle').appendChild(badge);
     var top = el('div', 'card');
     var pickRowM = el('label', 'row'); pickRowM.appendChild(el('span', 'lbl', 'RECIPE'));
-    var picker = el('select', 'cream'); picker.style.width = '62%'; picker.style.maxWidth = 'none';
+    var picker = el('select', 'cream'); picker.setAttribute('data-names', ''); picker.style.width = '62%'; picker.style.maxWidth = 'none';
     picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); refreshers.method(); };
     pickRowM.appendChild(picker); top.appendChild(pickRowM);
     var makes = el('div', 'makes'); top.appendChild(makes);
@@ -1857,13 +1857,47 @@
 
   // ---------------------------------------------------------------- the menu
   var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method' };
-  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked };
+  // ---------------------------------------------------------------- LANGUAGE (the same nine as the computer)
+  function useLang(name) {
+    SPT.setLang(name);
+    document.getElementById('langbtn').textContent = SPT.lang();
+  }
+  function pickLanguage() {
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'LANGUAGE'));
+    var row = el('div', 'notice-btns col');
+    SPT.names.forEach(function (name) {
+      var b = el('button', 'soft' + (name === SPT.lang() ? ' on' : ''), name); b.setAttribute('data-notr', '');
+      b.onclick = function () {
+        document.body.removeChild(shade);
+        data.settings.language = name; useLang(name); save();
+        var seen = String(data.settings.language_seen || '').split('|');
+        var note = SPT.notes[name];
+        if (note && seen.indexOf(name) < 0) {
+          seen.push(name); data.settings.language_seen = seen.filter(Boolean).join('|'); save();
+          var shade2 = el('div', 'shade'), box2 = el('div', 'notice hichef'); box2.setAttribute('data-notr', '');
+          box2.appendChild(el('div', 'notice-head', note[0]));
+          var body = el('div', 'notice-body'); body.appendChild(el('div', '', note[1])); box2.appendChild(body);
+          var ok = el('button', 'soft', 'OK'); ok.onclick = function () { document.body.removeChild(shade2); };
+          var r2 = el('div', 'notice-btns'); r2.appendChild(ok); box2.appendChild(r2);
+          shade2.appendChild(box2); document.body.appendChild(shade2);
+        }
+      };
+      row.appendChild(b);
+    });
+    var close = el('button', 'soft', 'CLOSE'); close.onclick = function () { document.body.removeChild(shade); };
+    row.appendChild(close);
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+  }
+
+  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');
       if (actions[name]) actions[name](); else if (targets[name]) show(targets[name]); else say(name + ' – coming next');
     });
   });
+  useLang(data.settings.language || 'ENGLISH'); SPT.start();
   var start = location.hash.replace('#', '');
   if (start && builders[start]) show(start);
   setTimeout(billReminder, 800);

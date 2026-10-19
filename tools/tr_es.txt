@@ -1,0 +1,190 @@
+SHARPERPLUS PREMIUM
+HACER UNA FOTO DE LA RECETA
+◀ PANEL
+SU TIPO DE IVA LOCAL
+ALQUILER Y HORARIO DE TRABAJO
+DÍAS DE TRABAJO AL MES
+HORAS DE TRABAJO AL DÍA
+Escriba cada miembro del personal y su sueldo mensual.
+Rellene DÍAS DE TRABAJO AL MES en Costos principales, para poder calcular el sueldo diario.
++ AÑADIR PERSONAL
+UNIDADES MENSUALES
+FACTURA DE LUZ (TOTAL PAGADO)
+✎ ESCRIBA SU FACTURA AQUÍ
+ELECTRICIDAD PREVISTA
+Vacío = base + margen: {0}
+BASE FIJA – FACTURA DE LUZ MÁS BAJA
+COSTO DE ELECTRICIDAD POR PORCIÓN
+TIPO DE GAS
+CON CONTADOR
+TAMAÑO DE LA BOMBONA (KG)
+ELIJA UNA LLAMA O UNA MEZCLA
+ELEGIR TODAS LAS LLAMAS
+MESES DE LUZ Y GAS
+AÑADIR MES Y AÑO ACTUALES
+LAS TABLAS MENSUALES MUESTRAN
+UNA CIFRA ROJA SIGNIFICA QUE SUPERA SU FACTURA PREVISTA
+GASTOS GENERALES POR ENCIMA / POR DEBAJO
+Mantenga el mes más reciente arriba. Las recetas usan la factura del mes de arriba, o la media cuando se elige SÍ.
+COSTO POR DÍA
+QUITAR
+QUITAR ESTE MES
+QUITAR EL MES
+QUITAR AL MIEMBRO DEL PERSONAL
+QUITAR EL PASO
+QUITAR EL INGREDIENTE
+Escriba su factura mensual de gas y las unidades de gas usadas en los meses de abajo.
+Escriba cada miembro del personal y su sueldo mensual. El sueldo diario es el sueldo mensual ÷ sus días de trabajo, y la tarifa por hora es el sueldo diario ÷ 8.
+COSTO DE PERSONAL POR DÍA ({0} PERSONAS)
+PERSONAL {0}
++ AÑADIR RECETA
+MARGEN DE BENEFICIO
+{0} INGREDIENTE SIN PRECIO
+{0} INGREDIENTES SIN PRECIO
+{0} INGREDIENTE NO TIENE PRECIO
+{0} INGREDIENTES NO TIENEN PRECIO
+OK
+ABRIR RECETA
+NOMBRE
+ELABORACIÓN
+ELABORACIÓN ★
+★ PREMIUM
+PREMIUM
+★ BIENVENIDO A PREMIUM
+Lea su receta y su elaboración en una sola foto
+Una elaboración paso a paso para su cocina
+Marque los ingredientes mientras prepara
+Envíela a su equipo por WhatsApp, LINE o correo, o imprímala
+Ahora añada sus costos de cocción, los costos principales y el personal para sacar el máximo partido a Premium.
+Todo listo – está sacando el máximo partido a SharperPlus Premium.
+Su receta está lista. ¿Quiere sus precios reales? Vaya a Costos principales.
+COSTO DE LA RECETA
+ACTUALIZAR
+📷 ELABORACIÓN DESDE FOTO
+📤 ENVIAR O IMPRIMIR
+ENVIAR O IMPRIMIR
+ESTA RECETA EN SU PANEL
+INGREDIENTES – MÁRQUELOS MIENTRAS PREPARA
+ELABORACIÓN
+TIEMPO (MIN)
+USA {0} INGREDIENTE
+USA {0} INGREDIENTES
+ELEGIR INGREDIENTES
+¿QUÉ INGREDIENTES?
+CONSEJO DEL CHEF
++ AÑADIR PASO
+Qué hacer en este paso
+Envíe la receta y la elaboración a su equipo.
+CORREO
+MÁS APPS (MESSENGER Y OTRAS)
+IMPRIMIR / GUARDAR COMO PDF
+NOTA PARA EL EQUIPO (OPCIONAL)
+Permita las ventanas emergentes para imprimir.
+Añada primero al menos un paso.
+ELEGIR RECETA
+LE RECOMENDAMOS AÑADIR PRIMERO LOS INGREDIENTES, PARA OBTENER EL TAMAÑO DEL LOTE
+PESO TOTAL DE SUS INGREDIENTES (APROVECHABLE)
+RECORDATORIO DE PRECIOS
+☐ NO VOLVER A MOSTRAR
+Actualice los precios para completar el costo de su receta
+Si alguno de sus ingredientes ha subido de precio, actualice el precio en su receta.
+Esto puede afectar a otras recetas con los mismos ingredientes.
+PRECIO POR KILO
+PRECIO POR LIBRA
+MERMA %
+RENDIMIENTO (G)
+RENDIMIENTO (OZ)
+COSTO NETO POR KILO
+COSTO NETO POR LIBRA
+COSTO TOTAL
++ AÑADIR INGREDIENTE
+IVA AL {0}%
+MANO DE OBRA
+VARIAS PERSONAS – CUÁNTAS
+— ELEGIR —
+Añada primero su personal en la página Personal y luego elíjalo aquí.
+Elija el mes. Así obtiene un costo preciso de cada plato frente a su factura de luz. Con 12 meses de datos, puede elegir la media de 12 meses.
+ELEGIR EL MES PARA LA LUZ
+MES MÁS RECIENTE
+TIEMPO DE COCCIÓN ELÉCTRICA POR LOTE – HORAS
+TIEMPO DE COCCIÓN ELÉCTRICA POR LOTE – MINUTOS
+TIEMPO DE COCCIÓN A GAS – HORAS
+TIEMPO DE COCCIÓN A GAS – MINUTOS
+COSTO DE ENVASE POR PORCIÓN
+COSTO Y PRECIO DE VENTA
+COSTO TOTAL POR PORCIÓN, INCLUIDOS MANO DE OBRA, GAS, LUZ Y ENVASE
+¿Cómo quiere añadir su receta?
+Si su foto incluye su receta y su elaboración, ambas se añadirán a su cuenta Premium.
+📷 HACER UNA FOTO DE LA RECETA
+✏️ ESCRIBIR UNA RECETA
+Haga una foto nítida de su ficha de receta, de frente y con buena luz.
+📷 HACER FOTO
+🖼 ELEGIR DE LAS FOTOS
+Leyendo su receta...
+La letra a mano puede tardar un poco más.
+RECETA LEÍDA
+{0} ingredientes y {1} pasos leídos de su foto.
+Revíselos con su foto y luego añada sus precios.
+No se encontraron ingredientes ni elaboración en esa foto.
+Pruebe una foto más nítida y luminosa.
+NO SE PUDO LEER LA FOTO
+No se pudo leer la foto.
+No se pudo abrir esa foto. Pruebe con otra foto.
+El lector de fotos está muy ocupado. Espere un minuto y vuelva a intentarlo.
+Sin conexión a Internet. Revise su conexión y vuelva a intentarlo.
+Vuelva a intentarlo.
+REVISE EL NOMBRE LEÍDO DE SU FOTO
+ESCRIBA EL NOMBRE DE LA NUEVA RECETA
+ESCRIBA EL NOMBRE DE LA RECETA
+NOMBRE DE LA RECETA
+Elija otro nombre.
+ELABORACIÓN LEÍDA
+No se encontraron pasos en esa foto.
+Revise los pasos con su foto.
+YA TIENE PASOS
+SUSTITUIR LOS MÍOS
+AÑADIR DESPUÉS DE LOS MÍOS
+Aún no hay pasos. Pulse + AÑADIR PASO, o ELABORACIÓN DESDE FOTO.
+Esta receta aún no tiene ingredientes.
+Aún no hay ingredientes. Añádalos en la página Receta.
+Aún no hay meses. Pulse AÑADIR MES Y AÑO ACTUALES para empezar.
+Ninguna receta coincide con ese nombre.
+Aún no hay recetas. Pulse + AÑADIR RECETA.
+RECORDATORIO MENSUAL
+¿Ha actualizado sus facturas de luz y gas este mes?
+Mantenerlas al día hace que el costo de cada receta sea correcto.
+ACTUALIZAR AHORA
+YA ESTÁ HECHO
+RECORDÁRMELO MÁS TARDE
+NUEVO PRECIO DEL INGREDIENTE
+RECETAS ACTUALIZADAS
+Vaya a su panel y revise los
+IR AL PANEL
+TAMBIÉN SE USA EN
+Pulse OK para añadirlo al historial de ingredientes.
+NUEVO PRECIO DE VENTA GUARDADO
+COSTO POR PORCIÓN AHORA:
+PRECIO DE VENTA:
+MARGEN DE BENEFICIO:
+ÚLTIMA ACTUALIZACIÓN DE PRECIO: {0}/{1}/{2}
+ALERTA DE MARGEN AL {0}%
+PRECIO CAMBIADO {0} – CONFIRMAR PRECIO
+PRECIO DE INGREDIENTE CAMBIADO: {0} – REVISE EL PRECIO DE VENTA EN EL PANEL
+ÚLTIMO AVISO
+¡UNA VEZ BORRADO, NO SE PUEDE DESHACER!
+POR FAVOR, REVISE
+No puedo leer ese mes.
+Escríbalo así: JAN-2026
+EJEMPLO MARCH 2025 O MAY 2025
+{0} MESES CREADOS.
+No se pudo guardar en este teléfono.
+✔ GUARDADO
+RINDE {0}
+HISTORIAL DE INGREDIENTES – PRÓXIMAMENTE
+ALMACÉN DE DATOS – PRÓXIMAMENTE
+GUÍA DE USUARIO – PRÓXIMAMENTE
+CAMBIAR APARIENCIA – PRÓXIMAMENTE
+GAS PREVISTO MENOS FACTURA PAGADA
+ESTA RECETA
+— ENVIADO DESDE SHARPERPLUS
+{0} ingredientes leídos de su foto.

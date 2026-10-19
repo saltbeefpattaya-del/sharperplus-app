@@ -1,0 +1,190 @@
+SHARPERPLUS PREMIUM
+AMBIL GAMBAR RESIPI
+◀ PAPAN PEMUKA
+KADAR CUKAI TEMPATAN ANDA
+SEWA & MASA BEKERJA
+HARI BEKERJA SEBULAN
+JAM BEKERJA SEHARI
+Taip setiap kakitangan dan gaji bulanan mereka.
+Sila isi HARI BEKERJA SEBULAN dalam Kos Induk, supaya gaji harian dapat dikira.
++ TAMBAH KAKITANGAN
+UNIT BULANAN
+BIL ELEKTRIK (JUMLAH DIBAYAR)
+✎ TAIP BIL ANDA DI SINI
+ELEKTRIK DIRANCANG
+Kosong = asas + penimbal: {0}
+ASAS TETAP – BIL ELEKTRIK TERENDAH
+KOS ELEKTRIK SETIAP HIDANGAN
+JENIS GAS
+BERMETER
+SAIZ TONG GAS (KG)
+PILIH SATU ATAU GABUNGAN API
+PILIH SEMUA API
+BULAN ELEKTRIK & GAS
+TAMBAH BULAN DAN TAHUN SEMASA
+JADUAL BULAN MENUNJUKKAN
+NOMBOR MERAH BERMAKNA ANDA MELEBIHI BIL YANG DIRANCANG
+OVERHED LEBIH / KURANG
+Letakkan bulan terkini di atas. Resipi menggunakan bil bulan paling atas, atau purata apabila YA dipilih.
+KOS SEHARI
+BUANG
+BUANG BULAN INI
+BUANG BULAN
+BUANG KAKITANGAN
+BUANG LANGKAH
+BUANG BAHAN
+Taip bil gas bulanan anda dan unit gas yang digunakan dalam bulan di bawah.
+Taip setiap kakitangan dan gaji bulanan mereka. Gaji harian ialah gaji bulanan ÷ hari bekerja anda, dan kadar sejam ialah gaji harian ÷ 8.
+KOS KAKITANGAN SEHARI ({0} ORANG)
+KAKITANGAN {0}
++ TAMBAH RESIPI
+MARGIN UNTUNG
+{0} BAHAN TANPA HARGA
+{0} BAHAN TANPA HARGA
+{0} BAHAN TIADA HARGA
+{0} BAHAN TIADA HARGA
+OK
+BUKA RESIPI
+NAMA
+CARA MEMASAK
+CARA MEMASAK ★
+★ PREMIUM
+PREMIUM
+★ SELAMAT DATANG KE PREMIUM
+Baca resipi dan cara memasak daripada satu gambar
+Cara memasak langkah demi langkah untuk dapur anda
+Tandakan bahan anda semasa menyediakan
+Hantar kepada pasukan anda melalui WhatsApp, LINE atau e-mel, atau cetak
+Sekarang tambah kos memasak, Kos Induk dan kakitangan untuk manfaat penuh daripada Premium.
+Semua sudah siap – anda mendapat manfaat penuh daripada SharperPlus Premium.
+Resipi anda sudah siap. Mahu harga sebenar? Pergi ke Kos Induk.
+KOS RESIPI
+KEMAS KINI
+📷 CARA MEMASAK DARIPADA GAMBAR
+📤 HANTAR ATAU CETAK
+HANTAR ATAU CETAK
+RESIPI INI DI PAPAN PEMUKA ANDA
+BAHAN – TANDAKAN SEMASA MENYEDIAKAN
+CARA MEMASAK
+MASA (MIN)
+GUNA {0} BAHAN
+GUNA {0} BAHAN
+PILIH BAHAN
+BAHAN YANG MANA?
+PETUA CEF
++ TAMBAH LANGKAH
+Apa yang perlu dibuat dalam langkah ini
+Hantar resipi dan cara memasak kepada pasukan anda.
+E-MEL
+APLIKASI LAIN (MESSENGER DAN LAIN-LAIN)
+CETAK / SIMPAN SEBAGAI PDF
+NOTA UNTUK PASUKAN (PILIHAN)
+Sila benarkan pop-up untuk mencetak.
+Tambah sekurang-kurangnya satu langkah dahulu.
+PILIH RESIPI
+KAMI SYORKAN ANDA TAMBAH BAHAN DAHULU, SUPAYA ANDA DAPAT SAIZ KELOMPOK
+JUMLAH BERAT BAHAN ANDA (BOLEH GUNA)
+PERINGATAN HARGA
+☐ JANGAN TUNJUK LAGI
+Sila kemas kini harga untuk melengkapkan kos resipi anda
+Jika salah satu bahan anda naik harga, sila kemas kini harga dalam resipi anda.
+Ini mungkin menjejaskan resipi lain yang menggunakan bahan yang sama.
+HARGA SEKILO
+HARGA SEPAUN
+SISA %
+HASIL (G)
+HASIL (OZ)
+KOS BERSIH SEKILO
+KOS BERSIH SEPAUN
+JUMLAH KOS
++ TAMBAH BAHAN
+CUKAI {0}%
+BURUH
+BEBERAPA KAKITANGAN – BERAPA ORANG
+— PILIH —
+Tambah kakitangan anda di halaman Kakitangan dahulu, kemudian pilih di sini.
+Sila pilih bulan. Ini memberi kos tepat setiap hidangan berbanding bil elektrik anda. Apabila ada data 12 bulan, anda boleh pilih purata 12 bulan.
+PILIH BULAN UNTUK CAJ ELEKTRIK
+BULAN TERKINI
+MASA MEMASAK ELEKTRIK SETIAP KELOMPOK – JAM
+MASA MEMASAK ELEKTRIK SETIAP KELOMPOK – MINIT
+MASA MEMASAK GAS – JAM
+MASA MEMASAK GAS – MINIT
+KOS PEMBUNGKUSAN SETIAP HIDANGAN
+KOS & HARGA JUALAN
+JUMLAH KOS SETIAP HIDANGAN, TERMASUK BURUH, GAS, ELEKTRIK DAN PEMBUNGKUSAN
+Bagaimana anda mahu menambah resipi?
+Jika gambar anda mengandungi resipi dan cara memasak, kedua-duanya akan ditambah ke akaun Premium anda.
+📷 AMBIL GAMBAR RESIPI
+✏️ TAIP RESIPI
+Ambil gambar helaian resipi yang jelas, dari depan dan dalam cahaya yang baik.
+📷 AMBIL GAMBAR
+🖼 PILIH DARIPADA GAMBAR
+Membaca resipi anda...
+Tulisan tangan mungkin mengambil masa lebih sedikit.
+RESIPI DIBACA
+{0} bahan dan {1} langkah memasak dibaca daripada gambar anda.
+Sila semak dengan gambar anda, kemudian tambah harga.
+Tiada bahan atau cara memasak ditemui dalam gambar itu.
+Cuba gambar yang lebih jelas dan terang.
+GAMBAR TIDAK DAPAT DIBACA
+Gambar tidak dapat dibaca.
+Gambar itu tidak dapat dibuka. Sila cuba gambar lain.
+Pembaca gambar sangat sibuk sekarang. Sila tunggu seminit dan cuba lagi.
+Tiada sambungan Internet. Sila semak sambungan anda dan cuba lagi.
+Sila cuba lagi.
+SEMAK NAMA YANG DIBACA DARIPADA GAMBAR
+TAIP NAMA RESIPI BAHARU
+TAIP NAMA RESIPI
+NAMA RESIPI
+Sila pilih nama lain.
+CARA MEMASAK DIBACA
+Tiada langkah memasak ditemui dalam gambar itu.
+Semak langkah dengan gambar anda.
+ANDA SUDAH ADA LANGKAH
+GANTI YANG SAYA
+TAMBAH SELEPAS YANG SAYA
+Belum ada langkah. Tekan + TAMBAH LANGKAH, atau CARA MEMASAK DARIPADA GAMBAR.
+Resipi ini belum ada bahan.
+Belum ada bahan. Tambah di halaman Resipi.
+Belum ada bulan. Tekan TAMBAH BULAN DAN TAHUN SEMASA untuk mula.
+Tiada resipi sepadan dengan nama itu.
+Belum ada resipi. Tekan + TAMBAH RESIPI.
+PERINGATAN BULANAN
+Sudahkah anda kemas kini bil elektrik dan gas bulan ini?
+Mengemas kininya memastikan setiap kos resipi tepat.
+KEMAS KINI SEKARANG
+SUDAH SIAP
+INGATKAN SAYA NANTI
+HARGA BAHAN BAHARU
+RESIPI DIKEMAS KINI
+Sila pergi ke papan pemuka anda dan semak
+PERGI KE PAPAN PEMUKA
+JUGA DIGUNAKAN DALAM
+Tekan OK untuk menambahnya ke sejarah bahan.
+HARGA JUALAN BAHARU DISIMPAN
+KOS SETIAP HIDANGAN SEKARANG:
+HARGA JUALAN:
+MARGIN UNTUNG:
+KEMAS KINI HARGA TERAKHIR: {0}/{1}/{2}
+AMARAN MARGIN PADA {0}%
+HARGA BERUBAH {0} – SAHKAN HARGA
+HARGA BAHAN BERUBAH: {0} – SEMAK HARGA JUALAN DI PAPAN PEMUKA
+AMARAN TERAKHIR
+SETELAH DIPADAM, IA TIDAK BOLEH DIBATALKAN!
+SILA SEMAK
+Saya tidak dapat membaca bulan itu.
+Taip begini: JAN-2026
+CONTOH MARCH 2025 ATAU MAY 2025
+{0} BULAN DICIPTA.
+Tidak dapat menyimpan pada telefon ini.
+✔ DISIMPAN
+MENGHASILKAN {0}
+SEJARAH BAHAN – AKAN DATANG
+SIMPANAN DATA – AKAN DATANG
+PANDUAN PENGGUNA – AKAN DATANG
+TUKAR PAPARAN – AKAN DATANG
+GAS DIRANCANG TOLAK BIL DIBAYAR
+RESIPI INI
+— DIHANTAR DARIPADA SHARPERPLUS
+{0} bahan dibaca daripada gambar anda.

@@ -1,0 +1,190 @@
+SHARPERPLUS PREMIUM
+FOTO VOM REZEPT MACHEN
+◀ ÜBERSICHT
+IHR MEHRWERTSTEUERSATZ
+MIETE & ARBEITSZEIT
+ARBEITSTAGE PRO MONAT
+ARBEITSSTUNDEN PRO TAG
+Geben Sie jede Mitarbeiterin und jeden Mitarbeiter mit Monatslohn ein.
+Bitte tragen Sie ARBEITSTAGE PRO MONAT in den Stammkosten ein, damit der Tageslohn berechnet werden kann.
++ PERSONAL HINZUFÜGEN
+MONATLICHE EINHEITEN
+STROMRECHNUNG (GESAMT BEZAHLT)
+✎ RECHNUNG HIER EINTRAGEN
+GEPLANTER STROM
+Leer = Grundwert + Puffer: {0}
+FESTER GRUNDWERT – NIEDRIGSTE STROMRECHNUNG
+STROMKOSTEN PRO PORTION
+GASART
+MIT ZÄHLER
+GRÖSSE DER GASFLASCHE (KG)
+WÄHLEN SIE EINE ODER MEHRERE FLAMMEN
+ALLE FLAMMEN WÄHLEN
+STROM- & GASMONATE
+AKTUELLEN MONAT UND JAHR HINZUFÜGEN
+MONATSTABELLEN ZEIGEN
+EINE ROTE ZAHL BEDEUTET, DASS SIE ÜBER IHRER GEPLANTEN RECHNUNG LIEGEN
+GEMEINKOSTEN DARÜBER / DARUNTER
+Halten Sie den neuesten Monat oben. Rezepte nutzen die Rechnung des obersten Monats oder den Durchschnitt, wenn JA gewählt ist.
+KOSTEN PRO TAG
+ENTFERNEN
+DIESEN MONAT ENTFERNEN
+MONAT ENTFERNEN
+MITARBEITER ENTFERNEN
+SCHRITT ENTFERNEN
+ZUTAT ENTFERNEN
+Tragen Sie unten in den Monaten Ihre monatliche Gasrechnung und die verbrauchten Gaseinheiten ein.
+Geben Sie jede Mitarbeiterin und jeden Mitarbeiter mit Monatslohn ein. Der Tageslohn ist der Monatslohn ÷ Ihre Arbeitstage, der Stundensatz ist der Tageslohn ÷ 8.
+PERSONALKOSTEN PRO TAG ({0} PERSONEN)
+PERSONAL {0}
++ REZEPT HINZUFÜGEN
+GEWINNMARGE
+{0} ZUTAT OHNE PREIS
+{0} ZUTATEN OHNE PREIS
+{0} ZUTAT HAT KEINEN PREIS
+{0} ZUTATEN HABEN KEINEN PREIS
+OK
+REZEPT ÖFFNEN
+NAME
+ZUBEREITUNG
+ZUBEREITUNG ★
+★ PREMIUM
+PREMIUM
+★ WILLKOMMEN BEI PREMIUM
+Rezept und Zubereitung aus einem einzigen Foto lesen
+Eine Zubereitung Schritt für Schritt für Ihre Küche
+Haken Sie Ihre Zutaten bei der Vorbereitung ab
+Per WhatsApp, LINE oder E-Mail an Ihr Team senden oder ausdrucken
+Fügen Sie jetzt Ihre Garkosten, Stammkosten und Ihr Personal hinzu, um Premium voll zu nutzen.
+Alles eingerichtet – Sie nutzen SharperPlus Premium voll aus.
+Ihr Rezept ist eingerichtet. Möchten Sie Ihre echten Preise? Gehen Sie zu den Stammkosten.
+REZEPTKALKULATION
+AKTUALISIEREN
+📷 ZUBEREITUNG AUS FOTO
+📤 SENDEN ODER DRUCKEN
+SENDEN ODER DRUCKEN
+DIESES REZEPT IN IHRER ÜBERSICHT
+ZUTATEN – BEI DER VORBEREITUNG ABHAKEN
+ZUBEREITUNG
+ZEIT (MIN)
+NUTZT {0} ZUTAT
+NUTZT {0} ZUTATEN
+ZUTATEN WÄHLEN
+WELCHE ZUTATEN?
+TIPP VOM KOCH
++ SCHRITT HINZUFÜGEN
+Was in diesem Schritt zu tun ist
+Senden Sie Rezept und Zubereitung an Ihr Team.
+E-MAIL
+WEITERE APPS (MESSENGER UND ANDERE)
+DRUCKEN / ALS PDF SPEICHERN
+NOTIZ FÜR DAS TEAM (OPTIONAL)
+Bitte erlauben Sie Pop-ups zum Drucken.
+Fügen Sie zuerst mindestens einen Schritt hinzu.
+REZEPT WÄHLEN
+WIR EMPFEHLEN, ZUERST IHRE ZUTATEN EINZUGEBEN, DAMIT SIE DIE CHARGENGRÖSSE ERHALTEN
+GESAMTGEWICHT IHRER ZUTATEN (VERWENDBAR)
+PREIS-ERINNERUNG
+☐ NICHT MEHR ANZEIGEN
+Bitte aktualisieren Sie die Preise, um Ihre Rezeptkalkulation abzuschließen
+Wenn eine Ihrer Zutaten teurer geworden ist, aktualisieren Sie bitte den Preis in Ihrem Rezept.
+Das kann andere Rezepte mit denselben Zutaten betreffen.
+PREIS PRO KILO
+PREIS PRO PFUND
+ABFALL %
+AUSBEUTE (G)
+AUSBEUTE (OZ)
+NETTOKOSTEN PRO KILO
+NETTOKOSTEN PRO PFUND
+GESAMTKOSTEN
++ ZUTAT HINZUFÜGEN
+MWST. {0}%
+ARBEIT
+MEHRERE MITARBEITER – WIE VIELE
+— WÄHLEN —
+Fügen Sie Ihr Personal zuerst auf der Personalseite hinzu und wählen Sie es dann hier.
+Bitte wählen Sie den Monat. So erhalten Sie genaue Kosten jedes Gerichts im Verhältnis zu Ihrer Stromrechnung. Mit 12 Monaten Daten können Sie den 12-Monats-Durchschnitt wählen.
+MONAT FÜR DIE STROMKOSTEN WÄHLEN
+NEUESTER MONAT
+ELEKTRISCHE GARZEIT PRO CHARGE – STUNDEN
+ELEKTRISCHE GARZEIT PRO CHARGE – MINUTEN
+GARZEIT MIT GAS – STUNDEN
+GARZEIT MIT GAS – MINUTEN
+VERPACKUNGSKOSTEN PRO PORTION
+KOSTEN & VERKAUFSPREIS
+GESAMTKOSTEN PRO PORTION, INKL. ARBEIT, GAS, STROM UND VERPACKUNG
+Wie möchten Sie Ihr Rezept hinzufügen?
+Wenn Ihr Foto sowohl Ihr Rezept als auch Ihre Zubereitung enthält, werden beide Ihrem Premium-Konto hinzugefügt.
+📷 FOTO VOM REZEPT MACHEN
+✏️ REZEPT EINTIPPEN
+Machen Sie ein scharfes Foto Ihres Rezeptblatts, gerade von vorn und bei gutem Licht.
+📷 FOTO MACHEN
+🖼 AUS FOTOS WÄHLEN
+Ihr Rezept wird gelesen...
+Handschrift kann etwas länger dauern.
+REZEPT GELESEN
+{0} Zutaten und {1} Zubereitungsschritte aus Ihrem Foto gelesen.
+Bitte prüfen Sie sie mit Ihrem Foto und tragen Sie dann Ihre Preise ein.
+Auf diesem Foto wurden keine Zutaten oder Zubereitung gefunden.
+Versuchen Sie ein schärferes, helleres Foto.
+DAS FOTO KONNTE NICHT GELESEN WERDEN
+Das Foto konnte nicht gelesen werden.
+Dieses Foto konnte nicht geöffnet werden. Bitte versuchen Sie ein anderes Foto.
+Der Fotoleser ist gerade sehr ausgelastet. Bitte warten Sie eine Minute und versuchen Sie es erneut.
+Keine Internetverbindung. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.
+Bitte versuchen Sie es erneut.
+PRÜFEN SIE DEN AUS DEM FOTO GELESENEN NAMEN
+NAMEN DES NEUEN REZEPTS EINGEBEN
+NAMEN DES REZEPTS EINGEBEN
+REZEPTNAME
+Bitte wählen Sie einen anderen Namen.
+ZUBEREITUNG GELESEN
+Auf diesem Foto wurden keine Zubereitungsschritte gefunden.
+Prüfen Sie die Schritte mit Ihrem Foto.
+SIE HABEN SCHON SCHRITTE
+MEINE ERSETZEN
+NACH MEINEN ANFÜGEN
+Noch keine Schritte. Tippen Sie auf + SCHRITT HINZUFÜGEN oder ZUBEREITUNG AUS FOTO.
+Dieses Rezept hat noch keine Zutaten.
+Noch keine Zutaten. Fügen Sie sie auf der Rezeptseite hinzu.
+Noch keine Monate. Tippen Sie auf AKTUELLEN MONAT UND JAHR HINZUFÜGEN, um zu beginnen.
+Kein Rezept passt zu diesem Namen.
+Noch keine Rezepte. Tippen Sie auf + REZEPT HINZUFÜGEN.
+MONATLICHE ERINNERUNG
+Haben Sie diesen Monat Ihre Strom- und Gasrechnung aktualisiert?
+Wenn sie aktuell sind, stimmt jede Rezeptkalkulation.
+JETZT AKTUALISIEREN
+SCHON ERLEDIGT
+SPÄTER ERINNERN
+NEUER ZUTATENPREIS
+REZEPTE AKTUALISIERT
+Bitte gehen Sie zu Ihrer Übersicht und prüfen Sie die
+ZUR ÜBERSICHT
+AUCH VERWENDET IN
+Tippen Sie auf OK, um sie zum Zutatenverlauf hinzuzufügen.
+NEUER VERKAUFSPREIS GESPEICHERT
+KOSTEN PRO PORTION JETZT:
+VERKAUFSPREIS:
+GEWINNMARGE:
+LETZTE PREISÄNDERUNG: {0}/{1}/{2}
+MARGEN-ALARM BEI {0}%
+PREIS GEÄNDERT {0} – PREIS BESTÄTIGEN
+ZUTATENPREIS GEÄNDERT: {0} – VERKAUFSPREIS IN DER ÜBERSICHT PRÜFEN
+LETZTE WARNUNG
+EINMAL GELÖSCHT, KANN DIES NICHT RÜCKGÄNGIG GEMACHT WERDEN!
+BITTE PRÜFEN
+Diesen Monat kann ich nicht lesen.
+Schreiben Sie es wie JAN-2026
+BEISPIEL MARCH 2025 ODER MAY 2025
+{0} MONATE ERSTELLT.
+Konnte auf diesem Telefon nicht speichern.
+✔ GESPEICHERT
+ERGIBT {0}
+ZUTATENVERLAUF – DEMNÄCHST
+DATENSPEICHER – DEMNÄCHST
+BENUTZERHANDBUCH – DEMNÄCHST
+ERSCHEINUNGSBILD ÄNDERN – DEMNÄCHST
+GEPLANTES GAS MINUS BEZAHLTE RECHNUNG
+DIESES REZEPT
+— GESENDET MIT SHARPERPLUS
+{0} Zutaten aus Ihrem Foto gelesen.

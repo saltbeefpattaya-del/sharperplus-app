@@ -1,0 +1,190 @@
+SHARPERPLUS PREMIUM
+PRENDRE UNE PHOTO DE LA RECETTE
+◀ TABLEAU DE BORD
+VOTRE TAUX DE TVA LOCAL
+LOYER ET TEMPS DE TRAVAIL
+JOURS DE TRAVAIL PAR MOIS
+HEURES DE TRAVAIL PAR JOUR
+Saisissez chaque membre du personnel et son salaire mensuel.
+Veuillez remplir JOURS DE TRAVAIL PAR MOIS dans Coûts principaux, afin de calculer le salaire journalier.
++ AJOUTER DU PERSONNEL
+UNITÉS MENSUELLES
+FACTURE D'ÉLECTRICITÉ (TOTAL PAYÉ)
+✎ SAISISSEZ VOTRE FACTURE ICI
+ÉLECTRICITÉ PRÉVUE
+Vide = base + marge : {0}
+BASE FIXE – FACTURE D'ÉLECTRICITÉ LA PLUS BASSE
+COÛT D'ÉLECTRICITÉ PAR PORTION
+TYPE DE GAZ
+AU COMPTEUR
+TAILLE DE LA BOUTEILLE DE GAZ (KG)
+CHOISISSEZ UN FEU OU UN MÉLANGE DE FEUX
+CHOISIR TOUS LES FEUX
+MOIS ÉLECTRICITÉ ET GAZ
+AJOUTER LE MOIS ET L'ANNÉE EN COURS
+LES TABLEAUX MENSUELS AFFICHENT
+UN CHIFFRE ROUGE SIGNIFIE QUE VOUS DÉPASSEZ VOTRE FACTURE PRÉVUE
+FRAIS GÉNÉRAUX AU-DESSUS / EN DESSOUS
+Gardez le mois le plus récent en haut. Les recettes utilisent la facture du mois du haut, ou la moyenne quand OUI est choisi.
+COÛT PAR JOUR
+SUPPRIMER
+SUPPRIMER CE MOIS
+SUPPRIMER LE MOIS
+SUPPRIMER LE MEMBRE DU PERSONNEL
+SUPPRIMER L'ÉTAPE
+SUPPRIMER L'INGRÉDIENT
+Saisissez votre facture de gaz mensuelle et les unités de gaz utilisées dans les mois ci-dessous.
+Saisissez chaque membre du personnel et son salaire mensuel. Le salaire journalier est le salaire mensuel ÷ vos jours de travail, et le taux horaire est le salaire journalier ÷ 8.
+COÛT DU PERSONNEL PAR JOUR ({0} PERSONNES)
+PERSONNEL {0}
++ AJOUTER UNE RECETTE
+MARGE BÉNÉFICIAIRE
+{0} INGRÉDIENT SANS PRIX
+{0} INGRÉDIENTS SANS PRIX
+{0} INGRÉDIENT N'A PAS DE PRIX
+{0} INGRÉDIENTS N'ONT PAS DE PRIX
+OK
+OUVRIR LA RECETTE
+NOM
+PRÉPARATION
+PRÉPARATION ★
+★ PREMIUM
+PREMIUM
+★ BIENVENUE DANS PREMIUM
+Lisez votre recette et sa préparation à partir d'une seule photo
+Une préparation étape par étape pour votre cuisine
+Cochez vos ingrédients au fur et à mesure de la mise en place
+Envoyez-la à votre équipe par WhatsApp, LINE ou e-mail, ou imprimez-la
+Ajoutez maintenant vos coûts de cuisson, vos coûts principaux et votre personnel pour profiter au maximum de Premium.
+Tout est prêt – vous profitez au maximum de SharperPlus Premium.
+Votre recette est prête. Vous voulez vos vrais prix ? Allez dans Coûts principaux.
+COÛT DE LA RECETTE
+METTRE À JOUR
+📷 PRÉPARATION D'APRÈS PHOTO
+📤 ENVOYER OU IMPRIMER
+ENVOYER OU IMPRIMER
+CETTE RECETTE SUR VOTRE TABLEAU DE BORD
+INGRÉDIENTS – COCHEZ-LES AU FUR ET À MESURE
+PRÉPARATION
+TEMPS (MIN)
+UTILISE {0} INGRÉDIENT
+UTILISE {0} INGRÉDIENTS
+CHOISIR LES INGRÉDIENTS
+QUELS INGRÉDIENTS ?
+ASTUCE DU CHEF
++ AJOUTER UNE ÉTAPE
+Que faire à cette étape
+Envoyez la recette et la préparation à votre équipe.
+E-MAIL
+AUTRES APPLIS (MESSENGER ET AUTRES)
+IMPRIMER / ENREGISTRER EN PDF
+NOTE POUR L'ÉQUIPE (FACULTATIF)
+Veuillez autoriser les fenêtres pop-up pour imprimer.
+Ajoutez d'abord au moins une étape.
+CHOISIR LA RECETTE
+NOUS VOUS CONSEILLONS D'AJOUTER D'ABORD VOS INGRÉDIENTS, POUR OBTENIR LA TAILLE DU LOT
+POIDS TOTAL DE VOS INGRÉDIENTS (UTILISABLE)
+RAPPEL DE PRIX
+☐ NE PLUS AFFICHER
+Veuillez mettre à jour les prix pour compléter le coût de votre recette
+Si l'un de vos ingrédients a augmenté, veuillez mettre à jour son prix dans votre recette.
+Cela peut affecter d'autres recettes qui utilisent les mêmes ingrédients.
+PRIX AU KILO
+PRIX À LA LIVRE
+PERTE %
+RENDEMENT (G)
+RENDEMENT (OZ)
+COÛT NET AU KILO
+COÛT NET À LA LIVRE
+COÛT TOTAL
++ AJOUTER UN INGRÉDIENT
+TVA À {0}%
+MAIN-D'ŒUVRE
+PLUSIEURS EMPLOYÉS – COMBIEN
+— CHOISIR —
+Ajoutez d'abord votre personnel sur la page Personnel, puis choisissez-le ici.
+Veuillez choisir le mois. Cela donne un coût précis de chaque plat par rapport à votre facture d'électricité. Avec 12 mois de données, vous pouvez choisir la moyenne sur 12 mois.
+CHOISIR LE MOIS POUR L'ÉLECTRICITÉ
+MOIS LE PLUS RÉCENT
+TEMPS DE CUISSON ÉLECTRIQUE PAR LOT – HEURES
+TEMPS DE CUISSON ÉLECTRIQUE PAR LOT – MINUTES
+TEMPS DE CUISSON AU GAZ – HEURES
+TEMPS DE CUISSON AU GAZ – MINUTES
+COÛT D'EMBALLAGE PAR PORTION
+COÛT ET PRIX DE VENTE
+COÛT TOTAL PAR PORTION, MAIN-D'ŒUVRE, GAZ, ÉLECTRICITÉ ET EMBALLAGE COMPRIS
+Comment voulez-vous ajouter votre recette ?
+Si votre photo contient votre recette et votre préparation, les deux seront ajoutées à votre compte Premium.
+📷 PRENDRE UNE PHOTO DE LA RECETTE
+✏️ SAISIR UNE RECETTE
+Prenez une photo nette de votre fiche recette, bien de face et avec une bonne lumière.
+📷 PRENDRE UNE PHOTO
+🖼 CHOISIR DANS LES PHOTOS
+Lecture de votre recette...
+L'écriture manuscrite peut prendre un peu plus de temps.
+RECETTE LUE
+{0} ingrédients et {1} étapes de préparation lus sur votre photo.
+Veuillez les vérifier avec votre photo, puis ajoutez vos prix.
+Aucun ingrédient ni préparation trouvé sur cette photo.
+Essayez une photo plus nette et plus lumineuse.
+LA PHOTO N'A PAS PU ÊTRE LUE
+La photo n'a pas pu être lue.
+Cette photo n'a pas pu être ouverte. Essayez une autre photo.
+Le lecteur de photos est très occupé. Patientez une minute et réessayez.
+Pas de connexion Internet. Vérifiez votre connexion et réessayez.
+Veuillez réessayer.
+VÉRIFIEZ LE NOM LU SUR VOTRE PHOTO
+SAISISSEZ LE NOM DE LA NOUVELLE RECETTE
+SAISISSEZ LE NOM DE LA RECETTE
+NOM DE LA RECETTE
+Veuillez choisir un autre nom.
+PRÉPARATION LUE
+Aucune étape de préparation trouvée sur cette photo.
+Vérifiez les étapes avec votre photo.
+VOUS AVEZ DÉJÀ DES ÉTAPES
+REMPLACER LES MIENNES
+AJOUTER APRÈS LES MIENNES
+Pas encore d'étapes. Appuyez sur + AJOUTER UNE ÉTAPE, ou PRÉPARATION D'APRÈS PHOTO.
+Pas encore d'ingrédients dans cette recette.
+Pas encore d'ingrédients. Ajoutez-les sur la page Recette.
+Pas encore de mois. Appuyez sur AJOUTER LE MOIS ET L'ANNÉE EN COURS pour commencer.
+Aucune recette ne correspond à ce nom.
+Pas encore de recettes. Appuyez sur + AJOUTER UNE RECETTE.
+RAPPEL MENSUEL
+Avez-vous mis à jour vos factures d'électricité et de gaz ce mois-ci ?
+Les tenir à jour garde le coût de chaque recette exact.
+METTRE À JOUR
+DÉJÀ FAIT
+ME LE RAPPELER PLUS TARD
+NOUVEAU PRIX D'INGRÉDIENT
+RECETTES MISES À JOUR
+Veuillez aller sur votre tableau de bord et vérifier les
+ALLER AU TABLEAU DE BORD
+AUSSI UTILISÉ DANS
+Cliquez sur OK pour l'ajouter à l'historique des ingrédients.
+NOUVEAU PRIX DE VENTE ENREGISTRÉ
+COÛT PAR PORTION MAINTENANT :
+PRIX DE VENTE :
+MARGE BÉNÉFICIAIRE :
+DERNIÈRE MISE À JOUR DU PRIX : {0}/{1}/{2}
+ALERTE DE MARGE À {0}%
+PRIX MODIFIÉ {0} – CONFIRMER LE PRIX
+PRIX D'INGRÉDIENT MODIFIÉ : {0} – VÉRIFIEZ LE PRIX DE VENTE SUR LE TABLEAU DE BORD
+DERNIER AVERTISSEMENT
+UNE FOIS SUPPRIMÉ, IL EST IMPOSSIBLE DE REVENIR EN ARRIÈRE !
+VEUILLEZ VÉRIFIER
+Je ne peux pas lire ce mois.
+Écrivez-le comme JAN-2026
+EXEMPLE MARCH 2025 OU MAY 2025
+{0} MOIS CRÉÉS.
+Impossible d'enregistrer sur ce téléphone.
+✔ ENREGISTRÉ
+DONNE {0}
+HISTORIQUE DES INGRÉDIENTS – BIENTÔT
+STOCKAGE DES DONNÉES – BIENTÔT
+GUIDE D'UTILISATION – BIENTÔT
+CHANGER L'APPARENCE – BIENTÔT
+GAZ PRÉVU MOINS FACTURE PAYÉE
+CETTE RECETTE
+— ENVOYÉ DEPUIS SHARPERPLUS
+{0} ingrédients lus sur votre photo.

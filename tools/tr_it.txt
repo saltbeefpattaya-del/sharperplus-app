@@ -1,0 +1,190 @@
+SHARPERPLUS PREMIUM
+FAI UNA FOTO DELLA RICETTA
+◀ PANNELLO
+LA TUA ALIQUOTA IVA LOCALE
+AFFITTO E ORARIO DI LAVORO
+GIORNI LAVORATIVI AL MESE
+ORE LAVORATIVE AL GIORNO
+Inserisci ogni membro del personale e la sua paga mensile.
+Compila GIORNI LAVORATIVI AL MESE nei Costi principali, così si può calcolare la paga giornaliera.
++ AGGIUNGI PERSONALE
+UNITÀ MENSILI
+BOLLETTA DELLA LUCE (TOTALE PAGATO)
+✎ INSERISCI QUI LA BOLLETTA
+ELETTRICITÀ PREVISTA
+Vuoto = base + margine: {0}
+BASE FISSA – BOLLETTA DELLA LUCE PIÙ BASSA
+COSTO DELL'ELETTRICITÀ PER PORZIONE
+TIPO DI GAS
+A CONTATORE
+DIMENSIONE DELLA BOMBOLA (KG)
+SCEGLI UNA FIAMMA O UNA COMBINAZIONE
+SCEGLI TUTTE LE FIAMME
+MESI LUCE E GAS
+AGGIUNGI MESE E ANNO CORRENTI
+LE TABELLE MENSILI MOSTRANO
+UNA CIFRA ROSSA SIGNIFICA CHE SUPERI LA BOLLETTA PREVISTA
+SPESE GENERALI SOPRA / SOTTO
+Tieni in alto il mese più recente. Le ricette usano la bolletta del mese in alto, o la media quando è scelto SÌ.
+COSTO AL GIORNO
+RIMUOVI
+RIMUOVI QUESTO MESE
+RIMUOVI IL MESE
+RIMUOVI IL MEMBRO DEL PERSONALE
+RIMUOVI IL PASSAGGIO
+RIMUOVI L'INGREDIENTE
+Inserisci la bolletta mensile del gas e le unità di gas usate nei mesi qui sotto.
+Inserisci ogni membro del personale e la sua paga mensile. La paga giornaliera è la paga mensile ÷ i tuoi giorni lavorativi, e la paga oraria è la paga giornaliera ÷ 8.
+COSTO DEL PERSONALE AL GIORNO ({0} PERSONE)
+PERSONALE {0}
++ AGGIUNGI RICETTA
+MARGINE DI PROFITTO
+{0} INGREDIENTE SENZA PREZZO
+{0} INGREDIENTI SENZA PREZZO
+{0} INGREDIENTE NON HA PREZZO
+{0} INGREDIENTI NON HANNO PREZZO
+OK
+APRI RICETTA
+NOME
+PROCEDIMENTO
+PROCEDIMENTO ★
+★ PREMIUM
+PREMIUM
+★ BENVENUTO IN PREMIUM
+Leggi ricetta e procedimento da un'unica foto
+Un procedimento passo dopo passo per la tua cucina
+Spunta gli ingredienti mentre prepari
+Inviala al tuo team via WhatsApp, LINE o e-mail, oppure stampala
+Ora aggiungi i costi di cottura, i costi principali e il personale per sfruttare al massimo Premium.
+Tutto pronto – stai sfruttando al massimo SharperPlus Premium.
+La tua ricetta è pronta. Vuoi i tuoi prezzi reali? Vai ai Costi principali.
+COSTO DELLA RICETTA
+AGGIORNA
+📷 PROCEDIMENTO DA FOTO
+📤 INVIA O STAMPA
+INVIA O STAMPA
+QUESTA RICETTA NEL TUO PANNELLO
+INGREDIENTI – SPUNTALI MENTRE PREPARI
+PROCEDIMENTO
+TEMPO (MIN)
+USA {0} INGREDIENTE
+USA {0} INGREDIENTI
+SCEGLI GLI INGREDIENTI
+QUALI INGREDIENTI?
+CONSIGLIO DELLO CHEF
++ AGGIUNGI PASSAGGIO
+Cosa fare in questo passaggio
+Invia la ricetta e il procedimento al tuo team.
+E-MAIL
+ALTRE APP (MESSENGER E ALTRE)
+STAMPA / SALVA COME PDF
+NOTA PER IL TEAM (FACOLTATIVA)
+Consenti i pop-up per stampare.
+Aggiungi prima almeno un passaggio.
+SCEGLI LA RICETTA
+TI CONSIGLIAMO DI INSERIRE PRIMA GLI INGREDIENTI, COSÌ OTTIENI LA DIMENSIONE DEL LOTTO
+PESO TOTALE DEI TUOI INGREDIENTI (UTILIZZABILE)
+PROMEMORIA PREZZI
+☐ NON MOSTRARE PIÙ
+Aggiorna i prezzi per completare il costo della ricetta
+Se uno dei tuoi ingredienti è aumentato, aggiorna il prezzo nella ricetta.
+Potrebbe influire su altre ricette con gli stessi ingredienti.
+PREZZO AL CHILO
+PREZZO ALLA LIBBRA
+SCARTO %
+RESA (G)
+RESA (OZ)
+COSTO NETTO AL CHILO
+COSTO NETTO ALLA LIBBRA
+COSTO TOTALE
++ AGGIUNGI INGREDIENTE
+IVA AL {0}%
+MANODOPERA
+PIÙ PERSONE – QUANTE
+— SCEGLI —
+Aggiungi prima il personale nella pagina Personale, poi sceglilo qui.
+Scegli il mese. Così ottieni un costo preciso di ogni piatto rispetto alla bolletta della luce. Con 12 mesi di dati puoi scegliere la media di 12 mesi.
+SCEGLI IL MESE PER LA LUCE
+MESE PIÙ RECENTE
+TEMPO DI COTTURA ELETTRICA PER LOTTO – ORE
+TEMPO DI COTTURA ELETTRICA PER LOTTO – MINUTI
+TEMPO DI COTTURA A GAS – ORE
+TEMPO DI COTTURA A GAS – MINUTI
+COSTO DELL'IMBALLAGGIO PER PORZIONE
+COSTO E PREZZO DI VENDITA
+COSTO TOTALE PER PORZIONE, COMPRESI MANODOPERA, GAS, LUCE E IMBALLAGGIO
+Come vuoi aggiungere la tua ricetta?
+Se la tua foto contiene sia la ricetta che il procedimento, entrambi verranno aggiunti al tuo account Premium.
+📷 FAI UNA FOTO DELLA RICETTA
+✏️ SCRIVI UNA RICETTA
+Fai una foto nitida della scheda ricetta, dritta e con buona luce.
+📷 FAI UNA FOTO
+🖼 SCEGLI DALLE FOTO
+Lettura della ricetta in corso...
+La scrittura a mano può richiedere un po' più di tempo.
+RICETTA LETTA
+{0} ingredienti e {1} passaggi letti dalla tua foto.
+Controllali con la foto, poi aggiungi i prezzi.
+Nessun ingrediente o procedimento trovato in quella foto.
+Prova una foto più nitida e luminosa.
+NON È STATO POSSIBILE LEGGERE LA FOTO
+Non è stato possibile leggere la foto.
+Non è stato possibile aprire quella foto. Prova un'altra foto.
+Il lettore di foto è molto occupato. Attendi un minuto e riprova.
+Nessuna connessione Internet. Controlla la connessione e riprova.
+Riprova.
+CONTROLLA IL NOME LETTO DALLA FOTO
+SCRIVI IL NOME DELLA NUOVA RICETTA
+SCRIVI IL NOME DELLA RICETTA
+NOME DELLA RICETTA
+Scegli un altro nome.
+PROCEDIMENTO LETTO
+Nessun passaggio trovato in quella foto.
+Controlla i passaggi con la tua foto.
+HAI GIÀ DEI PASSAGGI
+SOSTITUISCI I MIEI
+AGGIUNGI DOPO I MIEI
+Nessun passaggio ancora. Premi + AGGIUNGI PASSAGGIO, o PROCEDIMENTO DA FOTO.
+Questa ricetta non ha ancora ingredienti.
+Nessun ingrediente ancora. Aggiungili nella pagina Ricetta.
+Nessun mese ancora. Premi AGGIUNGI MESE E ANNO CORRENTI per iniziare.
+Nessuna ricetta corrisponde a quel nome.
+Nessuna ricetta ancora. Premi + AGGIUNGI RICETTA.
+PROMEMORIA MENSILE
+Hai aggiornato le bollette di luce e gas questo mese?
+Tenerle aggiornate mantiene giusto il costo di ogni ricetta.
+AGGIORNA ORA
+GIÀ FATTO
+RICORDAMELO PIÙ TARDI
+NUOVO PREZZO DELL'INGREDIENTE
+RICETTE AGGIORNATE
+Vai al tuo pannello e controlla i
+VAI AL PANNELLO
+USATO ANCHE IN
+Premi OK per aggiungerlo alla cronologia degli ingredienti.
+NUOVO PREZZO DI VENDITA SALVATO
+COSTO PER PORZIONE ORA:
+PREZZO DI VENDITA:
+MARGINE DI PROFITTO:
+ULTIMO AGGIORNAMENTO PREZZO: {0}/{1}/{2}
+AVVISO MARGINE AL {0}%
+PREZZO CAMBIATO {0} – CONFERMA IL PREZZO
+PREZZO DELL'INGREDIENTE CAMBIATO: {0} – CONTROLLA IL PREZZO DI VENDITA NEL PANNELLO
+ULTIMO AVVISO
+UNA VOLTA ELIMINATO, NON SI PUÒ ANNULLARE!
+CONTROLLA
+Non riesco a leggere questo mese.
+Scrivilo così: JAN-2026
+ESEMPIO MARCH 2025 O MAY 2025
+{0} MESI CREATI.
+Impossibile salvare su questo telefono.
+✔ SALVATO
+RESA {0}
+CRONOLOGIA INGREDIENTI – IN ARRIVO
+ARCHIVIO DATI – IN ARRIVO
+GUIDA UTENTE – IN ARRIVO
+CAMBIA ASPETTO – IN ARRIVO
+GAS PREVISTO MENO BOLLETTA PAGATA
+QUESTA RICETTA
+— INVIATO DA SHARPERPLUS
+{0} ingredienti letti dalla tua foto.

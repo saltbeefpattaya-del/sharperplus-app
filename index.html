@@ -207,6 +207,8 @@ select.cream{text-align-last:center;-webkit-appearance:none;appearance:none;padd
 .give{display:flex;gap:10px;align-items:flex-start;font:bold 18px/1.35 Arial,sans-serif;color:#1B1B1B;padding:5px 0}
 .givetick{color:#1E6B2A;font-size:20px}
 .c-dash{background:linear-gradient(90deg,#000 45%,#C8921E);box-shadow:0 4px 0 #3A2400}
+.tile span{text-transform:uppercase}
+.hichef .notice-body{text-align:start;font-size:17px;line-height:1.45}
 [hidden]{display:none !important}
 </style>
 </head>
@@ -215,29 +217,31 @@ select.cream{text-align-last:center;-webkit-appearance:none;appearance:none;padd
 <div id="app">
 <div class="wrap" id="menu">
   <div class="tools">
-    <button class="soft" data-go="LANGUAGE">ENGLISH</button>
-    <button class="soft" data-go="CHANGE APPEARANCE">CHANGE<br>APPEARANCE</button>
+    <button class="soft" data-go="LANGUAGE" data-notr id="langbtn">ENGLISH</button>
+    <button class="soft" data-go="CHANGE APPEARANCE">CHANGE APPEARANCE</button>
   </div>
 
-  <div class="tile title"><span>MAIN MENU</span></div>
+  <div class="tile title" data-trall><span>MAIN MENU</span></div>
 
-  <button class="tile premium" data-go="PREMIUM"><span>SHARPERPLUS</span><span>PREMIUM</span></button>
+  <button data-trall class="tile premium" data-go="PREMIUM"><span>SHARPERPLUS</span><span>PREMIUM</span></button>
 
   <div class="grid">
-    <button class="tile" data-go="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
-    <button class="tile" data-go="ADD RECIPE FROM PHOTO"><span>TAKE A PHOTO</span><span>OF RECIPE</span></button>
-    <button class="tile" data-go="STAFF"><span>STAFF</span></button>
-    <button class="tile" data-go="ADD RECIPE"><span>ADD A</span><span>RECIPE</span></button>
-    <button class="tile" data-go="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
-    <button class="tile" data-go="DASHBOARD"><span>DASHBOARD</span></button>
+    <button data-trall class="tile" data-go="MASTER COSTINGS"><span>MASTER</span><span>COSTINGS</span></button>
+    <button data-trall class="tile" data-go="ADD RECIPE FROM PHOTO"><span>TAKE A PHOTO</span><span>OF RECIPE</span></button>
+    <button data-trall class="tile" data-go="STAFF"><span>STAFF</span></button>
+    <button data-trall class="tile" data-go="ADD RECIPE"><span>ADD A</span><span>RECIPE</span></button>
+    <button data-trall class="tile" data-go="INGREDIENTS HISTORY"><span>INGREDIENTS</span><span>HISTORY</span></button>
+    <button data-trall class="tile" data-go="DASHBOARD"><span>DASHBOARD</span></button>
   </div>
 
-  <button class="tile centre" data-go="DATA STORE"><span>DATA STORE</span></button>
+  <button data-trall class="tile centre" data-go="DATA STORE"><span>DATA STORE</span></button>
 
-  <div class="foot"><button class="soft" data-go="USER GUIDE">USER<br>GUIDE</button></div>
+  <div class="foot"><button class="soft" data-go="USER GUIDE">USER GUIDE</button></div>
 </div>
 </div>
 <div class="toast" id="toast"></div>
+<script src="lang.js"></script>
+<script src="i18n.js"></script>
 <script src="engine.js"></script>
 <script src="app.js"></script>
 </body>
