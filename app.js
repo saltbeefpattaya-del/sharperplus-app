@@ -1916,7 +1916,7 @@
         (st.tip.trim() ? '<div class="tip">' + esc(T('CHEF\'S TIP')) + ': ' + esc(st.tip) + '</div>' : '') + '</li>';
     }).join('');
     var logo = new URL('banner-phone.png', location.href).href;
-    return '<!doctype html><html lang="' + document.documentElement.lang + '" dir="' + document.documentElement.dir + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+    return '<!doctype html><html translate="no" lang="' + document.documentElement.lang + '" dir="' + document.documentElement.dir + '"><head><meta charset="utf-8"><meta name="google" content="notranslate"><meta name="viewport" content="width=device-width,initial-scale=1">' +
       '<title>' + esc(r.recipe_name || 'RECIPE') + ' - KITCHEN CARD</title><style>' +
       '*{-webkit-print-color-adjust:exact;print-color-adjust:exact}body{font-family:Arial,Helvetica,sans-serif;margin:0;background:#f4efe6;color:#1b1b1b}' +
       '.card{max-width:900px;margin:12px auto;background:#fff;border:3px solid #1b1b1b;padding:20px 24px}' +
