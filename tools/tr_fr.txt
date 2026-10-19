@@ -188,3 +188,178 @@ GAZ PRÉVU MOINS FACTURE PAYÉE
 CETTE RECETTE
 — ENVOYÉ DEPUIS SHARPERPLUS
 {0} ingrédients lus sur votre photo.
+Nous vous conseillons de faire cela avant d'ajouter votre première recette.
+Choisissez votre monnaie, l'unité de poids de vos ingrédients et votre taux de TVA.
+SharperPlus utilise ces réglages pour chaque recette. Vous n'avez pas à les saisir de nouveau, et cela évite les erreurs d'argent et de poids.
+Vos prix de vente doivent aussi aider à payer le loyer, pas seulement les ingrédients. Inclure le loyer vous montre mieux le vrai coût de chaque plat.
+Saisissez votre loyer mensuel, le nombre de jours travaillés par mois et le nombre d'heures travaillées par jour.
+SharperPlus calcule votre loyer par jour, prêt à en inclure une part dans le coût de vos recettes.
+Le temps passé à préparer un plat coûte aussi de l'argent. Sans lui, un plat peut sembler moins cher à faire qu'il ne l'est vraiment.
+Ajoutez le nom et le salaire mensuel de chaque membre du personnel. SharperPlus calcule leur coût par jour et par heure.
+Pour le coût d'une recette, nous vous conseillons d'inclure toutes les personnes qui aident à la préparer, pour compter leur temps.
+Voyez combien d'articles ou de portions votre cuisine fabrique chaque mois.
+Comprendre vos coûts
+SharperPlus répartit les coûts mensuels saisis sur les articles que vous fabriquez. Vous voyez combien chaque article doit rapporter pour payer vos factures.
+Par exemple, {0} de factures répartis sur {1} articles font {2} par article pour ces factures.
+Fixer un objectif mensuel
+Saisissez combien d'articles vous voulez que votre cuisine fabrique ce mois-ci.
+SharperPlus compare avec ce que vous avez fabriqué. Vous voyez si vous êtes en dessous, dans ou au-dessus de votre objectif.
+Nous vous conseillons d'enregistrer chaque fournée dans sa fiche recette. Chaque fournée s'ajoute à votre total du mois. Vous gardez le contrôle de vos coûts et de la production de votre cuisine.
+Votre facture d'électricité paie la cuisson, mais aussi l'éclairage, la climatisation et les frigos. Tout cela coûte de l'argent.
+Touchez SAISISSEZ VOTRE FACTURE ICI et entrez le montant. Choisissez ensuite la part utilisée pour cuisiner et la part pour tout le reste.
+SharperPlus peut ainsi estimer le coût d'électricité à inclure dans vos plats. Nous vous conseillons de tenir vos factures à jour pour des chiffres réels.
+Le gaz est un autre coût de cuisson. L'inclure vous aide à en tenir compte en fixant vos prix de vente.
+Choisissez gaz en bouteille ou gaz au compteur, puis entrez ce que vous payez. Cochez les feux que vous utilisez pour cuisiner.
+Nous vous conseillons de choisir les feux que vous utilisez d'habitude. SharperPlus estime ainsi un coût du gaz par minute adapté à votre cuisine.
+Vos mois
+Les factures changent au fil de l'année. Nous vous conseillons de les ajouter chaque mois pour voir quand vos coûts augmentent.
+Un chiffre rouge veut dire qu'une facture dépasse ce que vous aviez prévu. Vous repérez les coûts à surveiller.
+Après {0} mois de factures, vous pouvez utiliser le coût mensuel moyen. Un mois très élevé ou très bas pèse moins sur vos coûts.
+Ici, tous les coûts saisis sont réunis pour montrer leur total par jour.
+Vous voyez les frais fixes que vos ventes doivent couvrir.
+Nous vous conseillons d'ajouter le plus de coûts possible pour une image plus complète. Inutile de tout remplir maintenant. Commencez par ce que vous savez et ajoutez le reste à l'arrivée des factures.
+Nom et salaire mensuel
+Tapez le nom de chaque membre du personnel et son salaire mensuel, tel que vous le payez.
+Salaire journalier et taux horaire
+SharperPlus les calcule pour vous : le salaire journalier est le salaire mensuel divisé par vos jours de travail, puis vient le taux horaire. Vous ne les tapez jamais.
+Touchez ici pour ajouter la personne suivante. Le ✕ en haut d'un nom retire une personne qui est partie.
+Ce que toute votre équipe vous coûte par jour. Dans une recette, vous choisissez qui la prépare, et son temps est compté dans le coût du plat.
+Votre recette
+Le nom de la recette sur laquelle vous travaillez s'affiche ici.
+Pour ouvrir une recette enregistrée, touchez la flèche à côté de CHOISIR LA RECETTE et choisissez dans la liste. Pour en commencer une nouvelle, touchez + AJOUTER UNE RECETTE.
+Vous avez SharperPlus Premium ? Touchez PRÉPARATION ★ pour ajouter ou voir votre méthode de cuisson, prête à partager avec votre équipe.
+Votre produit
+Dans la liste, choisissez UNITÉS pour les articles à la pièce, comme des beigels ou des gâteaux, ou GRAMMES pour les produits vendus au poids.
+Ajoutez d'abord vos ingrédients. SharperPlus calcule alors leur poids utilisable total.
+Ensuite, vérifiez la taille de votre fournée et le nombre de portions obtenues.
+Les chiffres en gris sont calculés automatiquement. Vous pouvez les changer si besoin pour qu'ils correspondent à ce que votre fournée donne vraiment.
+Saisissez le nom de chaque ingrédient, la quantité en grammes et le prix payé au kilo.
+Utilisez PERTE % pour les pertes comme l'épluchage ou le parage. SharperPlus calcule le poids utilisable et ajuste le coût au kilo selon cette perte.
+SharperPlus retient chaque ingrédient et son dernier prix, qui se remplit tout seul la fois suivante.
+Votre fournisseur a changé son prix ? Mettez-le simplement à jour avant de calculer votre recette.
+Coûts de main-d'œuvre
+Avec les flèches, choisissez jusqu'à quatre membres du personnel qui aident à faire cette recette.
+Saisissez le temps que chaque personne passe à préparer la fournée, en heures et minutes.
+SharperPlus utilise leur salaire horaire pour calculer le coût total de main-d'œuvre et l'inclut dans le coût de chaque portion.
+Il manque quelqu'un dans la liste ? Ajoutez son nom et son salaire dans PERSONNEL au menu principal.
+Coûts d'électricité
+Dans la liste, choisissez le mois de la facture d'électricité à utiliser.
+Saisissez le temps de cuisson de la fournée avec des appareils électriques, en heures et minutes.
+SharperPlus utilise ces données pour estimer le coût d'électricité de la fournée et l'inclure dans le coût de chaque portion.
+Après {0} mois de factures, vous pouvez choisir plutôt la moyenne de ces mois.
+Coûts du gaz
+Saisissez le temps de cuisson de la fournée au gaz, en heures et minutes.
+SharperPlus utilise les données de gaz de COÛTS PRINCIPAUX pour estimer le coût du gaz de la fournée et l'inclure dans le coût de chaque portion.
+Vous pouvez ajouter ou modifier vos données de gaz dans COÛTS PRINCIPAUX.
+Si cette recette n'utilise pas de gaz, laissez les deux temps à {0}.
+Si vous la vendez dans une boîte ou un pot, tapez le coût de l'emballage et combien d'unités il contient.
+Coûts du loyer
+Votre loyer par jour est repris automatiquement de COÛTS PRINCIPAUX.
+Saisissez un pourcentage dans MAJORATION % pour inclure une part du loyer dans cette recette.
+SharperPlus calcule cette part et l'ajoute au coût de chaque portion, pour tenir compte du loyer dans votre prix de vente.
+Ici, vous voyez votre coût total par portion, selon les ingrédients et les autres coûts saisis.
+Saisissez votre PRIX DE VENTE pour voir votre bénéfice par portion et votre marge.
+Fixez la marge minimum que vous acceptez. Tout plat en dessous est mis en évidence sur votre TABLEAU DE BORD, pour repérer les coûts ou prix à revoir.
+Quand vous avez fini de saisir vos chiffres, touchez ENREGISTRER pour garder vos changements.
+Le tableau de bord
+Le tableau de bord réunit toutes vos recettes au même endroit. Ici, vous pouvez trouver et ouvrir n'importe quelle recette pour vérifier ses chiffres, la modifier ou la mettre à jour quand vous voulez.
+Vous voyez les hausses de prix des ingrédients et les recettes dont les coûts ont été mis à jour automatiquement.
+Vous pouvez aussi ouvrir une recette pour mettre à jour vos derniers chiffres de production et voir combien d'articles vous avez produits et vendus chaque mois.
+C'est très utile si vous utilisez SharperPlus Suites, notre système complet de gestion en ligne qui réunit caisse, gestion des stocks, rapports complets et bien plus.
+En savoir plus sur
+Voyons maintenant chaque partie de votre tableau de bord.
+Trouver vos recettes
+Tapez tout ou partie du nom d'un plat dans CHERCHER UNE RECETTE, puis touchez OUVRIR LA RECETTE sur celle que vous voulez voir ou mettre à jour.
+Touchez EFFACER LA RECHERCHE pour revoir toutes vos recettes.
+Pour commencer une nouvelle recette, touchez + AJOUTER UNE RECETTE.
+Une variante d'un plat existant ? Ouvrez d'abord cette recette, revenez au tableau de bord et touchez COPIER LA DERNIÈRE RECETTE OUVERTE. Donnez un nouveau nom à la copie et ajustez les ingrédients ou les quantités. Plus besoin de tout ressaisir !
+Vos chiffres
+Chaque recette montre combien d'unités donne votre fournée, le coût par portion et votre prix de vente.
+Vous voyez aussi votre bénéfice par portion en argent, et votre marge en pourcentage du prix de vente.
+Ces chiffres viennent des coûts que vous avez saisis. Ils vous aident à comparer vos recettes et à voir quels coûts ou prix revoir.
+Votre ALERTE DE MARGE montre la marge minimum fixée pour cette recette. Les couleurs vous aident à repérer ce qui demande votre attention.
+VERT : votre recette est au-dessus de votre marge minimum.
+ORANGE : un prix manque ou a changé. Ouvrez la recette pour vérifier ses chiffres.
+ROUGE : votre prix de vente est à revoir. Vérifiez vos coûts et ajustez le prix de vente si besoin.
+Prix rapide
+Changez votre prix de vente ici et touchez OK, sans ouvrir la recette complète.
+Gérer vos recettes
+Ouvrir ou modifier une recette
+Touchez OUVRIR LA RECETTE pour voir votre recette ou changer ses ingrédients, quantités et coûts.
+Noter ce que vous avez fait
+À chaque fournée, ouvrez la recette et mettez à jour la taille de la fournée et la taille de chaque produit. Ces chiffres suivent combien d'unités votre cuisine produit chaque mois.
+Changer le prix d'un ingrédient
+Changez le prix d'un ingrédient dans une seule recette. SharperPlus utilise automatiquement le nouveau prix pour recalculer chaque recette qui contient cet ingrédient.
+Supprimer une recette
+Touchez SUPPRIMER pour retirer une recette dont vous n'avez plus besoin. Vérifiez que c'est la bonne : la suppression est définitive et ne peut pas être annulée.
+Votre recette est écrite sur papier ?
+SharperPlus vous évite de tout taper !
+Prenez simplement une photo nette de votre recette écrite à la main ou imprimée, ou envoyez une photo déjà enregistrée sur votre téléphone ou votre ordinateur.
+Regardez la magie : SharperPlus transforme votre recette en texte ! Vérifiez les ingrédients et les quantités, corrigez si besoin, puis touchez ENREGISTRER. Votre recette est enregistrée !
+Vous avez SharperPlus Premium ? Vous pouvez aussi envoyer votre méthode de cuisson, prête à partager avec toute votre équipe.
+Saisissez le nom de votre recette.
+Votre nouvelle fiche recette s'ouvre ensuite, prête pour vos ingrédients.
+฿ Baht thaïlandais
+Tapez seulement le nombre.   Exemple : {0}
+Si vous ne facturez pas de taxe, tapez {0}.
+Tapez seulement le nombre.
+Si vous ne payez pas de loyer, laissez vide.
+Tapez le total que vous avez payé.
+Cherchez ce nombre sur votre facture.   Exemple : {0}
+C'est le moins que vous pensez payer pendant un mois calme.
+Si vous n'êtes pas sûr, laissez {0}.
+La taille est écrite sur la bouteille.   Exemple : {0}
+Cherchez ce nombre sur votre facture.
+❓ GUIDE POUR CETTE PAGE
+❓ COMMENT BIEN PRENDRE LA PHOTO
+✎ AIDE AU DÉMARRAGE : RÉPONDEZ À QUELQUES QUESTIONS
+ALLER À LA SECTION
+RÉGLAGES
+OBJECTIF DE PRODUCTION CE MOIS-CI
+PRODUCTION PAR RAPPORT À L'OBJECTIF
+Chaque fournée faite dans une recette s'ajoute aux UNITÉS PRODUITES de ce mois.
+AJOUTER LA PRODUCTION À CE MOIS
+AJOUTER LES VENTES À CE MOIS
+ENVOYER VOTRE CSV DE VENTES
+Pas encore de production. Changez la fournée d'une recette pour commencer.
+✔ NOUS AVONS REFAIT UNE FOURNÉE AUJOURD'HUI
+FOURNÉE AJOUTÉE
+ANNULER
+ANNULÉ
+CE MOIS-CI JUSQU'ICI :
+Chaque fournée s'ajoute aux UNITÉS PRODUITES PAR MOIS dans COÛTS PRINCIPAUX, pour un total courant de tout ce que votre cuisine fait chaque mois.
+Avec le temps, cela devient votre système simple de gestion des stocks, pour gérer à la fois votre stock et vos ventes.
+Remplissez d'abord la fournée, pour que SharperPlus sache combien de portions elle donne.
+OBJECTIF ATTEINT
+ÉCHEC DE L'ENVOI
+Format CSV non reconnu !
+Vérifiez que votre CSV a une colonne article
+(Item name ou Product) et une colonne ventes
+(Items sold, Units ou Qty).
+CHOISIR LE TYPE DE DONNÉES
+SI VOUS VOULEZ L'AJOUTER À UN AUTRE MOIS
+INDIQUEZ-LE CI-DESSOUS
+AUCUNE DONNÉE DE PRODUCTION.
+AUCUNE DONNÉE DE VENTES.
+AJOUTER LA PRODUCTION POUR LE COÛT ÉLECTRICITÉ ET GAZ ?
+AJOUTER LES VENTES POUR LE COÛT ÉLECTRICITÉ ET GAZ ?
+DONNÉES DE PRODUCTION
+DONNÉES DE VENTES
+Pour rouvrir ce guide, touchez GUIDE POUR CETTE PAGE en haut.
+Vous pouvez le revoir à tout moment : touchez GUIDE POUR CETTE PAGE en haut.
+Besoin d'un rappel ? Rouvrez ce guide à tout moment en touchant GUIDE POUR CETTE PAGE en haut.
+Rouvrez ce guide à tout moment en touchant GUIDE POUR CETTE PAGE en haut.
+Vous pouvez le revoir à tout moment : touchez COMMENT BIEN PRENDRE LA PHOTO.
+SOUS L'OBJECTIF DE {0} ({1}%)
+AU-DESSUS DE L'OBJECTIF DE {0} ({1}%)
+OBJECTIF ATTEINT ({0}%)
+CE MOIS-CI JUSQU'ICI : {0}
+Ajouté à la production du jour.
+Retiré de ce mois-ci.
+Total des unités vendues : {0}
+{0} UNITÉS
+{0} UNITÉS DE PRODUCTION AJOUTÉES POUR
+{0} UNITÉS DE VENTE AJOUTÉES POUR
+TOTAL : {0}
+VOUS AVEZ CHOISI LES VENTES EN UNITÉS POUR :
+Mois :

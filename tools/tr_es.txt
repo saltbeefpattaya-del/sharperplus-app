@@ -188,3 +188,178 @@ GAS PREVISTO MENOS FACTURA PAGADA
 ESTA RECETA
 — ENVIADO DESDE SHARPERPLUS
 {0} ingredientes leídos de su foto.
+Le recomendamos hacer esto antes de añadir su primera receta.
+Elija su moneda, la unidad con la que pesa los ingredientes y su porcentaje de IVA.
+SharperPlus usa estos ajustes en cada receta. Así no tiene que repetir los mismos datos y evita errores con el dinero y los pesos.
+Sus precios de venta deben ayudar a pagar el alquiler, no solo los ingredientes. Incluir el alquiler le muestra mejor el costo real de cada plato.
+Introduzca su alquiler mensual, cuántos días trabaja al mes y cuántas horas trabaja al día.
+SharperPlus calcula su alquiler por día, listo para incluir una parte en el costo de sus recetas.
+El tiempo que lleva hacer un plato también cuesta dinero. Si no lo cuenta, un plato puede parecer más barato de lo que es.
+Añada el nombre y el sueldo mensual de cada persona del personal. SharperPlus calcula su costo por día y por hora.
+Al calcular una receta, le recomendamos incluir a todos los que ayudan a prepararla, para que su tiempo cuente.
+Vea cuántas piezas o raciones hace su cocina cada mes.
+Entender sus costos
+SharperPlus reparte los costos mensuales que introduce entre las piezas que hace. Así ve cuánto debe aportar cada pieza a sus facturas.
+Por ejemplo, {0} en facturas repartidos entre {1} piezas son {2} por pieza para esas facturas.
+Fijar un objetivo mensual
+Introduzca cuántas piezas quiere que su cocina haga este mes.
+SharperPlus lo compara con lo que ha hecho. Verá si está por debajo, en o por encima de su objetivo.
+Le recomendamos registrar cada tanda en su ficha de receta. Cada tanda se suma a su total del mes. Así controla sus costos y lo que produce su cocina.
+Su factura de luz paga la cocción, pero también las luces, el aire acondicionado y las neveras. Todo eso cuesta dinero.
+Toque ESCRIBA SU FACTURA AQUÍ e introduzca el importe. Luego elija cuánto se usa para cocinar y cuánto para todo lo demás.
+Así SharperPlus calcula el costo de luz que incluir en sus platos. Le recomendamos mantener sus facturas al día para que las cifras sean reales.
+El gas es otro costo de cocinar. Incluirlo le ayuda a tenerlo en cuenta al fijar sus precios de venta.
+Elija gas en bombona o gas con contador e introduzca lo que paga. Marque los fuegos que usa al cocinar.
+Le recomendamos elegir los fuegos que usa normalmente. Así SharperPlus calcula un costo de gas por minuto que se ajusta a su forma de cocinar.
+Sus meses
+Las facturas cambian a lo largo del año. Le recomendamos añadirlas cada mes para ver cuándo suben sus costos.
+Una cifra en rojo significa que una factura es mayor de lo previsto, para que vea los costos que necesitan atención.
+Tras introducir {0} meses de facturas, puede usar el costo medio mensual. Así un mes muy alto o muy bajo afecta menos a sus costos.
+Aquí se juntan los costos que ha introducido y se ve cuánto suman al día.
+Le ayuda a entender los gastos fijos que sus ventas deben cubrir.
+Le recomendamos añadir todos los costos que pueda para tener una imagen más completa. No tiene que completarlo todo ahora. Empiece con lo que sabe y añada el resto cuando lleguen las facturas.
+Nombre y sueldo mensual
+Escriba el nombre de cada persona del personal y su sueldo mensual, tal como lo paga.
+Sueldo diario y tarifa por hora
+SharperPlus los calcula por usted: el sueldo diario es el sueldo mensual dividido entre sus días de trabajo, y luego la tarifa por hora. Nunca los escribe usted.
+Toque aquí para añadir a la siguiente persona. La ✕ arriba de un nombre quita a alguien que se ha ido.
+Lo que le cuesta todo su equipo al día. En una receta elige quién la prepara, y su tiempo se incluye en el costo del plato.
+Su receta
+Aquí aparece el nombre de la receta en la que está trabajando.
+Para abrir una receta guardada, toque la flecha junto a ELEGIR RECETA y elija de su lista. Para empezar una nueva, toque + AÑADIR RECETA.
+¿Usa SharperPlus Premium? Toque ELABORACIÓN ★ para añadir o ver su elaboración, lista para compartir con su equipo.
+Su producto
+En la lista elija UNIDADES para piezas sueltas, como beigels o pasteles, o GRAMOS para productos al peso.
+Añada primero sus ingredientes. SharperPlus calcula entonces su peso útil total.
+Después, revise el tamaño de la tanda y cuántas raciones da.
+Las cifras en gris se calculan solas. Puede cambiarlas si hace falta para que coincidan con lo que su tanda da de verdad.
+Introduzca el nombre de cada ingrediente, la cantidad en gramos y el precio que paga por kilo.
+Use MERMA % para las pérdidas al pelar o limpiar. SharperPlus calcula el peso útil y ajusta el costo por kilo a esa merma.
+SharperPlus recuerda cada ingrediente y su último precio, que se rellena solo la próxima vez.
+¿Su proveedor cambió el precio? Actualícelo antes de calcular su receta.
+Costos de mano de obra
+Con las flechas elija hasta cuatro personas del personal que ayudan a hacer esta receta.
+Introduzca el tiempo que cada persona dedica a la tanda, en horas y minutos.
+SharperPlus usa su sueldo por hora para calcular el costo total de mano de obra y lo incluye en el costo de cada ración.
+¿Falta alguien en la lista? Añada su nombre y sueldo en PERSONAL del menú principal.
+Costos de luz
+En la lista elija el mes de la factura de luz que quiere usar.
+Introduzca cuánto tarda la tanda en cocinarse con aparatos eléctricos, en horas y minutos.
+SharperPlus usa estos datos para calcular el costo de luz de la tanda y lo incluye en el costo de cada ración.
+Tras introducir {0} meses de facturas, puede elegir en su lugar la media de esos meses.
+Costos de gas
+Introduzca cuánto tarda la tanda en cocinarse con gas, en horas y minutos.
+SharperPlus usa los datos de gas de COSTOS PRINCIPALES para calcular el costo de gas de la tanda y lo incluye en el costo de cada ración.
+Puede añadir o actualizar sus datos de gas en COSTOS PRINCIPALES.
+Si esta receta no usa gas, deje los dos tiempos en {0}.
+Si lo vende en una caja o tarrina, escriba el costo del envase y cuántas unidades caben.
+Costos de alquiler
+Su alquiler diario se toma solo de los datos de COSTOS PRINCIPALES.
+Introduzca un porcentaje en RECARGO % para incluir una parte del alquiler en esta receta.
+SharperPlus calcula esa parte y la suma al costo de cada ración, para tener en cuenta el alquiler al fijar su precio de venta.
+Aquí verá su costo total por ración, según los ingredientes y los demás costos que ha introducido.
+Introduzca su PRECIO DE VENTA para ver su beneficio por ración y su margen.
+Fije el margen mínimo que acepta. Cualquier plato por debajo se resalta en su PANEL, para ver costos o precios que revisar.
+Cuando termine de introducir sus cifras, toque GUARDAR para conservar los cambios.
+El panel
+El panel reúne todas sus recetas en un solo lugar. Desde aquí puede buscar y abrir cualquier receta para revisar sus cifras, cambiarla o actualizarla cuando quiera.
+Verá avisos de subidas de precio de ingredientes y qué recetas han actualizado sus costos solas.
+También puede abrir una receta para actualizar sus últimas cifras de producción y ver cuánto ha producido y vendido cada mes.
+Es muy útil si usa SharperPlus Suites, nuestro sistema completo de gestión en línea que reúne TPV, control de stock, informes completos y mucho más.
+Más información en
+Ahora le mostramos cada parte de su panel.
+Buscar sus recetas
+Escriba todo o parte del nombre de un plato en BUSCAR RECETA y toque ABRIR RECETA en la que quiera ver o actualizar.
+Toque BORRAR BÚSQUEDA para ver de nuevo todas sus recetas.
+Para empezar una receta nueva, toque + AÑADIR RECETA.
+¿Una variante de un plato que ya tiene? Abra primero esa receta, vuelva al panel y toque COPIAR ÚLTIMA RECETA ABIERTA. Ponga un nombre nuevo a la copia y ajuste ingredientes o cantidades. ¡Así no tiene que introducirlo todo otra vez!
+Sus cifras
+Cada receta muestra cuántas unidades da su tanda, el costo por ración y su precio de venta.
+También verá su beneficio por ración en dinero y su margen como porcentaje del precio de venta.
+Estas cifras salen de los costos que ha introducido. Le ayudan a comparar recetas y ver dónde revisar costos o precios.
+Su ALERTA DE MARGEN muestra el margen mínimo fijado para esta receta. Los colores le ayudan a ver lo que necesita atención.
+VERDE: su receta está por encima de su margen mínimo.
+NARANJA: falta un precio o ha cambiado. Abra la receta para revisar sus cifras.
+ROJO: su precio de venta necesita revisión. Revise sus costos y ajuste el precio de venta si hace falta.
+Precio rápido
+Cambie aquí su precio de venta y toque OK, sin abrir toda la receta.
+Gestionar sus recetas
+Abrir o cambiar una receta
+Toque ABRIR RECETA para ver su receta o cambiar ingredientes, cantidades y costos.
+Anotar lo que ha hecho
+Cada vez que haga una tanda, abra la receta y actualice el tamaño de la tanda y de cada producto. Estas cifras muestran cuántas unidades produce su cocina cada mes.
+Cambiar el precio de un ingrediente
+Solo tiene que cambiar el precio de un ingrediente en una receta. SharperPlus usa solo el nuevo precio para recalcular cada receta que lleve ese ingrediente.
+Eliminar una receta
+Toque ELIMINAR para quitar una receta que ya no necesita. Compruebe que es la correcta: eliminar es para siempre y no se puede deshacer.
+¿Tiene su receta escrita en papel?
+¡SharperPlus le ahorra teclearla entera!
+Haga una foto clara de su receta escrita a mano o impresa, o suba una foto que ya tenga en su móvil u ordenador.
+¡Mire la magia: SharperPlus convierte su receta en texto! Revise los ingredientes y cantidades, corrija lo que haga falta y toque GUARDAR. ¡Su receta ya está dentro!
+¿Usa SharperPlus Premium? También puede subir su elaboración, lista para compartir con todo su equipo.
+Introduzca el nombre de su receta.
+Luego se abre su nueva ficha de receta, lista para sus ingredientes.
+฿ Baht tailandés
+Escriba solo el número.   Ejemplo: {0}
+Si no cobra impuestos, escriba {0}.
+Escriba solo el número.
+Si no paga alquiler, déjelo vacío.
+Escriba el total que pagó.
+Busque este número en su factura.   Ejemplo: {0}
+Es lo mínimo que espera pagar en un mes tranquilo.
+Si no está seguro, deje {0}.
+El tamaño viene impreso en la bombona.   Ejemplo: {0}
+Busque este número en su factura.
+❓ GUÍA DE ESTA PÁGINA
+❓ CÓMO HACER UNA BUENA FOTO
+✎ AYUDA INICIAL: CONTESTE UNAS PREGUNTAS
+IR A LA SECCIÓN
+AJUSTES
+OBJETIVO DE PRODUCCIÓN ESTE MES
+PRODUCCIÓN FRENTE AL OBJETIVO
+Cada tanda hecha en una receta se suma a las UNIDADES PRODUCIDAS de este mes.
+AÑADIR PRODUCIDO A ESTE MES
+AÑADIR VENDIDO A ESTE MES
+SUBIR SU CSV DE VENTAS
+Aún no hay producción. Cambie la tanda en una receta para empezar.
+✔ HOY HEMOS HECHO OTRA TANDA
+TANDA AÑADIDA
+DESHACER
+DESHECHO
+ESTE MES HASTA AHORA:
+Cada tanda se suma a las UNIDADES PRODUCIDAS AL MES en COSTOS PRINCIPALES, con un total al día de todo lo que su cocina hace cada mes.
+Con el tiempo, esto será su sistema sencillo de control de stock, para llevar tanto su stock como sus ventas.
+Rellene primero la tanda, para que SharperPlus sepa cuántas raciones da.
+OBJETIVO CUMPLIDO
+NO SE PUDO SUBIR
+¡Formato CSV no reconocido!
+Compruebe que su CSV tiene una columna de artículo
+(Item name o Product) y una columna de vendidos
+(Items sold, Units o Qty).
+ELEGIR TIPO DE DATOS
+SI QUIERE AÑADIRLO A OTRO MES
+ESCRÍBALO ABAJO
+NO HAY DATOS DE PRODUCCIÓN.
+NO HAY DATOS DE VENTAS.
+¿AÑADIR LA PRODUCCIÓN PARA EL COSTO DE LUZ Y GAS?
+¿AÑADIR LAS VENTAS PARA EL COSTO DE LUZ Y GAS?
+DATOS DE PRODUCCIÓN
+DATOS DE VENTAS
+Para volver a abrir esta guía, toque GUÍA DE ESTA PÁGINA arriba.
+Puede verla otra vez cuando quiera: toque GUÍA DE ESTA PÁGINA arriba.
+¿Necesita un recordatorio? Vuelva a abrir esta guía cuando quiera tocando GUÍA DE ESTA PÁGINA arriba.
+Vuelva a abrir esta guía cuando quiera tocando GUÍA DE ESTA PÁGINA arriba.
+Puede verla otra vez cuando quiera: toque CÓMO HACER UNA BUENA FOTO.
+POR DEBAJO DEL OBJETIVO EN {0} ({1}%)
+POR ENCIMA DEL OBJETIVO EN {0} ({1}%)
+OBJETIVO CUMPLIDO ({0}%)
+ESTE MES HASTA AHORA: {0}
+Añadido a la producción de hoy.
+Quitado de este mes.
+Total de unidades vendidas: {0}
+{0} UNIDADES
+{0} UNIDADES DE PRODUCCIÓN AÑADIDAS PARA
+{0} UNIDADES DE VENTA AÑADIDAS PARA
+TOTAL: {0}
+HA ELEGIDO VENTAS EN UNIDADES PARA:
+Mes:

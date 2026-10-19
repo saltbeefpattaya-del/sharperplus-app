@@ -188,3 +188,178 @@ GAS DIRANCANG TOLAK BIL DIBAYAR
 RESIPI INI
 — DIHANTAR DARIPADA SHARPERPLUS
 {0} bahan dibaca daripada gambar anda.
+Kami cadangkan anda buat ini sebelum menambah resipi pertama.
+Pilih mata wang, unit untuk menimbang bahan dan peratus VAT anda.
+SharperPlus guna tetapan ini untuk setiap resipi. Anda tidak perlu memasukkan butiran yang sama lagi, dan ia mengelak kesilapan wang dan berat.
+Harga jualan anda perlu membantu membayar sewa, bukan hanya bahan. Memasukkan sewa membantu anda melihat kos sebenar setiap hidangan.
+Masukkan sewa bulanan, berapa hari anda bekerja sebulan dan berapa jam anda bekerja sehari.
+SharperPlus mengira sewa sehari, sedia untuk memasukkan sebahagiannya dalam kos resipi anda.
+Masa untuk membuat hidangan juga ada kosnya. Jika tidak dikira, hidangan nampak lebih murah daripada sebenarnya.
+Tambah nama dan gaji bulanan setiap kakitangan. SharperPlus mengira kos mereka sehari dan sejam.
+Semasa mengira kos resipi, kami cadangkan anda masukkan semua yang membantu menyediakannya supaya masa mereka dikira.
+Lihat berapa banyak barang atau hidangan yang dapur anda hasilkan setiap bulan.
+Fahami kos anda
+SharperPlus membahagikan kos bulanan yang anda masukkan kepada barang yang anda buat. Ini menunjukkan berapa setiap barang perlu menyumbang untuk bil anda.
+Contohnya, bil {0} dibahagi kepada {1} barang bermaksud {2} setiap barang untuk bil tersebut.
+Tetapkan sasaran bulanan
+Masukkan berapa banyak barang yang anda mahu dapur hasilkan bulan ini.
+SharperPlus membandingkan ini dengan jumlah yang anda buat. Anda boleh lihat sama ada di bawah, tepat atau melebihi sasaran.
+Kami cadangkan anda rekod setiap kelompok dalam helaian resipinya. Setiap kelompok ditambah ke jumlah bulanan anda. Ini membantu anda mengawal kos dan pengeluaran dapur.
+Bil elektrik membayar untuk memasak, dan juga lampu, penghawa dingin dan peti sejuk. Semua ini ada kosnya.
+Ketik TAIP BIL ANDA DI SINI dan masukkan jumlah bil. Kemudian pilih berapa digunakan untuk memasak dan berapa untuk yang lain.
+Ini membantu SharperPlus menganggar kos elektrik untuk hidangan anda. Kami cadangkan anda kemas kini bil supaya angka sama dengan yang anda bayar.
+Gas ialah satu lagi kos memasak. Memasukkannya membantu anda mengambil kira kos itu semasa menetapkan harga jualan.
+Pilih gas tong atau gas bermeter, kemudian masukkan harga yang anda bayar. Tandakan api yang anda guna semasa memasak.
+Kami cadangkan anda pilih api yang biasa anda guna. Ini membantu SharperPlus menganggar kos gas seminit yang sesuai dengan cara anda memasak.
+Bulan anda
+Bil berubah sepanjang tahun. Kami cadangkan anda tambah setiap bulan supaya anda nampak bila kos naik.
+Angka merah bermaksud bil lebih tinggi daripada yang dirancang, membantu anda nampak kos yang perlu diberi perhatian.
+Selepas memasukkan bil {0} bulan, anda boleh guna kos purata bulanan. Ini mengurangkan kesan satu bulan yang luar biasa tinggi atau rendah.
+Ini menghimpunkan kos yang anda masukkan dan menunjukkan jumlahnya sehari.
+Ia membantu anda memahami kos operasi yang perlu ditampung oleh jualan.
+Kami cadangkan anda tambah seberapa banyak kos yang boleh untuk gambaran lebih lengkap. Anda tidak perlu siapkan semuanya sekarang. Mula dengan apa yang anda tahu dan tambah selebihnya apabila bil tiba.
+Nama dan gaji bulanan
+Taip nama setiap kakitangan dan gaji bulanan mereka, seperti yang anda bayar.
+Gaji harian dan kadar sejam
+SharperPlus mengiranya untuk anda: gaji harian ialah gaji bulanan dibahagi hari bekerja, kemudian kadar sejam. Anda tidak perlu menaipnya.
+Ketik di sini untuk menambah orang seterusnya. ✕ di atas nama membuang orang yang sudah berhenti.
+Kos seluruh pasukan anda sehari. Semasa membina resipi, anda pilih siapa yang membuatnya, dan masa mereka dikira dalam kos hidangan.
+Resipi anda
+Nama resipi yang sedang anda kerjakan dipaparkan di sini.
+Untuk membuka resipi yang disimpan, ketik anak panah di sebelah PILIH RESIPI dan pilih daripada senarai. Untuk resipi baharu, ketik + TAMBAH RESIPI.
+Guna SharperPlus Premium? Ketik CARA MEMASAK ★ untuk menambah atau melihat cara memasak, sedia untuk dikongsi dengan pasukan.
+Produk anda
+Dalam senarai, pilih UNIT untuk barang satu-satu seperti beigel atau kek, atau GRAM untuk produk mengikut berat.
+Tambah bahan dahulu. SharperPlus kemudian mengira jumlah berat yang boleh digunakan.
+Seterusnya, semak saiz kelompok dan bilangan hidangan yang dihasilkan.
+Angka kelabu dikira secara automatik. Anda boleh mengubahnya jika perlu supaya sama dengan hasil sebenar kelompok.
+Masukkan nama setiap bahan, kuantiti dalam gram dan harga yang anda bayar sekilo.
+Guna SISA % untuk kehilangan seperti mengupas atau memotong. SharperPlus mengira berat yang boleh digunakan dan melaraskan kos sekilo.
+SharperPlus mengingati setiap bahan dan harga terakhirnya, jadi harga diisi sendiri lain kali.
+Pembekal tukar harga? Kemas kini sahaja sebelum mengira kos resipi.
+Kos buruh
+Guna anak panah untuk memilih sehingga empat kakitangan yang membantu membuat resipi ini.
+Masukkan masa setiap orang menyediakan kelompok, dalam jam dan minit.
+SharperPlus guna gaji sejam mereka untuk mengira jumlah kos buruh dan memasukkannya dalam kos setiap hidangan.
+Ada yang tiada dalam senarai? Tambah nama dan gaji dalam KAKITANGAN di menu utama.
+Kos elektrik
+Dalam senarai, pilih bulan bil elektrik yang mahu digunakan.
+Masukkan berapa lama kelompok dimasak dengan peralatan elektrik, dalam jam dan minit.
+SharperPlus guna butiran ini untuk menganggar kos elektrik kelompok dan memasukkannya dalam kos setiap hidangan.
+Selepas memasukkan bil {0} bulan, anda boleh pilih purata bulan-bulan itu.
+Kos gas
+Masukkan berapa lama kelompok dimasak dengan gas, dalam jam dan minit.
+SharperPlus guna butiran gas dalam KOS INDUK untuk menganggar kos gas kelompok dan memasukkannya dalam kos setiap hidangan.
+Anda boleh tambah atau kemas kini butiran gas dalam KOS INDUK.
+Jika resipi ini tidak guna gas, biarkan kedua-dua masa pada {0}.
+Jika anda menjualnya dalam kotak atau bekas, taip kos pembungkusan dan berapa unit yang muat.
+Kos sewa
+Sewa harian diambil secara automatik daripada butiran dalam KOS INDUK.
+Masukkan peratus dalam TOKOKAN % untuk memasukkan sebahagian sewa dalam resipi ini.
+SharperPlus mengira bahagian ini dan menambahnya ke kos setiap hidangan, membantu anda mengambil kira sewa dalam harga jualan.
+Di sini anda lihat jumlah kos setiap hidangan, berdasarkan bahan dan kos lain yang anda masukkan.
+Masukkan HARGA JUALAN untuk melihat untung setiap hidangan dan margin untung.
+Tetapkan margin untung terendah yang anda terima. Hidangan di bawahnya diserlahkan di PAPAN PEMUKA, membantu anda nampak kos atau harga yang perlu disemak.
+Selepas siap memasukkan angka, ketik SIMPAN untuk menyimpan perubahan.
+Papan pemuka
+Papan pemuka mengumpulkan semua resipi anda di satu tempat. Dari sini anda boleh cari dan buka mana-mana resipi untuk menyemak angka, membuat perubahan atau mengemas kininya bila-bila masa.
+Anda akan nampak makluman kenaikan harga bahan dan resipi mana yang kosnya dikemas kini secara automatik.
+Anda juga boleh buka mana-mana resipi untuk mengemas kini angka pengeluaran terkini dan melihat berapa banyak yang dihasilkan dan dijual setiap bulan.
+Ini sangat berguna jika anda guna SharperPlus Suites, sistem pengurusan perniagaan dalam talian kami yang lengkap dengan POS, kawalan stok, laporan penuh dan banyak lagi.
+Ketahui lebih lanjut di
+Sekarang mari kami tunjukkan setiap bahagian papan pemuka.
+Cari resipi anda
+Taip nama hidangan, penuh atau sebahagian, dalam CARI RESIPI, kemudian ketik BUKA RESIPI pada resipi yang mahu dilihat atau dikemas kini.
+Ketik KOSONGKAN CARIAN untuk menunjukkan semua resipi semula.
+Untuk resipi baharu, ketik + TAMBAH RESIPI.
+Membuat versi lain hidangan sedia ada? Buka resipi itu dahulu, kembali ke papan pemuka dan ketik SALIN RESIPI TERAKHIR DIBUKA. Beri salinan nama baharu dan ubah bahan atau kuantiti. Tidak perlu masukkan semuanya semula!
+Angka anda
+Setiap resipi menunjukkan berapa unit dihasilkan oleh kelompok, kos setiap hidangan dan harga jualan anda.
+Anda juga nampak untung setiap hidangan dalam wang, dan margin untung sebagai peratus harga jualan.
+Angka ini berdasarkan kos yang anda masukkan, membantu anda membandingkan resipi dan nampak kos atau harga yang perlu disemak.
+AMARAN MARGIN menunjukkan margin untung minimum yang anda tetapkan untuk resipi ini. Warna membantu anda nampak apa yang perlu diberi perhatian.
+HIJAU: resipi anda melebihi margin untung minimum.
+OREN: harga tiada atau telah berubah. Buka resipi untuk menyemak angka.
+MERAH: harga jualan perlu disemak. Semak kos dan ubah harga jualan jika perlu.
+Kemas kini harga pantas
+Ubah harga jualan di sini dan ketik OK, tanpa membuka resipi penuh.
+Mengurus resipi anda
+Buka atau edit resipi
+Ketik BUKA RESIPI untuk melihat resipi atau mengubah bahan, kuantiti dan kos.
+Rekod apa yang anda buat
+Setiap kali anda buat satu kelompok, buka resipi dan kemas kini saiz kelompok dan saiz setiap produk. Angka ini membantu menjejak berapa unit dapur hasilkan setiap bulan.
+Ubah harga bahan
+Anda hanya perlu ubah harga bahan dalam satu resipi. SharperPlus guna harga baharu secara automatik untuk mengira semula setiap resipi yang ada bahan itu.
+Padam resipi
+Ketik PADAM untuk membuang resipi yang tidak diperlukan lagi. Pastikan anda pilih yang betul, kerana padam adalah kekal dan tidak boleh dibatalkan.
+Resipi anda ditulis di atas kertas?
+SharperPlus menjimatkan anda daripada menaip semuanya!
+Ambil gambar jelas resipi tulisan tangan atau bercetak, atau muat naik gambar yang sudah ada dalam telefon atau komputer.
+Lihat keajaiban apabila SharperPlus menukar resipi anda kepada teks! Semak bahan dan kuantiti, betulkan jika perlu, kemudian ketik SIMPAN. Resipi anda sudah dimasukkan!
+Guna SharperPlus Premium? Anda juga boleh muat naik cara memasak, sedia untuk dikongsi dengan seluruh pasukan.
+Masukkan nama resipi anda.
+Kemudian helaian resipi baharu akan dibuka, sedia untuk bahan anda.
+฿ Baht Thai
+Taip nombor sahaja.   Contoh: {0}
+Jika anda tidak mengenakan cukai, taip {0}.
+Taip nombor sahaja.
+Jika anda tidak membayar sewa, biarkan kosong.
+Taip jumlah yang anda bayar.
+Cari nombor ini pada bil anda.   Contoh: {0}
+Ini jumlah paling rendah yang anda jangka bayar pada bulan yang lengang.
+Jika tidak pasti, biarkan {0}.
+Saiz dicetak pada tong.   Contoh: {0}
+Cari nombor ini pada bil anda.
+❓ PANDUAN UNTUK HALAMAN INI
+❓ CARA AMBIL GAMBAR YANG BAIK
+✎ PEMBANTU TETAPAN: JAWAB BEBERAPA SOALAN
+PERGI KE BAHAGIAN
+TETAPAN
+SASARAN PENGELUARAN BULAN INI
+PENGELUARAN BERBANDING SASARAN
+Setiap kelompok yang dibuat dalam resipi ditambah ke UNIT DIKELUARKAN bulan ini.
+TAMBAH PENGELUARAN KE BULAN INI
+TAMBAH JUALAN KE BULAN INI
+MUAT NAIK CSV JUALAN
+Belum ada pengeluaran. Ubah kelompok dalam resipi untuk bermula.
+✔ KAMI BUAT SATU LAGI KELOMPOK HARI INI
+KELOMPOK DITAMBAH
+BATAL
+DIBATALKAN
+BULAN INI SETAKAT INI:
+Setiap kelompok yang anda buat ditambah ke UNIT DIKELUARKAN SEBULAN dalam KOS INDUK, memberi jumlah berjalan semua yang dapur hasilkan setiap bulan.
+Lama-kelamaan, ini menjadi sistem kawalan stok mudah anda, membantu anda mengurus stok dan jualan.
+Sila isi kelompok dahulu, supaya SharperPlus tahu berapa hidangan yang dihasilkan.
+CAPAI SASARAN
+MUAT NAIK GAGAL
+Format CSV tidak dikenali!
+Sila pastikan CSV anda ada lajur barang
+(Item name atau Product) dan lajur jualan
+(Items sold, Units atau Qty).
+PILIH JENIS DATA
+JIKA ANDA MAHU TAMBAH KE BULAN LAIN
+SILA MASUKKAN DI BAWAH
+TIADA DATA PENGELUARAN DALAM SISTEM.
+TIADA DATA JUALAN DALAM SISTEM.
+TAMBAH DATA PENGELUARAN UNTUK KOS ELEKTRIK DAN GAS?
+TAMBAH DATA JUALAN UNTUK KOS ELEKTRIK DAN GAS?
+DATA PENGELUARAN
+DATA JUALAN
+Untuk membuka panduan ini semula, ketik PANDUAN UNTUK HALAMAN INI di atas.
+Anda boleh lihat semula bila-bila masa: ketik PANDUAN UNTUK HALAMAN INI di atas.
+Perlu peringatan? Buka panduan ini bila-bila masa dengan mengetik PANDUAN UNTUK HALAMAN INI di atas.
+Buka panduan ini bila-bila masa dengan mengetik PANDUAN UNTUK HALAMAN INI di atas.
+Anda boleh lihat semula bila-bila masa: ketik CARA AMBIL GAMBAR YANG BAIK.
+DI BAWAH SASARAN SEBANYAK {0} ({1}%)
+MELEBIHI SASARAN SEBANYAK {0} ({1}%)
+CAPAI SASARAN ({0}%)
+BULAN INI SETAKAT INI: {0}
+Ditambah ke pengeluaran hari ini.
+Ditolak daripada bulan ini.
+Jumlah unit dijual: {0}
+{0} UNIT
+{0} UNIT PENGELUARAN DITAMBAH UNTUK
+{0} UNIT JUALAN DITAMBAH UNTUK
+JUMLAH: {0}
+ANDA MEMILIH JUALAN UNIT UNTUK:
+Bulan:

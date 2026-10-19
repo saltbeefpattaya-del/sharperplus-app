@@ -188,3 +188,178 @@ GEPLANTES GAS MINUS BEZAHLTE RECHNUNG
 DIESES REZEPT
 — GESENDET MIT SHARPERPLUS
 {0} Zutaten aus Ihrem Foto gelesen.
+Wir empfehlen, dies vor Ihrem ersten Rezept zu erledigen.
+Wählen Sie Ihre Währung, die Einheit zum Wiegen der Zutaten und Ihren Mehrwertsteuersatz.
+SharperPlus nutzt diese Einstellungen für jedes Rezept. So müssen Sie nichts doppelt eingeben und vermeiden Fehler bei Geld und Gewicht.
+Ihre Verkaufspreise müssen auch die Miete mittragen, nicht nur die Zutaten. Mit der Miete sehen Sie die echten Kosten jedes Gerichts besser.
+Geben Sie Ihre Monatsmiete ein, wie viele Tage Sie im Monat arbeiten und wie viele Stunden pro Tag.
+SharperPlus berechnet Ihre Miete pro Tag und kann einen Anteil davon in Ihre Rezeptkosten aufnehmen.
+Die Zeit für ein Gericht kostet auch Geld. Ohne sie wirkt ein Gericht billiger, als es wirklich ist.
+Tragen Sie Namen und Monatslohn jedes Mitarbeiters ein. SharperPlus berechnet die Kosten pro Tag und pro Stunde.
+Wir empfehlen, bei einem Rezept alle einzutragen, die bei der Zubereitung helfen, damit ihre Zeit mitgezählt wird.
+Sehen Sie, wie viele Stück oder Portionen Ihre Küche jeden Monat herstellt.
+Ihre Kosten verstehen
+SharperPlus verteilt Ihre monatlichen Kosten auf die hergestellten Stücke. So sehen Sie, wie viel jedes Stück zu Ihren Rechnungen beitragen muss.
+Beispiel: {0} Rechnungen verteilt auf {1} Stück ergibt {2} pro Stück für diese Rechnungen.
+Ein Monatsziel setzen
+Geben Sie ein, wie viele Stück Ihre Küche diesen Monat herstellen soll.
+SharperPlus vergleicht das mit Ihrer tatsächlichen Menge. Sie sehen, ob Sie unter, auf oder über Ihrem Ziel liegen.
+Wir empfehlen, jede Charge in ihrem Rezeptblatt zu erfassen. Jede Charge wird zu Ihrer Monatssumme addiert. So behalten Sie Ihre Kosten und die Produktion Ihrer Küche im Griff.
+Mit Ihrer Stromrechnung bezahlen Sie das Kochen, aber auch Licht, Klimaanlage und Kühlschränke. All das kostet Geld.
+Tippen Sie auf RECHNUNG HIER EINTRAGEN und geben Sie den Betrag ein. Wählen Sie dann, wie viel fürs Kochen und wie viel für alles andere verbraucht wird.
+So kann SharperPlus die Stromkosten für Ihre Gerichte schätzen. Halten Sie Ihre Rechnungen aktuell, damit die Zahlen stimmen.
+Gas ist ein weiterer Kostenpunkt beim Kochen. Wenn Sie es einbeziehen, berücksichtigen Sie diese Kosten bei Ihren Verkaufspreisen.
+Wählen Sie Gasflasche oder Gas vom Zähler und geben Sie Ihren Preis ein. Haken Sie die Flammen an, mit denen Sie kochen.
+Wir empfehlen, die Flammen zu wählen, die Sie normalerweise nutzen. So schätzt SharperPlus die Gaskosten pro Minute passend zu Ihrer Kochweise.
+Ihre Monate
+Rechnungen ändern sich übers Jahr. Wir empfehlen, sie jeden Monat einzutragen, damit Sie sehen, wann Ihre Kosten steigen.
+Eine rote Zahl bedeutet: Die Rechnung ist höher als geplant. So erkennen Sie Kosten, die Aufmerksamkeit brauchen.
+Nach {0} Monaten Rechnungen können Sie die durchschnittlichen Monatskosten nutzen. Ein ungewöhnlich hoher oder niedriger Monat wirkt sich dann weniger aus.
+Hier werden Ihre eingegebenen Kosten zusammengefasst, und Sie sehen die Summe pro Tag.
+So verstehen Sie die laufenden Kosten, die Ihre Verkäufe decken müssen.
+Wir empfehlen, so viele Kosten wie möglich einzutragen, um ein vollständigeres Bild zu bekommen. Sie müssen nicht alles jetzt ausfüllen. Beginnen Sie mit dem, was Sie wissen, und ergänzen Sie den Rest, wenn die Rechnungen kommen.
+Name und Monatslohn
+Tippen Sie den Namen jedes Mitarbeiters und seinen Monatslohn ein, so wie Sie ihn zahlen.
+Tageslohn und Stundensatz
+SharperPlus berechnet das für Sie: Der Tageslohn ist der Monatslohn geteilt durch Ihre Arbeitstage, daraus folgt der Stundensatz. Sie tippen ihn nie ein.
+Tippen Sie hier, um die nächste Person hinzuzufügen. Das ✕ oben an einem Namen entfernt jemanden, der gegangen ist.
+Was Ihr ganzes Team Sie pro Tag kostet. In einem Rezept wählen Sie, wer es zubereitet, und dessen Zeit wird ins Gericht eingerechnet.
+Ihr Rezept
+Hier steht der Name des Rezepts, an dem Sie gerade arbeiten.
+Um ein gespeichertes Rezept zu öffnen, tippen Sie auf den Pfeil neben REZEPT WÄHLEN und wählen aus Ihrer Liste. Für ein neues Rezept tippen Sie auf + REZEPT HINZUFÜGEN.
+Sie haben SharperPlus Premium? Tippen Sie auf ZUBEREITUNG ★, um Ihre Kochanleitung hinzuzufügen oder anzusehen, bereit zum Teilen mit Ihrem Team.
+Ihr Produkt
+Wählen Sie in der Liste EINHEITEN für Einzelstücke wie Bagels oder Kuchen, oder GRAMM für Produkte nach Gewicht.
+Tragen Sie zuerst Ihre Zutaten ein. SharperPlus berechnet dann deren nutzbares Gesamtgewicht.
+Prüfen Sie danach Ihre Chargengröße und die Zahl der Portionen.
+Graue Zahlen werden automatisch berechnet. Sie können sie bei Bedarf ändern, damit sie zu Ihrer tatsächlichen Charge passen.
+Tragen Sie den Namen jeder Zutat ein, die Menge in Gramm und Ihren Preis pro Kilo.
+Mit ABFALL % rechnen Sie Verluste wie Schälen oder Putzen ein. SharperPlus berechnet das nutzbare Gewicht und passt die Kosten pro Kilo an.
+SharperPlus merkt sich jede Zutat und ihren letzten Preis, der beim nächsten Mal von selbst erscheint.
+Ihr Lieferant hat den Preis geändert? Aktualisieren Sie ihn einfach, bevor Sie Ihr Rezept berechnen.
+Arbeitskosten
+Wählen Sie mit den Pfeilen bis zu vier Mitarbeiter, die bei diesem Rezept helfen.
+Tragen Sie die Zeit ein, die jede Person für die Charge braucht, in Stunden und Minuten.
+SharperPlus berechnet mit ihren Stundenlöhnen die gesamten Arbeitskosten und rechnet sie in die Kosten jeder Portion ein.
+Fehlt jemand in der Liste? Tragen Sie Name und Lohn unter PERSONAL im Hauptmenü ein.
+Stromkosten
+Wählen Sie in der Liste den Monat der Stromrechnung, die Sie nutzen möchten.
+Tragen Sie ein, wie lange Ihre Charge mit Elektrogeräten gart, in Stunden und Minuten.
+SharperPlus schätzt damit die Stromkosten der Charge und rechnet sie in die Kosten jeder Portion ein.
+Nach {0} Monaten Rechnungen können Sie stattdessen den Durchschnitt dieser Monate wählen.
+Gaskosten
+Tragen Sie ein, wie lange Ihre Charge mit Gas gart, in Stunden und Minuten.
+SharperPlus nutzt die Gasangaben aus STAMMKOSTEN, schätzt die Gaskosten der Charge und rechnet sie in die Kosten jeder Portion ein.
+Ihre Gasangaben können Sie in STAMMKOSTEN hinzufügen oder ändern.
+Wenn dieses Rezept kein Gas braucht, lassen Sie beide Zeitfelder auf {0}.
+Wenn Sie es in einer Box oder einem Becher verkaufen, tragen Sie die Verpackungskosten ein und wie viele Stück hineinpassen.
+Mietkosten
+Ihre Tagesmiete wird automatisch aus den Angaben in STAMMKOSTEN übernommen.
+Tragen Sie bei AUFSCHLAG % einen Prozentsatz ein, um einen Mietanteil in dieses Rezept aufzunehmen.
+SharperPlus berechnet den Anteil und addiert ihn zu den Kosten jeder Portion, damit die Miete in Ihren Verkaufspreis einfließt.
+Hier sehen Sie Ihre Gesamtkosten pro Portion, aus den Zutaten und den anderen eingetragenen Kosten.
+Tragen Sie Ihren VERKAUFSPREIS ein, um Gewinn pro Portion und Marge zu sehen.
+Legen Sie die niedrigste Marge fest, die Sie akzeptieren. Jedes Gericht darunter wird in Ihrer ÜBERSICHT markiert, damit Sie Kosten oder Preise erkennen, die geprüft werden müssen.
+Wenn Sie mit Ihren Zahlen fertig sind, tippen Sie auf SPEICHERN, um die Änderungen zu sichern.
+Die Übersicht
+Die Übersicht zeigt alle Ihre Rezepte an einem Ort. Hier finden und öffnen Sie jedes Rezept, um Zahlen zu prüfen, etwas zu ändern oder es jederzeit zu aktualisieren.
+Sie sehen Hinweise auf gestiegene Zutatenpreise und welche Rezeptkosten automatisch aktualisiert wurden.
+Sie können auch jedes Rezept öffnen, um Ihre neuesten Produktionszahlen einzutragen und zu sehen, wie viel Sie jeden Monat hergestellt und verkauft haben.
+Das ist besonders nützlich, wenn Sie SharperPlus Suites nutzen, unser komplettes Online-System für Ihr Geschäft mit Kasse, Lagerverwaltung, vollständigen Berichten und vielem mehr.
+Mehr erfahren unter
+Jetzt zeigen wir Ihnen jeden Teil Ihrer Übersicht.
+Ihre Rezepte finden
+Tippen Sie den ganzen Namen eines Gerichts oder einen Teil in REZEPT SUCHEN ein und tippen Sie dann bei dem gewünschten Rezept auf REZEPT ÖFFNEN.
+Tippen Sie auf SUCHE LÖSCHEN, um wieder alle Rezepte zu sehen.
+Für ein neues Rezept tippen Sie auf + REZEPT HINZUFÜGEN.
+Eine Variante eines bestehenden Gerichts? Öffnen Sie zuerst dieses Rezept, gehen Sie zurück zur Übersicht und tippen Sie auf ZULETZT GEÖFFNETES REZEPT KOPIEREN. Geben Sie der Kopie einen neuen Namen und passen Sie Zutaten oder Mengen an. So müssen Sie nicht alles neu eingeben!
+Ihre Zahlen
+Jedes Rezept zeigt, wie viele Stück Ihre Charge ergibt, die Kosten pro Portion und Ihren Verkaufspreis.
+Sie sehen auch Ihren Gewinn pro Portion als Geldbetrag und Ihre Marge als Prozent vom Verkaufspreis.
+Diese Zahlen beruhen auf Ihren eingetragenen Kosten. Sie helfen beim Vergleichen und zeigen, wo Kosten oder Verkaufspreise geprüft werden müssen.
+Ihr MARGEN-ALARM zeigt die Mindestmarge für dieses Rezept. Die Farben zeigen Ihnen, was Aufmerksamkeit braucht.
+GRÜN: Ihr Rezept liegt über Ihrer Mindestmarge.
+ORANGE: Ein Preis fehlt oder hat sich geändert. Öffnen Sie das Rezept und prüfen Sie die Zahlen.
+ROT: Ihr Verkaufspreis muss geprüft werden. Prüfen Sie Ihre Kosten und passen Sie den Verkaufspreis bei Bedarf an.
+Schnelle Preisänderung
+Ändern Sie hier Ihren Verkaufspreis und tippen Sie auf OK, ohne das ganze Rezept zu öffnen.
+Ihre Rezepte verwalten
+Ein Rezept öffnen oder ändern
+Tippen Sie auf REZEPT ÖFFNEN, um Ihr Rezept anzusehen oder Zutaten, Mengen und Kosten zu ändern.
+Festhalten, was Sie gemacht haben
+Öffnen Sie bei jeder Charge das Rezept und tragen Sie Chargengröße und Größe jedes Produkts ein. Diese Zahlen zeigen, wie viele Stück Ihre Küche jeden Monat herstellt.
+Einen Zutatenpreis ändern
+Sie ändern den Preis einer Zutat nur in einem Rezept. SharperPlus nutzt den neuen Preis automatisch und berechnet jedes Rezept mit dieser Zutat neu.
+Ein Rezept löschen
+Tippen Sie auf LÖSCHEN, um ein Rezept zu entfernen, das Sie nicht mehr brauchen. Prüfen Sie, dass es das richtige ist: Löschen ist endgültig und kann nicht rückgängig gemacht werden.
+Ihr Rezept steht auf Papier?
+SharperPlus erspart Ihnen das Abtippen!
+Machen Sie einfach ein scharfes Foto Ihres handgeschriebenen oder gedruckten Rezepts, oder laden Sie ein Foto hoch, das schon auf Ihrem Handy oder Computer ist.
+Sehen Sie zu, wie SharperPlus Ihr Rezept in Text verwandelt! Prüfen Sie Zutaten und Mengen, korrigieren Sie bei Bedarf und tippen Sie auf SPEICHERN. Schon ist Ihr Rezept drin!
+Sie haben SharperPlus Premium? Dann können Sie auch Ihre Kochanleitung hochladen, bereit zum Teilen mit Ihrem ganzen Team.
+Geben Sie den Namen Ihres Rezepts ein.
+Danach öffnet sich Ihr neues Rezeptblatt, bereit für Ihre Zutaten.
+฿ Thailändischer Baht
+Tippen Sie nur die Zahl ein.   Beispiel: {0}
+Wenn Sie keine Steuer berechnen, tippen Sie {0}.
+Tippen Sie nur die Zahl ein.
+Wenn Sie keine Miete zahlen, lassen Sie es leer.
+Tippen Sie den Gesamtbetrag ein, den Sie gezahlt haben.
+Diese Zahl steht auf Ihrer Rechnung.   Beispiel: {0}
+Das ist das Wenigste, das Sie in einem ruhigen Monat erwarten.
+Wenn Sie unsicher sind, lassen Sie {0} stehen.
+Die Größe steht auf der Flasche.   Beispiel: {0}
+Diese Zahl steht auf Ihrer Rechnung.
+❓ ANLEITUNG FÜR DIESE SEITE
+❓ SO GELINGT DAS FOTO
+✎ EINRICHTUNGSHILFE: EIN PAAR FRAGEN BEANTWORTEN
+ZUM ABSCHNITT
+EINSTELLUNGEN
+PRODUKTIONSZIEL DIESEN MONAT
+PRODUKTION IM VERGLEICH ZUM ZIEL
+Jede Charge aus einem Rezept wird zu PRODUZIERTE STÜCK dieses Monats addiert.
+PRODUKTION ZU DIESEM MONAT
+VERKÄUFE ZU DIESEM MONAT
+VERKAUFS-CSV HOCHLADEN
+Noch keine Produktion. Ändern Sie die Charge in einem Rezept, um zu beginnen.
+✔ WIR HABEN HEUTE NOCH EINE CHARGE GEMACHT
+CHARGE HINZUGEFÜGT
+RÜCKGÄNGIG
+RÜCKGÄNGIG GEMACHT
+DIESEN MONAT BISHER:
+Jede Charge wird zu PRODUZIERTE STÜCK PRO MONAT in STAMMKOSTEN addiert und ergibt eine laufende Summe von allem, was Ihre Küche jeden Monat herstellt.
+Mit der Zeit wird daraus Ihre einfache Lagerverwaltung, mit der Sie Bestand und Verkäufe steuern.
+Bitte füllen Sie zuerst die Charge aus, damit SharperPlus weiß, wie viele Portionen sie ergibt.
+ZIEL ERREICHT
+HOCHLADEN FEHLGESCHLAGEN
+CSV-Format nicht erkannt!
+Bitte prüfen Sie, dass Ihre CSV eine Artikelspalte
+(Item name oder Product) und eine Verkaufsspalte hat
+(Items sold, Units oder Qty).
+DATENART WÄHLEN
+WENN SIE DAS EINEM ANDEREN MONAT ZUORDNEN MÖCHTEN
+BITTE UNTEN EINTRAGEN
+KEINE PRODUKTIONSDATEN IM SYSTEM.
+KEINE VERKAUFSDATEN IM SYSTEM.
+PRODUKTIONSDATEN FÜR STROM- UND GASKOSTEN HINZUFÜGEN?
+VERKAUFSDATEN FÜR STROM- UND GASKOSTEN HINZUFÜGEN?
+PRODUKTIONSDATEN
+VERKAUFSDATEN
+Um diese Anleitung erneut zu öffnen, tippen Sie oben auf ANLEITUNG FÜR DIESE SEITE.
+Sie können sie jederzeit erneut ansehen: Tippen Sie oben auf ANLEITUNG FÜR DIESE SEITE.
+Brauchen Sie eine Erinnerung? Öffnen Sie diese Anleitung jederzeit über ANLEITUNG FÜR DIESE SEITE oben.
+Öffnen Sie diese Anleitung jederzeit über ANLEITUNG FÜR DIESE SEITE oben.
+Sie können sie jederzeit erneut ansehen: Tippen Sie auf SO GELINGT DAS FOTO.
+UNTER DEM ZIEL UM {0} ({1}%)
+ÜBER DEM ZIEL UM {0} ({1}%)
+ZIEL ERREICHT ({0}%)
+DIESEN MONAT BISHER: {0}
+Zur heutigen Produktion addiert.
+Von diesem Monat abgezogen.
+Verkaufte Stück gesamt: {0}
+{0} STÜCK
+{0} PRODUZIERTE STÜCK HINZUGEFÜGT FÜR
+{0} VERKAUFTE STÜCK HINZUGEFÜGT FÜR
+GESAMT: {0}
+SIE HABEN VERKAUFTE STÜCK GEWÄHLT FÜR:
+Monat:

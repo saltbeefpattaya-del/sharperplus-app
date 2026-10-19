@@ -131,9 +131,9 @@
       var log = data.production_log || [];
       for (var i = log.length - 1; i >= 0; i--) if (log[i][1] === name && num(log[i][2]) === qty) { log.splice(i, 1); break; }
       s.units_produced = String(Math.max(0, num(s.units_produced) - qty)); save();
-      notice('UNDONE', [qty + ' ' + name.toUpperCase() + ' taken off this month.']);
+      notice('UNDONE', [qty + ' ' + name.toUpperCase(), 'Taken off this month.']);
     }
-    var lines = [qty + ' ' + name.toUpperCase() + ' added to today\u2019s production.', '',
+    var lines = [qty + ' ' + name.toUpperCase(), 'Added to today\u2019s production.', '',
       'THIS MONTH SO FAR:  ' + SP.whole(total)];
     var go = s.hide_production_notice
       ? notice('BATCH ADDED', lines, ['OK', 'UNDO']).then(function (a) { if (a === 1) { undo(); return 'undone'; } })
@@ -443,7 +443,7 @@
           var total = salesCsvUnits(csvRows(String(rd.result || '').replace(/^\ufeff/, '')));
           if (total == null) { notice('UPLOAD FAILED', ['CSV format not recognised!', '', 'Please make sure your CSV has an item column', '(Item name or Product) and a sold column', '(Items sold, Units or Qty).']); return; }
           var d = new Date(), def = SP.monthLabel(d.getFullYear(), d.getMonth() + 1).toUpperCase();
-          ask('SELECT DATA TYPE', ['YOU HAVE SELECTED UNIT SALES, FOR ' + def + '.', 'IF YOU WISH TO ADD THIS TO A DIFFERENT MONTH', 'PLEASE ADD BELOW'], 'MMM-YYYY', def).then(function (text) {
+          ask('SELECT DATA TYPE', ['YOU HAVE SELECTED UNIT SALES FOR:', def, 'IF YOU WISH TO ADD THIS TO A DIFFERENT MONTH', 'PLEASE ADD BELOW'], 'MMM-YYYY', def).then(function (text) {
             if (!text) { notice('CANCELLED', ['Sales upload cancelled.']); return; }
             var when = SP.parseMonth(text);
             if (!when) { notice('FORMAT ERROR', ['Could not recognise that month.', 'Please use MMM-YYYY (e.g. FEB-2026)']); return; }
@@ -452,7 +452,7 @@
             s.units_sold = units2; save();
             setView('SALES');
             refreshers.master();
-            notice('UPLOAD COMPLETE', ['Sales CSV Uploaded!', '', 'Total Units Sold: ' + SP.whole(total), 'Month: ' + SP.monthLabel(when[0], when[1])]);
+            notice('UPLOAD COMPLETE', ['Sales CSV Uploaded!', '', 'Total Units Sold: ' + SP.whole(total), 'Month:', SP.monthLabel(when[0], when[1])]);
           });
         };
         rd.readAsText(f);
