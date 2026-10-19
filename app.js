@@ -834,9 +834,8 @@
     }, function () { return recipeNow().made_by || 'UNITS'; }, function (v) { recipeNow().made_by = v; });
     prod.appendChild(el('div', 'note', 'WE RECOMMEND YOU ADD YOUR INGREDIENTS FIRST, SO YOU CAN GET YOUR BATCH SIZE'));
     outRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', 'weight');
-    inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
-    var sizeIn = inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
-    var sizeOut = outRow(prod, 'PRODUCT SIZE (EACH UNIT)', 'eachsize');   // units: total weight \u00f7 batch
+    var batchIn = inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
+    inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
     outRow(prod, 'TOTAL PRODUCTS', 'products');
     outRow(prod, 'COST PER PORTION INGREDIENTS', 'portion');
 
@@ -1163,9 +1162,8 @@
       put('portion', m(out.portion));
       var usable = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
       put('weight', SP.US ? SP.commas(usable, 2) + ' oz' : SP.commas(Math.round(usable), 0) + ' g');
-      var units = (r.made_by || 'UNITS') === 'UNITS', each = num(r.batch_size) ? usable / num(r.batch_size) : 0;
-      sizeIn.hidden = units; sizeOut.hidden = !units;
-      put('eachsize', each ? SP.commas(each, 2) + (SP.US ? ' oz' : ' g') : '');
+      var units = (r.made_by || 'UNITS') === 'UNITS';
+      batchIn.querySelector('input').placeholder = units && usable ? String(Math.round(usable * 100) / 100) : '';
       ingOuts.forEach(function (o, i) {
         var row = r.rows[i] || [];
         var any = row.some(function (c) { return String(c || '').trim(); });

@@ -111,9 +111,11 @@
     madeBy = String(madeBy || 'GRAMS').trim().toUpperCase();
     if (madeBy === 'LB') { batch = batch * 16; madeBy = 'GRAMS'; }
     var products;
-    if (madeBy !== 'GRAMS') products = batch;
+    // whole portions only: 30.4 -> 30, 30.6 -> 31 (a little left over is spread over the portions)
+    if (madeBy !== 'GRAMS') products = size > 0 ? batch / size : batch;
     else if (size === 0) products = batch / (E.US ? 4 : 100);
     else products = batch / size;
+    products = Math.round(products + 1e-9);
     var portion = products === 0 ? 0 : sub / products;
     return [sub, vat, total, products, portion];
   }
@@ -258,7 +260,10 @@
     });
     out.lines = lines.map(function (l) { return costRow(l[0], l[1], l[2]); });
     var vatPercent = num(settings.vat_percent);
-    var cr = costRecipe(lines, num(recipe.batch_size), num(recipe.product_size), vatPercent,
+    var batch = num(recipe.batch_size);
+    if (!batch && String(recipe.made_by || 'UNITS').toUpperCase() === 'UNITS')    // empty: the total usable weight
+      batch = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
+    var cr = costRecipe(lines, batch, num(recipe.product_size), vatPercent,
                         recipe.made_by || 'UNITS');
     var sub = cr[0], vat = cr[1], total = cr[2], products = cr[3], portion = cr[4];
     var used = (recipe.consumables || []).map(function (line) {
