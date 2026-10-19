@@ -833,7 +833,8 @@
       return SP.US ? [['UNITS', 'UNITS'], ['GRAMS', 'OZ'], ['LB', 'LB']] : [['UNITS', 'UNITS'], ['GRAMS', 'GRAMS']];
     }, function () { return recipeNow().made_by || 'UNITS'; }, function (v) { recipeNow().made_by = v; });
     prod.appendChild(el('div', 'note', 'WE RECOMMEND YOU ADD YOUR INGREDIENTS FIRST, SO YOU CAN GET YOUR BATCH SIZE'));
-    outRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', 'weight');
+    var weightIn = inRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', function () { return recipeNow().total_weight || ''; },
+                         function (v) { recipeNow().total_weight = v; });
     var batchIn = inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
     inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
     var totIn = inRow(prod, 'TOTAL PRODUCTS', function () { return recipeNow().total_products || ''; },
@@ -1165,11 +1166,14 @@
         if (!ti.value && ti.placeholder) { ti.value = ti.placeholder; recipeNow().total_products = ti.value; save(); ti.select(); }
       };
       put('portion', m(out.portion));
-      var usable = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
-      put('weight', SP.US ? SP.commas(usable, 2) + ' oz' : SP.commas(Math.round(usable), 0) + ' g');
-      var units = (r.made_by || 'UNITS') === 'UNITS';
+      var wi = weightIn.querySelector('input');          // grey = ingredients added up; type to change it
+      wi.placeholder = out.weight_worked ? String(Math.round(out.weight_worked * 100) / 100) : '';
+      wi.onfocus = function () {
+        if (!wi.value && wi.placeholder) { wi.value = wi.placeholder; recipeNow().total_weight = wi.value; save(); wi.select(); }
+      };
+      var usable = out.weight;
       var bi = batchIn.querySelector('input');
-      bi.placeholder = units && usable ? String(Math.round(usable * 100) / 100) : '';
+      bi.placeholder = usable ? String(Math.round(usable * 100) / 100) : '';
       bi.onfocus = function () {          // tap the grey weight: it becomes a number you can change
         if (!bi.value && bi.placeholder) { bi.value = bi.placeholder; recipeNow().batch_size = bi.value; save(); calc(); bi.select(); }
       };

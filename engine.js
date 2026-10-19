@@ -260,9 +260,10 @@
     });
     out.lines = lines.map(function (l) { return costRow(l[0], l[1], l[2]); });
     var vatPercent = num(settings.vat_percent);
+    out.weight_worked = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);   // ingredients added up
+    out.weight = num(recipe.total_weight) > 0 ? num(recipe.total_weight) : out.weight_worked;   // or typed by hand
     var batch = num(recipe.batch_size);
-    if (!batch && String(recipe.made_by || 'UNITS').toUpperCase() === 'UNITS')    // empty: the total usable weight
-      batch = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
+    if (!batch) batch = out.weight;                   // empty batch: the total weight
     var cr = costRecipe(lines, batch, num(recipe.product_size), vatPercent,
                         recipe.made_by || 'UNITS');
     var sub = cr[0], vat = cr[1], total = cr[2], products = cr[3], portion = cr[4];
