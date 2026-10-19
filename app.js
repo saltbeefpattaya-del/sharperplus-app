@@ -81,12 +81,9 @@
     if (!find()) { months(s).push([SP.monthLabel(y, m), '', '', '', '']); s.gas_history.push(''); s.gas_units_history.push(''); sortMonthLines(s); }
     return find() || null;
   }
-  function logProduction(name, qty) { // one line per recipe per day; returns this month's total
+  function logProduction(name, qty) { // every batch made is added (a second batch the same day adds on top)
     var log = data.production_log = data.production_log || [];
-    var day = isoDay(), month = prodMonth(), hit = null;
-    log.forEach(function (l) { if (l[0] === day && String(l[1]).trim().toLowerCase() === name.trim().toLowerCase()) hit = l; });
-    if (hit) hit[2] = String(qty); else log.push([day, name, String(qty), month]);
-    return log.filter(function (l) { return l[3] === month; }).reduce(function (a, l) { return a + num(l[2]); }, 0);
+    log.push([isoDay(), name, String(qty), prodMonth()]);
   }
   function productionMonths() {       // {'2026-10': {recipe: qty}} from the log
     var out = {};
@@ -116,27 +113,39 @@
     if (changed) save();
   }
   var productsSeen = null;
-  function productionMade(r) {        // TOTAL PRODUCTS on a recipe was changed by the chef: log it for today
+  function productionMade(r) {        // the chef changed the batch on a recipe: that batch is made today
+    var qty = Math.floor(SP.costEverything(r, data.settings).products + 1e-9);
+    if (qty === productsSeen) return;
+    productsSeen = qty;
+    addBatch(r);
+  }
+  function addBatch(r) {              // one batch of this recipe made today; whole portions (grams / portion size)
     monthRollover();
     var s = data.settings, name = String(r.recipe_name || '').trim();
     var qty = Math.floor(SP.costEverything(r, s).products + 1e-9);
-    if (qty === productsSeen) return;
-    productsSeen = qty;
-    var day = isoDay(), logged = null;
-    (data.production_log || []).forEach(function (l) { if (l[0] === day && String(l[1]).trim().toLowerCase() === name.toLowerCase()) logged = num(l[2]); });
-    if (!name || qty <= 0 || qty === logged) return;
-    var month = prodMonth();
-    var before = (data.production_log || []).filter(function (l) { return l[3] === month; }).reduce(function (a, l) { return a + num(l[2]); }, 0);
-    var after = logProduction(name, qty);
-    var total = Math.floor(num(s.units_produced) + after - before + 1e-9);
+    if (!name || qty <= 0) { notice('NOTICE', ['Please fill in the batch first, so SharperPlus knows how many portions it makes.']); return; }
+    logProduction(name, qty);
+    var total = Math.floor(num(s.units_produced) + qty + 1e-9);
     s.units_produced = String(total); save();
-    var go = s.hide_production_notice ? Promise.resolve(0) : notice('NOTICE', [
-      'This quantity has been added to MONTHLY UNITS PRODUCED in Master Costings.', '',
-      'This gives you a running total of all recipes produced within a month, across all your recipe sheets.', '',
-      'Over time, this becomes your simple stock control system, allowing you to manage both your stock and sales levels.'],
-      ['OK', 'DON\'T SHOW THIS MESSAGE AGAIN']).then(function (a) { if (a === 1) { s.hide_production_notice = 'HIDE'; save(); } });
-    go.then(function () {
-      if (total - num(s.units_sold) < 0)
+    function undo() {
+      var log = data.production_log || [];
+      for (var i = log.length - 1; i >= 0; i--) if (log[i][1] === name && num(log[i][2]) === qty) { log.splice(i, 1); break; }
+      s.units_produced = String(Math.max(0, num(s.units_produced) - qty)); save();
+      notice('UNDONE', [qty + ' ' + name.toUpperCase() + ' taken off this month.']);
+    }
+    var lines = [qty + ' ' + name.toUpperCase() + ' added to today\u2019s production.', '',
+      'THIS MONTH SO FAR:  ' + SP.whole(total)];
+    var go = s.hide_production_notice
+      ? notice('BATCH ADDED', lines, ['OK', 'UNDO']).then(function (a) { if (a === 1) { undo(); return 'undone'; } })
+      : notice('BATCH ADDED', lines.concat(['',
+          'Every batch you make is added to MONTHLY UNITS PRODUCED in Master Costings, giving you a running total of everything your kitchen makes each month.', '',
+          'Over time, this becomes your simple stock control system, allowing you to manage both your stock and sales levels.']),
+          ['OK', 'UNDO', 'DON\'T SHOW THIS MESSAGE AGAIN']).then(function (a) {
+            if (a === 1) { undo(); return 'undone'; }
+            if (a === 2) { s.hide_production_notice = 'HIDE'; save(); }
+          });
+    go.then(function (x) {
+      if (x !== 'undone' && num(s.units_produced) - num(s.units_sold) < 0)
         notice('STOCK ALERT', ['SALES HAVE OUTPERFORMED', 'PRODUCTION LEVELS', '', 'PLEASE CHECK YOUR', 'STOCK INVENTORY']);
     });
   }
@@ -394,7 +403,10 @@
     field(units, 'MONTHLY UNITS SOLD', function () { return s.units_sold; },
           function (v) { s.units_sold = v; });
     out(units, 'TOTAL STOCK HOLDING AFTER MONTHLY SALES', 'stock');
-    units.appendChild(el('div', 'note', 'Every time you change the batch on a recipe, it is added to UNITS PRODUCED for this month.'));
+    field(units, 'PRODUCTION TARGET THIS MONTH', function () { return (s.prod_targets || {})[prodMonth()] || ''; },
+          function (v) { s.prod_targets = s.prod_targets || {}; s.prod_targets[prodMonth()] = v; });
+    out(units, 'PRODUCTION AGAINST TARGET', 'perf', true);
+    units.appendChild(el('div', 'note', 'Every batch made on a recipe is added to UNITS PRODUCED for this month.'));
     buttons(units, [['ADD PRODUCED TO THIS MONTH', function () { unitsToMonth('produced'); }],
                     ['ADD SOLD TO THIS MONTH', function () { unitsToMonth('sold'); }]]);
     buttons(units, [['UPLOAD YOUR SALES CSV', uploadCsv], ['VIEW PRODUCTION HISTORY', viewProduction]]);
@@ -730,6 +742,13 @@
       setOut('rent_dish', s.rent_method === 'NONE' ? 'NOT USED' : SP.money(r.rent));
       var stock = num(s.units_produced) - num(s.units_sold);
       setOut('stock', SP.whole(stock), stock < 0);
+      var target = num((s.prod_targets || {})[prodMonth()]), made = num(s.units_produced);
+      if (outs.perf) {
+        outs.perf.classList.remove('pos');
+        if (!target) setOut('perf', '');
+        else if (made < target) setOut('perf', 'UNDER PERFORMED BY ' + SP.whole(target - made) + ' (' + Math.round(made / target * 100) + '%)', true);
+        else { setOut('perf', (made > target ? 'OVER PERFORMED BY ' + SP.whole(made - target) : 'ON TARGET') + ' (' + Math.round(made / target * 100) + '%)'); outs.perf.classList.add('pos'); }
+      }
       setOut('elec_bill_left', SP.money(bill));
       outs.elec_planned.textContent = num(c.elec_planned) ? '' : 'Empty = baseline + buffer: ' + SP.money(autoPlan);
       setOut('elec_cooking', SP.money(cooking));
@@ -1103,6 +1122,9 @@
       var inp = row.querySelector('input'); if (inp) inp.addEventListener('change', function () { productionMade(recipeNow()); });
     });
     var madeSel = prod.querySelector('select'); if (madeSel) madeSel.addEventListener('change', function () { productionMade(recipeNow()); });
+    var again = el('button', 'jump', '\u2714  WE MADE ANOTHER BATCH TODAY');
+    again.onclick = function () { save(); addBatch(recipeNow()); };
+    prod.appendChild(again);
     outRow(prod, 'COST PER PORTION INGREDIENTS', 'portion');
 
     // ---- ingredients
@@ -2204,7 +2226,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
