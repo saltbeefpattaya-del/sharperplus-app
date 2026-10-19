@@ -2068,7 +2068,9 @@
       'Tap CLEAR SEARCH to show all your recipes again.',
       'To start a new recipe, tap + ADD RECIPE.',
       'Making a variation of an existing dish? Open that recipe first, return to the dashboard and tap COPY LAST OPENED RECIPE. Give the copy a new name and adjust its ingredients or quantities. This saves you entering everything again!']],
-    ['.dash .dashgrid', 'YOUR FIGURES', 'Every recipe shows its cost per portion, selling price and profit, so you can see at a glance which dishes earn their place.'],
+    ['.dash .dashgrid', 'YOUR FIGURES', ['Each recipe shows how many units your batch makes, the cost per portion and your selling price.',
+      'You\u2019ll also see your profit per portion as a money amount and your profit margin as a percentage of the selling price.',
+      'These figures are based on the costs you\u2019ve entered, helping you compare recipes and see where costs or selling prices need reviewing.']],
     ['.dash .status', 'ALERTS', 'Green means the dish is above your lowest margin. Orange means a price is missing or has changed. Red means the selling price needs amending.'],
     ['.dash .quick', 'QUICK PRICE UPDATE', 'Change your selling price here and tap SET, without opening the full recipe.'],
     ['.dash .btnrow', 'OPEN OR DELETE', 'OPEN RECIPE takes you to the full recipe sheet. DELETE removes the recipe for good.']
