@@ -1244,7 +1244,7 @@
           if (!data.recipes.length) data.recipes.push(SP.blankRecipe());
           if (data.current >= data.recipes.length || data.current === i) data.current = 0;
           else if (data.current > i) data.current--;
-          save(); refreshers.dashboard();
+          save(); redrawOpen();
         });
     });
   }
@@ -1255,7 +1255,7 @@
     if (out.price) lines.push('Selling price:  ' + SP.money(out.price), 'Profit margin:  ' + (out.margin * 100).toFixed(2) + '%');
     lines.push('', 'Keep this selling price?', '', 'YES  =  keep it', 'NO   =  type a new price in QUICK UPDATED PRICE');
     notice('CONFIRM SELLING PRICE', lines, ['YES', 'NO']).then(function (a) {
-      if (a !== 0) return; c.price_check = ''; save(); refreshers.dashboard();
+      if (a !== 0) return; c.price_check = ''; save(); redrawOpen();
     });
   }
   function quickPrice(i, value) {
@@ -1264,36 +1264,19 @@
     c.selling_price = String(p);
     c.price_updated = ('0' + d.getDate()).slice(-2) + '/' + ('0' + (d.getMonth() + 1)).slice(-2) + '/' + d.getFullYear();
     c.price_check = '';
-    save(); refreshers.dashboard();
+    save(); redrawOpen();
     say('NEW SELLING PRICE SAVED');
   }
 
-  builders.dashboard = function () {
-    var page = pageTop('DASHBOARD');
-    var tools = el('div', 'card');
-    var findRow = el('label', 'row'); findRow.appendChild(el('span', 'lbl', 'FIND RECIPE'));
-    var find = el('input', 'cream'); find.placeholder = 'NAME'; find.oninput = function () { draw(); };
-    findRow.appendChild(find); tools.appendChild(findRow);
-    var tb = el('div', 'btnrow');
-    [['CLEAR SEARCH', function () { find.value = ''; draw(); }], ['+ ADD RECIPE', addChoice],
-     ['COPY LAST OPENED RECIPE', copyRecipe]].forEach(function (b) {
-      var x = el('button', 'soft', b[0]); x.onclick = b[1]; tb.appendChild(x); });
-    tools.appendChild(tb); page.appendChild(tools);
-    var list = el('div', ''); page.appendChild(list);
-
-    function draw() {
-      var s = data.settings; SP.setUnits(s);
-      list.innerHTML = '';
-      var want = find.value.trim().toUpperCase();
-      var order = data.recipes.map(function (r, i) { return [i, r]; }).reverse();
-      order.sort(function (a, b) { return (!a[1].costs || !a[1].costs.price_check) - (!b[1].costs || !b[1].costs.price_check); });
-      var shown = 0;
-      order.forEach(function (pair) {
-        var i = pair[0], r = pair[1];
-        r.costs = Object.assign(SP.recipeCosts(), r.costs || {});
-        var name = r.recipe_name || '(NO NAME)';
-        if (want && name.toUpperCase().indexOf(want) < 0) return;
-        shown++;
+  // one recipe's dashboard card: used on the DASHBOARD and inside PREMIUM
+  function redrawOpen() {
+    Object.keys(screens).forEach(function (k) { if (!screens[k].hidden && refreshers[k]) refreshers[k](); });
+  }
+  function dashCard(i, withButtons) {
+    var s = data.settings; SP.setUnits(s);
+    var r = data.recipes[i];
+    r.costs = Object.assign(SP.recipeCosts(), r.costs || {});
+    var name = r.recipe_name || '(NO NAME)';
         var out = SP.costEverything(r, s), c = r.costs;
         var box = el('div', 'dash');
         box.appendChild(el('div', 'dashhead', name));
@@ -1326,11 +1309,41 @@
         var qb = el('button', 'soft', 'SET'); qb.onclick = function () { quickPrice(i, qi.value); };
         q.appendChild(qi); q.appendChild(qb); box.appendChild(q);
         if (c.price_updated) box.appendChild(el('div', 'small', 'LAST PRICE UPDATE: ' + c.price_updated));
+        if (!withButtons) return box;
         var btns = el('div', 'btnrow');
         var open = el('button', 'soft', 'OPEN RECIPE'); open.onclick = function () { openRecipe(i); };
         var del = el('button', 'soft danger', 'DELETE'); del.onclick = function () { deleteRecipe(i); };
         btns.appendChild(open); btns.appendChild(del); box.appendChild(btns);
-        list.appendChild(box);
+    return box;
+  }
+
+  builders.dashboard = function () {
+    var page = pageTop('DASHBOARD');
+    var tools = el('div', 'card');
+    var findRow = el('label', 'row'); findRow.appendChild(el('span', 'lbl', 'FIND RECIPE'));
+    var find = el('input', 'cream'); find.placeholder = 'NAME'; find.oninput = function () { draw(); };
+    findRow.appendChild(find); tools.appendChild(findRow);
+    var tb = el('div', 'btnrow');
+    [['CLEAR SEARCH', function () { find.value = ''; draw(); }], ['+ ADD RECIPE', addChoice],
+     ['COPY LAST OPENED RECIPE', copyRecipe]].forEach(function (b) {
+      var x = el('button', 'soft', b[0]); x.onclick = b[1]; tb.appendChild(x); });
+    tools.appendChild(tb); page.appendChild(tools);
+    var list = el('div', ''); page.appendChild(list);
+
+    function draw() {
+      var s = data.settings; SP.setUnits(s);
+      list.innerHTML = '';
+      var want = find.value.trim().toUpperCase();
+      var order = data.recipes.map(function (r, i) { return [i, r]; }).reverse();
+      order.sort(function (a, b) { return (!a[1].costs || !a[1].costs.price_check) - (!b[1].costs || !b[1].costs.price_check); });
+      var shown = 0;
+      order.forEach(function (pair) {
+        var i = pair[0], r = pair[1];
+        r.costs = Object.assign(SP.recipeCosts(), r.costs || {});
+        var name = r.recipe_name || '(NO NAME)';
+        if (want && name.toUpperCase().indexOf(want) < 0) return;
+        shown++;
+        list.appendChild(dashCard(i, true));
       });
       if (!shown) list.appendChild(el('div', 'empty', want ? 'No recipe matches that name.' : 'No recipes yet. Press + ADD RECIPE.'));
     }
@@ -1576,7 +1589,7 @@
     var top = el('div', 'card');
     var pickRowM = el('label', 'row'); pickRowM.appendChild(el('span', 'lbl', 'RECIPE'));
     var picker = el('select', 'cream'); picker.style.width = '62%'; picker.style.maxWidth = 'none';
-    picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); draw(); };
+    picker.onchange = function () { data.current = parseInt(picker.value, 10); save(); refreshers.method(); };
     pickRowM.appendChild(picker); top.appendChild(pickRowM);
     var makes = el('div', 'makes'); top.appendChild(makes);
     var tb = el('div', 'btnrow');
@@ -1593,6 +1606,13 @@
     stepCard.appendChild(addRow); page.appendChild(stepCard);
     // what to do next: bright until done, then faded with a small UPDATE
     var next = el('div', 'nexttab'); page.insertBefore(next, top);
+    var glance = el('div', 'glance'); top.after(glance);
+    function drawGlance() {
+      glance.innerHTML = '';
+      if (!data.recipes[data.current]) return;
+      glance.appendChild(el('div', 'glancehead', 'THIS RECIPE ON YOUR DASHBOARD'));
+      glance.appendChild(dashCard(data.current, false));
+    }
     function drawNext() {
       next.innerHTML = '';
       var st = setupDone();
@@ -1784,7 +1804,7 @@
       apps.forEach(function (a) { var b = el('button', 'soft share ' + a[1], a[0]); b.onclick = a[2]; row.appendChild(b); });
       box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
     };
-    refreshers.method = function () { draw(); drawNext(); };
+    refreshers.method = function () { draw(); drawNext(); drawGlance(); };
     return page;
   };
 
