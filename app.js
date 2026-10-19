@@ -1884,7 +1884,7 @@
         body: JSON.stringify({ key: (data.settings.licence || {}).key || '', to: code, texts: texts.map(function (t) { return t || '-'; }) }) })
         .then(function (res) { return res.json(); }, function () { throw new Error('No internet connection. Please check your connection and try again.'); })
         .then(function (a) {
-          if (!a || !a.ok) throw new Error(a && a.error === 'premium' ? 'Translating your recipe is part of SharperPlus Premium.' : ((a && a.error) || 'The recipe could not be translated.'));
+          if (!a || !a.ok) { var e = new Error(a && a.error === 'premium' ? 'Translating your recipe is part of SharperPlus Premium.' : ((a && a.error) || 'The recipe could not be translated.')); e.detail = a && a.detail; throw e; }
           r.tr[code] = { src: src, out: a.texts }; save(); return a.texts;
         });
     return get.then(function (out) {
@@ -2148,12 +2148,15 @@
       var row = el('div', 'notice-btns col');
       function close() { document.body.removeChild(shade); }
       function open(url) { close(); window.location.href = url; }
+      var printWin = null;
       function ready(then) {        // the recipe, translated first when the box is ticked
         if (!trBox.checked) { then(r); return; }
         waiting(true, 'Translating your recipe...', 'This takes a few seconds.');
         translatedRecipe(r, lang).then(function (t) { waiting(false); then(t); }, function (err) {
           waiting(false); close();
-          if (/Premium/.test(err.message)) premiumBox(err.message); else notice('THE RECIPE COULD NOT BE TRANSLATED', [err.message]);
+          if (printWin) { try { printWin.close(); } catch (e) {} printWin = null; }
+          if (/Premium/.test(err.message)) premiumBox(err.message);
+          else notice('THE RECIPE COULD NOT BE TRANSLATED', [err.message].concat(err.detail ? ['', '(' + String(err.detail).slice(0, 200) + ')'] : []));
         });
       }
       var apps = [['WHATSAPP', 'wa', function () { ready(function (t) { open('https://wa.me/?text=' + encodeURIComponent(shareText(t, note.value))); }); }],
@@ -2162,7 +2165,7 @@
       if (navigator.share) apps.push(['MORE APPS (MESSENGER AND OTHERS)', 'more', function () {
         ready(function (t) { navigator.share({ title: t.recipe_name || 'RECIPE', text: shareText(t, note.value).replace(/\*/g, '') }).catch(function () {}); close(); }); }]);
       apps.push(['PRINT / SAVE AS PDF', 'print', function () {
-        var w = window.open('', '_blank');
+        var w = printWin = window.open('', '_blank');
         if (!w) { notice('NOTICE', ['Please allow pop-ups to print.']); return; }
         ready(function (t) { close(); w.document.open(); w.document.write(cardHtml(t)); w.document.close(); });
       }]);
