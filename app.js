@@ -2064,7 +2064,10 @@
       'This is especially useful if you use SharperPlus Suites, our complete online business management system, bringing together POS, stock control, full reporting and much more.',
       ['Find out more at ', 'SharperPlus Suites', 'https://sharperplus.com/sharperplus-suites/', '.'],
       'Now let\u2019s take you through each part of your dashboard.']],
-    ['[data-guide="DASH TOOLS"]', 'FIND YOUR RECIPES', 'Type part of a dish name to find it fast. + ADD RECIPE starts a new one. COPY LAST OPENED RECIPE makes a copy for you to change, handy for a dish with small differences.'],
+    ['[data-guide="DASH TOOLS"]', 'FIND YOUR RECIPES', ['Type all or part of a dish\u2019s name into FIND RECIPE, then tap OPEN RECIPE on the one you want to view or update.',
+      'Tap CLEAR SEARCH to show all your recipes again.',
+      'To start a new recipe, tap + ADD RECIPE.',
+      'Making a variation of an existing dish? Open that recipe first, return to the dashboard and tap COPY LAST OPENED RECIPE. Give the copy a new name and adjust its ingredients or quantities. This saves you entering everything again!']],
     ['.dash .dashgrid', 'YOUR FIGURES', 'Every recipe shows its cost per portion, selling price and profit, so you can see at a glance which dishes earn their place.'],
     ['.dash .status', 'ALERTS', 'Green means the dish is above your lowest margin. Orange means a price is missing or has changed. Red means the selling price needs amending.'],
     ['.dash .quick', 'QUICK PRICE UPDATE', 'Change your selling price here and tap SET, without opening the full recipe.'],
@@ -2074,6 +2077,7 @@
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
     runTour(PAGE_TOURS[key], function (st) { return st[0] && screens[key] ? screens[key].querySelector(st[0]) : null; }, function () {},
+      key === 'dashboard' ? 'You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.' :
       key === 'recipe' ? 'Need a reminder? You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.'
                        : 'You can watch this again at any time: tap USER GUIDE FOR THIS PAGE at the top.');
   }
@@ -2133,7 +2137,8 @@
       });
       else words.textContent = s[2];
       stepNo.hidden = TOUR.length === 1;
-      later.hidden = at !== 0 || !later.textContent.trim();
+      var laterAt = 0; for (var k = 0; k < TOUR.length; k++) { if (TOUR[k][0]) { laterAt = k; break; } }
+      later.hidden = at !== laterAt || !later.textContent.trim();
       back.style.visibility = at === 0 ? 'hidden' : 'visible';
       next.textContent = at === TOUR.length - 1 ? 'FINISH' : 'NEXT';
       end.hidden = at === TOUR.length - 1;
