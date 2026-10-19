@@ -2693,7 +2693,18 @@
     }).catch(offline);
   }
   var gateDone = false;
+  function keyFromLink() {             // app.sharperplus.com/?key=SP-... (the scan code and the email carry the key)
+    var m = location.search.match(/[?&]key=([^&#]+)/);
+    if (!m) return;
+    var k = decodeURIComponent(m[1]).toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (k.length === 14 && k.slice(0, 2) === 'SP') {
+      var lic = data.settings.licence || {}, tidy = 'SP-' + k.slice(2, 6) + '-' + k.slice(6, 10) + '-' + k.slice(10, 14);
+      if (lic.key !== tidy) { data.settings.licence = { key: tidy }; save(); }
+    }
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+  }
   function keyGate(then) {
+    keyFromLink();
     checkKey(function () { if (!gateDone) { gateDone = true; then(); } });
     document.addEventListener('visibilitychange', function () {    // coming back to the app: check again
       if (document.visibilityState === 'visible' && gateDone) checkKey(function () {});
