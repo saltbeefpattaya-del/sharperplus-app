@@ -1163,7 +1163,11 @@
       var usable = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
       put('weight', SP.US ? SP.commas(usable, 2) + ' oz' : SP.commas(Math.round(usable), 0) + ' g');
       var units = (r.made_by || 'UNITS') === 'UNITS';
-      batchIn.querySelector('input').placeholder = units && usable ? String(Math.round(usable * 100) / 100) : '';
+      var bi = batchIn.querySelector('input');
+      bi.placeholder = units && usable ? String(Math.round(usable * 100) / 100) : '';
+      bi.onfocus = function () {          // tap the grey weight: it becomes a number you can change
+        if (!bi.value && bi.placeholder) { bi.value = bi.placeholder; recipeNow().batch_size = bi.value; save(); calc(); bi.select(); }
+      };
       ingOuts.forEach(function (o, i) {
         var row = r.rows[i] || [];
         var any = row.some(function (c) { return String(c || '').trim(); });
