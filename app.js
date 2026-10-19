@@ -2071,7 +2071,10 @@
     ['.dash .dashgrid', 'YOUR FIGURES', ['Each recipe shows how many units your batch makes, the cost per portion and your selling price.',
       'You\u2019ll also see your profit per portion as a money amount and your profit margin as a percentage of the selling price.',
       'These figures are based on the costs you\u2019ve entered, helping you compare recipes and see where costs or selling prices need reviewing.']],
-    ['.dash .status', 'ALERTS', 'Green means the dish is above your lowest margin. Orange means a price is missing or has changed. Red means the selling price needs amending.'],
+    ['.dash .status', 'ALERTS', ['Your MARGIN ALERT shows the minimum profit margin you\u2019ve set for this recipe. The colours help you spot anything that needs attention.',
+      'GREEN: Your recipe is above your minimum profit margin.',
+      'ORANGE: A price is missing or has changed. Open the recipe to check its figures.',
+      'RED: Your selling price needs reviewing. Check your costs and adjust the selling price if needed.']],
     ['.dash .quick', 'QUICK PRICE UPDATE', 'Change your selling price here and tap SET, without opening the full recipe.'],
     ['.dash .btnrow', 'OPEN OR DELETE', 'OPEN RECIPE takes you to the full recipe sheet. DELETE removes the recipe for good.']
   ];
