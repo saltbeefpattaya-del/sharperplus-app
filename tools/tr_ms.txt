@@ -385,3 +385,16 @@ Kunci ini tidak dapat dibuka. Sila e-mel support@sharperplus.com
 Kunci SharperPlus anda
 Ini kunci SharperPlus anda sendiri. Simpan baik-baik: ia juga ada dalam e-mel yang kami hantar.
 Ketik BUKA SHARPERPLUS untuk membukanya pada telefon ini.
+SIMPAN KUNCI SAYA
+✔ KUNCI DISIMPAN
+Percubaan percuma {0} hari anda sudah bermula.
+Sila semak e-mel untuk kunci {0} hari anda. Simpan baik-baik.
+Kunci SharperPlus anda kini aktif pada telefon ini.
+Sila semak e-mel untuk kunci anda. Simpan baik-baik.
+Letak SharperPlus di skrin utama
+SharperPlus akan berada di telefon anda seperti aplikasi, dengan ikonnya sendiri. Ketik untuk membuka SharperPlus bila-bila masa.
+Ketik butang Kongsi di bawah skrin, kemudian ketik Tambah ke Skrin Utama.
+Ketik PASANG di bawah. SharperPlus akan ditambah ke skrin utama anda.
+PASANG
+BUKAN SEKARANG
+Ketik menu ⋮ di bahagian atas kanan, kemudian ketik Tambah ke skrin utama atau Pasang aplikasi.

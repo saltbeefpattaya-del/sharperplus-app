@@ -385,3 +385,16 @@ Dieser Schlüssel lässt sich nicht öffnen. Bitte schreiben Sie an support@shar
 Ihr SharperPlus-Schlüssel
 Das ist Ihr eigener SharperPlus-Schlüssel. Bewahren Sie ihn gut auf: Er steht auch in unserer E-Mail an Sie.
 Tippen Sie auf SHARPERPLUS ÖFFNEN, um ihn auf diesem Handy freizuschalten.
+MEINEN SCHLÜSSEL SPEICHERN
+✔ SCHLÜSSEL GESPEICHERT
+Ihre {0}-tägige kostenlose Testphase hat begonnen.
+Bitte sehen Sie in Ihren E-Mails nach Ihrem {0}-Tage-Schlüssel. Bewahren Sie ihn gut auf.
+Ihr SharperPlus-Schlüssel ist jetzt auf diesem Handy aktiv.
+Bitte sehen Sie in Ihren E-Mails nach Ihrem Schlüssel. Bewahren Sie ihn gut auf.
+SharperPlus auf den Startbildschirm legen
+SharperPlus ist dann wie eine App auf Ihrem Handy, mit eigenem Symbol. Einfach antippen, um SharperPlus jederzeit zu öffnen.
+Tippen Sie unten auf die Teilen-Taste und dann auf Zum Home-Bildschirm.
+Tippen Sie unten auf INSTALLIEREN. SharperPlus wird zu Ihrem Startbildschirm hinzugefügt.
+INSTALLIEREN
+JETZT NICHT
+Tippen Sie oben rechts auf das Menü ⋮ und dann auf Zum Startbildschirm hinzufügen oder App installieren.

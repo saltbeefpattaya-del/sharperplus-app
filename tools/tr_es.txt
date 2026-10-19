@@ -385,3 +385,16 @@ No se pudo abrir esta clave. Escriba a support@sharperplus.com
 Su clave de SharperPlus
 Esta es su propia clave de SharperPlus. Guárdela bien: también está en el correo que le enviamos.
 Toque ABRIR SHARPERPLUS para desbloquearla en este teléfono.
+GUARDAR MI CLAVE
+✔ CLAVE GUARDADA
+Su prueba gratuita de {0} días ha empezado.
+Revise su correo para ver su clave de {0} días. Guárdela bien.
+Su clave de SharperPlus ya está activa en este teléfono.
+Revise su correo para ver su clave. Guárdela bien.
+Ponga SharperPlus en su pantalla de inicio
+SharperPlus estará en su teléfono como una app, con su propio icono. Tóquelo para abrir SharperPlus cuando quiera.
+Toque el botón Compartir abajo y luego Añadir a pantalla de inicio.
+Toque INSTALAR abajo. SharperPlus se añadirá a su pantalla de inicio.
+INSTALAR
+AHORA NO
+Toque el menú ⋮ arriba a la derecha y luego Añadir a pantalla de inicio o Instalar aplicación.
