@@ -120,6 +120,8 @@
     Object.keys(screens).forEach(function (k) { screens[k].hidden = k !== name; });
     if (refreshers[name]) refreshers[name]();
     window.scrollTo(0, 0);
+    if (name === 'master' && data.settings.guide_master !== 'SEEN' && !document.querySelector('.toursheet'))
+      setTimeout(masterGuide, 450);
     if (location.hash !== '#' + name) history.pushState(null, '', name === 'menu' ? '#' : '#' + name);
   }
   window.addEventListener('popstate', function () {
@@ -153,11 +155,14 @@
   builders.master = function () {
     var s = data.settings, c = s.costs;
     var page = pageTop('OVERHEADS & COSTING FACTORS');
+    var guideBtn = el('button', 'guidebtn', '\u2753  USER GUIDE FOR THIS PAGE');
+    guideBtn.onclick = function () { masterGuide(); };
+    page.appendChild(guideBtn);
     var outs = {}, inputs = [];
 
     function card(title) {
       var box = el('div', 'card');
-      if (title) box.appendChild(el('div', 'cardhead', title));
+      if (title) { box.appendChild(el('div', 'cardhead', title)); box.setAttribute('data-guide', title); }
       page.appendChild(box);
       return box;
     }
@@ -1932,7 +1937,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.tile.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.tile.spot,.card.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
@@ -1968,8 +1973,26 @@
     ['ADD RECIPE FROM PHOTO', 'TAKE A PHOTO OF RECIPE', 'Let’s be honest: after a hard day in the kitchen, nobody wants to type out recipes. Take a photo of your handwritten recipe and SharperPlus turns it into text. Then just check it, as handwriting is not always read perfectly.'],
     ['DASHBOARD', 'DASHBOARD', 'All your recipes in one place. Search for a dish, change a price, or open its full recipe sheet. Any dish that falls below the lowest margin you set is highlighted.']
   ];
+  var MASTER_TOUR = [
+    ['YOUR SETTINGS', 'YOUR SETTINGS', 'Pick your currency and your weights, and type your local VAT rate. You only do this once, and every recipe follows it.'],
+    ['RENT & WORKING TIME', 'RENT & WORKING TIME', 'Type how many days you work each month, your hours per day and your monthly rent. SharperPlus works out your rent per day and shares it across every dish.'],
+    ['STAFF', 'STAFF', 'Type each member of staff and their monthly wage. SharperPlus works out their daily and hourly cost, ready to pick when you build a recipe.'],
+    ['MONTHLY UNITS', 'MONTHLY UNITS', 'Roughly how many portions you make and sell in a month. This is how your bills are shared fairly across each dish.'],
+    ['ELECTRIC COSTING BLOCK', 'ELECTRIC', 'Tap TYPE YOUR BILL HERE to add your electric bill. The split tells SharperPlus how much of your bill is cooking, and how much is lights, AC and fridges.'],
+    ['MONTHLY GAS COSTING', 'GAS', 'Choose canister or metered gas and type your cost. Then tick the flames you cook on, and every recipe gets a true gas cost per minute.'],
+    ['ELECTRIC & GAS MONTHS', 'YOUR MONTHS', 'Add your bills here each month. A red figure means you went over your planned bill. After 12 months you can use the yearly average.'],
+    ['COST PER DAY', 'COST PER DAY', 'Everything added up: what it costs you to open your doors each day. Nothing here is compulsory. Fill in what you have, and come back as your bills arrive.']
+  ];
+  function masterGuide() {
+    data.settings.guide_master = 'SEEN'; save();
+    runTour(MASTER_TOUR, function (s) { return document.querySelector('.page [data-guide="' + s[0] + '"]'); }, function () {},
+      'You can watch this again at any time: tap USER GUIDE FOR THIS PAGE at the top.');
+  }
   function startTour() {
     show('menu');
+    runTour(TOUR, function (s) { return document.querySelector('#menu [data-go="' + s[0] + '"]'); }, thankYou);
+  }
+  function runTour(TOUR, find, done, laterText) {
     var at = 0, lit = null;
     var shade = el('div', 'tourshade');
     var sheet = el('div', 'toursheet');
@@ -1981,7 +2004,7 @@
     heads.appendChild(stepNo); heads.appendChild(name);
     top.appendChild(face); top.appendChild(heads);
     var words = el('div', 'tourwords');
-    var later = el('div', 'tourlater', 'You can come back to this guide at any time: click USER GUIDE on the main menu.');
+    var later = el('div', 'tourlater', laterText || 'You can come back to this guide at any time: click USER GUIDE on the main menu.');
     var row = el('div', 'tourbtns');
     var back = el('button', 'soft', 'BACK'), next = el('button', 'gobtn tournext', 'NEXT');
     row.appendChild(back); row.appendChild(next);
@@ -1999,7 +2022,7 @@
     function paint() {
       var s = TOUR[at];
       if (lit) lit.classList.remove('spot');
-      lit = document.querySelector('#menu [data-go="' + s[0] + '"]');
+      lit = find(s);
       if (lit) {
         lit.classList.add('spot');
         var r = lit.getBoundingClientRect(), room = window.innerHeight - sheet.offsetHeight;
@@ -2016,7 +2039,7 @@
     back.onclick = function () { if (at > 0) { at--; paint(); } };
     next.onclick = function () {
       if (at < TOUR.length - 1) { at++; paint(); return; }
-      stop(); thankYou();
+      stop(); done();
     };
     end.onclick = stop;
     shade.onclick = function () {};
