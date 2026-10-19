@@ -27,6 +27,11 @@
 
   // the figures the desktop works out on save (read_settings)
   function derive(s) {
+    // monthly wage typed in -> daily wage = monthly / working days (recipes use the daily)
+    var days = num((s.costs || {}).work_days);
+    (s.staff || []).forEach(function (p) {
+      if (num(p[2]) > 0 && days > 0) p[1] = String(Math.round(num(p[2]) / days * 100) / 100);
+    });
     var lines = months(s);
     var avg = s.elec_average === 'YES';
     var bill = SP.electricLeft(lines.map(function (l) {
@@ -207,7 +212,8 @@
 
     // ---- rent and working time
     var rent = card('RENT & WORKING TIME');
-    costIn(rent, 'WORKING DAYS PER MONTH', 'work_days');
+    field(rent, 'WORKING DAYS PER MONTH', function () { return c.work_days || ''; },
+          function (v) { c.work_days = v; if (drawStaff) drawStaff.update(); });
     costIn(rent, 'WORKING HOURS PER DAY', 'work_hours');
     costIn(rent, 'RENT COST', 'rent_cost');
     out(rent, 'RENT COST PER DAY', 'rent_day');
@@ -215,7 +221,7 @@
 
     // ---- staff (the same list as the STAFF page)
     var staffCard = card('STAFF');
-    staffCard.appendChild(el('div', 'note', 'Type each member of staff and their daily wage.'));
+    staffCard.appendChild(el('div', 'note', 'Type each member of staff and their monthly wage.'));
     var staffBox = el('div', 'staffin'); staffCard.appendChild(staffBox);
     var drawStaff;
 
@@ -570,15 +576,21 @@
   // one staff list, used on the STAFF page and inside MASTER COSTINGS
   function staffEditor(parent, changed) {
     var s = data.settings;
+    var daysNote = el('div', 'note red', 'Please fill in WORKING DAYS PER MONTH in Master Costings, so the daily wage can be worked out.');
+    parent.appendChild(daysNote); daysNote.hidden = true;
     var list = el('div', 'staff'); parent.appendChild(list);
     var add = el('button', 'soft wide', '+ ADD STAFF'); parent.appendChild(add);
     var rates = [];
     function plain(v) { var n = num(v); return n ? String(n) : String(v || '').trim(); }
     function rateNow() {
       SP.setUnits(s);
+      derive(s);
       rates.forEach(function (r) {
-        r[1].textContent = String(r[0][0] || '').trim() ? SP.money(SP.hourlyRate(num(r[0][1]))) : '';
+        var has = num(r[0][1]) > 0;
+        r[2].textContent = has ? SP.money(num(r[0][1])) : '';
+        r[1].textContent = has ? SP.money(SP.hourlyRate(num(r[0][1]))) : '';
       });
+      if (daysNote) daysNote.hidden = num(s.costs.work_days) > 0 || !(s.staff || []).some(function (p) { return num(p[2]) > 0; });
       if (changed) changed();
     }
     function draw() {
@@ -599,7 +611,7 @@
         };
         head.appendChild(del); box.appendChild(head);
         var grid = el('div', 'wages');
-        [['DAILY WAGE', 1], ['MONTHLY WAGE', 2]].forEach(function (w) {
+        [['MONTHLY WAGE', 2]].forEach(function (w) {
           var cell = el('label', 'wage');
           cell.appendChild(el('span', 'lbl', w[0]));
           var input = el('input', 'cream'); input.inputMode = 'decimal';
@@ -610,10 +622,13 @@
           input.oninput = function () { p[w[1]] = plain(input.value); save(); rateNow(); };
           cell.appendChild(input); grid.appendChild(cell);
         });
+        var dayCell = el('div', 'wage');
+        dayCell.appendChild(el('span', 'lbl', 'DAILY WAGE'));
+        var daily = el('span', 'calc'); dayCell.appendChild(daily); grid.appendChild(dayCell);
         var rateCell = el('div', 'wage');
         rateCell.appendChild(el('span', 'lbl', 'HOURLY RATE'));
         var rate = el('span', 'calc'); rateCell.appendChild(rate); grid.appendChild(rateCell);
-        rates.push([p, rate]);
+        rates.push([p, rate, daily]);
         box.appendChild(grid); list.appendChild(box);
       });
       rateNow();
@@ -622,19 +637,21 @@
       s.staff.push(['', '', '']); save(); draw();
       var names = list.querySelectorAll('input.name'); names[names.length - 1].focus();
     };
-    return function () {
+    var api = function () {
       s.staff = (s.staff || []).filter(function (p, i, all) {
         return String(p[0] || '').trim() || String(p[1] || '').trim() || String(p[2] || '').trim() || i === all.length - 1;
       });
       draw();
     };
+    api.update = rateNow;
+    return api;
   }
 
   builders.stafflist = function () {
     var s = data.settings;
     var page = pageTop('STAFF WAGES');
-    page.appendChild(el('div', 'note', 'Type each member of staff and their daily wage. ' +
-      'The hourly rate is the daily wage \u00f7 8, and recipes use it for labour.'));
+    page.appendChild(el('div', 'note', 'Type each member of staff and their monthly wage. ' +
+      'The daily wage is the monthly wage \u00f7 your working days, and the hourly rate is the daily wage \u00f7 8.'));
     var holder = el('div'); page.appendChild(holder);
     var total = el('div', 'card'); page.appendChild(total);
     function sums() {
