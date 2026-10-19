@@ -157,16 +157,42 @@
     return page;
   }
 
+  // jump to section: one tap takes the chef straight to that part of a long page
+  function jumpBox(page, list) {        // list: [card title, button words, colour]
+    var jump = el('div', 'jumpbox');
+    jump.appendChild(el('div', 'jumptitle', 'JUMP TO SECTION'));
+    var grid = el('div', 'jumpgrid'); jump.appendChild(grid);
+    list.forEach(function (j) {
+      var b = el('button', 'jumpbtn', j[1]); b.style.background = j[2];
+      b.onclick = function () {
+        var target = page.querySelector('.card[data-guide="' + j[0] + '"]'); if (!target) return;
+        var bar = page.querySelector('.bar'), off = (bar ? bar.offsetHeight : 0) + 8;
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - off, behavior: 'smooth' });
+        target.classList.add('flash'); setTimeout(function () { target.classList.remove('flash'); }, 1600);
+      };
+      grid.appendChild(b);
+    });
+    page.appendChild(jump);
+  }
+  var MASTER_HEADS = [['YOUR SETTINGS', 'SETTINGS', '#4F5A2E'], ['RENT & WORKING TIME', 'RENT & WORKING TIME', '#4A433C'],
+    ['STAFF', 'STAFF', '#59445F'], ['MONTHLY UNITS', 'MONTHLY UNITS', '#185451'], ['ELECTRIC COSTING BLOCK', 'ELECTRIC', '#37566E'],
+    ['MONTHLY GAS COSTING', 'GAS', '#37566E'], ['ELECTRIC & GAS MONTHS', 'YOUR MONTHS', '#2B4357'], ['COST PER DAY', 'COST PER DAY', '#20364D']];
+
   // ---------------------------------------------------------------- MASTER COSTINGS
   builders.master = function () {
     var s = data.settings, c = s.costs;
     var page = pageTop('OVERHEADS & COSTING FACTORS');
     guideButton(page, 'master');
-    var outs = {}, inputs = [], heads = 0;
+    jumpBox(page, MASTER_HEADS);
+    var outs = {}, inputs = [];
 
     function card(title) {
       var box = el('div', 'card');
-      if (title) { box.appendChild(el('div', 'cardhead', title)); box.setAttribute('data-guide', title); box.classList.add('hc' + (++heads)); }
+      if (title) {
+        var h = el('div', 'cardhead rhead', title);
+        MASTER_HEADS.forEach(function (m) { if (m[0] === title) h.style.background = m[2]; });
+        box.appendChild(h); box.setAttribute('data-guide', title);
+      }
       page.appendChild(box);
       return box;
     }
@@ -823,21 +849,7 @@
       }
       page.appendChild(b); return b;
     }
-    // ---- jump to section: one tap takes the chef straight to that part of the sheet
-    var jump = el('div', 'jumpbox');
-    jump.appendChild(el('div', 'jumptitle', 'JUMP TO SECTION'));
-    var jumpGrid = el('div', 'jumpgrid'); jump.appendChild(jumpGrid);
-    Object.keys(HEADCOL).forEach(function (t) {
-      var b = el('button', 'jumpbtn', t); b.style.background = HEADCOL[t];
-      b.onclick = function () {
-        var target = page.querySelector('.card[data-guide="' + t + '"]'); if (!target) return;
-        var bar = page.querySelector('.bar'), off = (bar ? bar.offsetHeight : 0) + 8;
-        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - off, behavior: 'smooth' });
-        target.classList.add('flash'); setTimeout(function () { target.classList.remove('flash'); }, 1600);
-      };
-      jumpGrid.appendChild(b);
-    });
-    page.appendChild(jump);
+    jumpBox(page, Object.keys(HEADCOL).map(function (t) { return [t, t, HEADCOL[t]]; }));
     function inRow(box, label, get, set, opts) {
       opts = opts || {};
       var row = el('label', 'row'); row.appendChild(el('span', 'lbl', label));
@@ -1985,7 +1997,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.card[class*=hc]>.cardhead{color:#fff;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.card.hc1>.cardhead{background:#1F3A5F}\n.card.hc2>.cardhead{background:#5B2A86}\n.card.hc3>.cardhead{background:#0E6E6E}\n.card.hc4>.cardhead{background:#8B1E3F}\n.card.hc5>.cardhead{background:#1565C0}\n.card.hc6>.cardhead{background:#C2410C}\n.card.hc7>.cardhead{background:#1E6B2E}\n.card.hc8>.cardhead{background:#111;color:#F2B705}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
