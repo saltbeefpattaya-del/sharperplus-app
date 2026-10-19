@@ -1364,7 +1364,8 @@
 
   builders.dashboard = function () {
     var page = pageTop('DASHBOARD');
-    var tools = el('div', 'card');
+    guideButton(page, 'dashboard');
+    var tools = el('div', 'card'); tools.setAttribute('data-guide', 'DASH TOOLS');
     var findRow = el('label', 'row'); findRow.appendChild(el('span', 'lbl', 'FIND RECIPE'));
     var find = el('input', 'cream'); find.placeholder = 'NAME'; find.oninput = function () { draw(); };
     findRow.appendChild(find); tools.appendChild(findRow);
@@ -2056,7 +2057,14 @@
       'Set the lowest profit margin you\u2019re happy to accept. Any dish below this level is highlighted on your DASHBOARD, helping you spot costs or prices that need reviewing.',
       'When you\u2019ve finished entering your figures, tap SAVE to keep your changes.']]
   ];
-  var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR };
+  var DASH_TOUR = [
+    ['[data-guide="DASH TOOLS"]', 'FIND YOUR RECIPES', 'Type part of a dish name to find it fast. + ADD RECIPE starts a new one. COPY LAST OPENED RECIPE makes a copy for you to change, handy for a dish with small differences.'],
+    ['.dash .dashgrid', 'YOUR FIGURES', 'Every recipe shows its cost per portion, selling price and profit, so you can see at a glance which dishes earn their place.'],
+    ['.dash .status', 'ALERTS', 'Green means the dish is above your lowest margin. Orange means a price is missing or has changed. Red means the selling price needs amending.'],
+    ['.dash .quick', 'QUICK PRICE UPDATE', 'Change your selling price here and tap SET, without opening the full recipe.'],
+    ['.dash .btnrow', 'OPEN OR DELETE', 'OPEN RECIPE takes you to the full recipe sheet. DELETE removes the recipe for good.']
+  ];
+  var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR, dashboard: DASH_TOUR };
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
     runTour(PAGE_TOURS[key], function (st) { return screens[key] && screens[key].querySelector(st[0]); }, function () {},
