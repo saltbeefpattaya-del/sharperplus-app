@@ -223,7 +223,10 @@
 
     // ---- electric costing block
     var elec = card('ELECTRIC COSTING BLOCK');
-    out(elec, 'ELECTRIC BILL (TOTAL PAID)', 'elec_bill_left');
+    var billRow = out(elec, 'ELECTRIC BILL (TOTAL PAID)', 'elec_bill_left');
+    var toBill = el('button', 'jump', '\u270e  TYPE YOUR BILL HERE');
+    toBill.onclick = function () { goToBill('MONTHLY ELECTRIC COST'); };
+    billRow.onclick = toBill.onclick; elec.appendChild(toBill);
     costIn(elec, 'PLANNED ELECTRICITY', 'elec_planned');
     var hint = el('div', 'hint'); elec.appendChild(hint); outs.elec_planned = hint;
     out(elec, 'TOTAL COOKING ELECTRIC', 'elec_cooking');
@@ -259,7 +262,8 @@
       costIn(gas, 'PLANNED GAS BILL', 'gas_planned'),
       costIn(gas, 'BUFFER % (OPTIONAL)', 'gas_buffer', { suffix: '%' }),
       out(gas, 'PLANNED GAS BILL WITH BUFFER', 'gas_planned_buffer'),
-      out(gas, 'GAS BILL (TOTAL PAID)', 'gas_bill_show'),
+      (function () { var r = out(gas, 'GAS BILL (TOTAL PAID)', 'gas_bill_show');
+        r.onclick = function () { goToBill('MONTHLY GAS COST'); }; return r; })(),
       out(gas, 'UNITS USED (FROM YOUR BILL)', 'gas_units_show'),
       costIn(gas, 'TAX % ON YOUR BILL (OPTIONAL)', 'gas_tax', { suffix: '%' }),
       out(gas, 'BILL BEFORE TAX', 'gas_net'),
@@ -391,6 +395,21 @@
       });
     }
 
+    function goToBill(label) {        // the bill is typed in the newest month, like the desktop
+      if (!months(s).length) { var d = new Date(); addMonth(d.getFullYear(), d.getMonth() + 1); }
+      var first = list.querySelector('.month');
+      var rows = first ? first.querySelectorAll('.row') : [];
+      for (var i = 0; i < rows.length; i++) {
+        var l = rows[i].querySelector('.lbl');
+        if (l && l.textContent === label) {
+          var inp = rows[i].querySelector('input');
+          rows[i].scrollIntoView({ block: 'center' });
+          rows[i].classList.add('flash'); setTimeout(function (r) { r.classList.remove('flash'); }.bind(null, rows[i]), 1800);
+          if (inp) setTimeout(function () { inp.focus(); }, 350);
+          return;
+        }
+      }
+    }
     var monthOuts = [];
     function drawMonths() {
       list.innerHTML = ''; monthOuts = [];
