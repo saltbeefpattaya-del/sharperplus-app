@@ -266,6 +266,10 @@
     var cr = costRecipe(lines, batch, num(recipe.product_size), vatPercent,
                         recipe.made_by || 'UNITS');
     var sub = cr[0], vat = cr[1], total = cr[2], products = cr[3], portion = cr[4];
+    out.products_worked = products;                 // what the sums give
+    if (num(recipe.total_products) > 0) {            // typed in by hand: use it
+      products = num(recipe.total_products); portion = sub / products;
+    }
     var used = (recipe.consumables || []).map(function (line) {
       var l = (line.concat(['', '', '', ''])).slice(0, 4);
       return consumableCost(num(l[1]), num(l[2]), num(l[3]));

@@ -836,7 +836,8 @@
     outRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', 'weight');
     var batchIn = inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
     inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
-    outRow(prod, 'TOTAL PRODUCTS', 'products');
+    var totIn = inRow(prod, 'TOTAL PRODUCTS', function () { return recipeNow().total_products || ''; },
+                      function (v) { recipeNow().total_products = v; });
     outRow(prod, 'COST PER PORTION INGREDIENTS', 'portion');
 
     // ---- ingredients
@@ -1158,7 +1159,11 @@
       r.rows.forEach(wasteGrams);
       var out = SP.costEverything(r, s);
       var m = SP.money;
-      put('products', SP.commas(out.products, 2).replace(/\.?0+$/, '') || '0');
+      var ti = totIn.querySelector('input');             // grey = worked out; type to change it
+      ti.placeholder = String(out.products_worked || 0);
+      ti.onfocus = function () {
+        if (!ti.value && ti.placeholder) { ti.value = ti.placeholder; recipeNow().total_products = ti.value; save(); ti.select(); }
+      };
       put('portion', m(out.portion));
       var usable = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);
       put('weight', SP.US ? SP.commas(usable, 2) + ' oz' : SP.commas(Math.round(usable), 0) + ' g');
