@@ -213,6 +213,12 @@
     out(rent, 'RENT COST PER DAY', 'rent_day');
     out(rent, 'TOTAL RENT COST PER DISH', 'rent_dish', true);
 
+    // ---- staff (the same list as the STAFF page)
+    var staffCard = card('STAFF');
+    staffCard.appendChild(el('div', 'note', 'Type each member of staff and their daily wage.'));
+    var staffBox = el('div', 'staffin'); staffCard.appendChild(staffBox);
+    var drawStaff;
+
     // ---- units
     var units = card('MONTHLY UNITS');
     field(units, 'MONTHLY UNITS PRODUCED', function () { return s.units_produced; },
@@ -303,14 +309,6 @@
         : 'AVERAGE OF ' + picked.length + ' FLAMES: ' +
           SP.money(costs.reduce(function (a, b) { return a + b; }, 0) / costs.length) + '/MIN']);
     }
-
-    // ---- per day
-    var day = card('COST PER DAY');
-    out(day, 'RENT COST PER DAY', 'sum_rent');
-    out(day, 'ELECTRICITY COST PER DAY', 'sum_elec');
-    out(day, 'GAS COST PER DAY', 'sum_gas');
-    out(day, 'STAFF COST PER DAY', 'sum_staff');
-    out(day, 'GRAND TOTAL PER DAY', 'sum_total', true);
 
     // ---- the months
     var mon = card('ELECTRIC & GAS MONTHS');
@@ -549,8 +547,19 @@
     }
     function E4(v) { return SP.SYMBOL + SP.commas(v, 4); }
 
+    // ---- per day: every cost added up, so it sits at the bottom
+    var day = card('COST PER DAY');
+    out(day, 'RENT COST PER DAY', 'sum_rent');
+    out(day, 'ELECTRICITY COST PER DAY', 'sum_elec');
+    out(day, 'GAS COST PER DAY', 'sum_gas');
+    out(day, 'STAFF COST PER DAY', 'sum_staff');
+    out(day, 'GRAND TOTAL PER DAY', 'sum_total', true);
+
+    drawStaff = staffEditor(staffBox, function () { if (outs.sum_staff) refresh(); });
+    drawStaff();
     drawMonths();
     refreshers.master = function () {
+      drawStaff();
       inputs.forEach(function (x) { if (document.activeElement !== x.input) x.input.value = x.get() || ''; });
       drawMonths(); refresh();
     };
@@ -558,17 +567,20 @@
   };
 
   // ---------------------------------------------------------------- STAFF WAGES
-  builders.stafflist = function () {
+  // one staff list, used on the STAFF page and inside MASTER COSTINGS
+  function staffEditor(parent, changed) {
     var s = data.settings;
-    var page = pageTop('STAFF WAGES');
-    page.appendChild(el('div', 'note', 'Type each member of staff and their daily wage. ' +
-      'The hourly rate is the daily wage \u00f7 8, and recipes use it for labour.'));
-    var list = el('div', 'staff'); page.appendChild(list);
-    var add = el('button', 'soft wide', '+ ADD STAFF'); page.appendChild(add);
-    var total = el('div', 'card'); page.appendChild(total);
+    var list = el('div', 'staff'); parent.appendChild(list);
+    var add = el('button', 'soft wide', '+ ADD STAFF'); parent.appendChild(add);
     var rates = [];
-
     function plain(v) { var n = num(v); return n ? String(n) : String(v || '').trim(); }
+    function rateNow() {
+      SP.setUnits(s);
+      rates.forEach(function (r) {
+        r[1].textContent = String(r[0][0] || '').trim() ? SP.money(SP.hourlyRate(num(r[0][1]))) : '';
+      });
+      if (changed) changed();
+    }
     function draw() {
       list.innerHTML = ''; rates = [];
       s.staff = s.staff || [];
@@ -578,7 +590,7 @@
         var box = el('div', 'person');
         var head = el('div', 'personhead');
         var name = el('input', 'cream name'); name.placeholder = 'STAFF NAME'; name.value = p[0];
-        name.oninput = function () { p[0] = name.value; save(); sums(); };
+        name.oninput = function () { p[0] = name.value; save(); rateNow(); };
         head.appendChild(name);
         var del = el('button', 'del', '\u2715'); del.setAttribute('aria-label', 'Remove');
         del.onclick = function () {
@@ -595,7 +607,7 @@
           show();
           input.onfocus = function () { input.value = plain(p[w[1]]); };
           input.onblur = show;
-          input.oninput = function () { p[w[1]] = plain(input.value); save(); sums(); };
+          input.oninput = function () { p[w[1]] = plain(input.value); save(); rateNow(); };
           cell.appendChild(input); grid.appendChild(cell);
         });
         var rateCell = el('div', 'wage');
@@ -604,29 +616,35 @@
         rates.push([p, rate]);
         box.appendChild(grid); list.appendChild(box);
       });
-      sums();
-    }
-    function sums() {
-      SP.setUnits(s);
-      rates.forEach(function (r) {
-        r[1].textContent = String(r[0][0] || '').trim() ? SP.money(SP.hourlyRate(num(r[0][1]))) : '';
-      });
-      var named = s.staff.filter(function (p) { return String(p[0] || '').trim(); });
-      total.innerHTML = '';
-      var row = el('div', 'row'); row.appendChild(el('span', 'lbl', 'STAFF COST PER DAY (' + named.length + ' STAFF)'));
-      var v = el('span', 'calc strong', SP.money(named.reduce(function (a, p) { return a + num(p[1]); }, 0)));
-      row.appendChild(v); total.appendChild(row);
+      rateNow();
     }
     add.onclick = function () {
       s.staff.push(['', '', '']); save(); draw();
       var names = list.querySelectorAll('input.name'); names[names.length - 1].focus();
     };
-    refreshers.stafflist = function () {
+    return function () {
       s.staff = (s.staff || []).filter(function (p, i, all) {
         return String(p[0] || '').trim() || String(p[1] || '').trim() || String(p[2] || '').trim() || i === all.length - 1;
       });
       draw();
     };
+  }
+
+  builders.stafflist = function () {
+    var s = data.settings;
+    var page = pageTop('STAFF WAGES');
+    page.appendChild(el('div', 'note', 'Type each member of staff and their daily wage. ' +
+      'The hourly rate is the daily wage \u00f7 8, and recipes use it for labour.'));
+    var holder = el('div'); page.appendChild(holder);
+    var total = el('div', 'card'); page.appendChild(total);
+    function sums() {
+      var named = (s.staff || []).filter(function (p) { return String(p[0] || '').trim(); });
+      total.innerHTML = '';
+      var row = el('div', 'row'); row.appendChild(el('span', 'lbl', 'STAFF COST PER DAY (' + named.length + ' STAFF)'));
+      row.appendChild(el('span', 'calc strong', SP.money(named.reduce(function (a, p) { return a + num(p[1]); }, 0))));
+      total.appendChild(row);
+    }
+    refreshers.stafflist = staffEditor(holder, sums);
     return page;
   };
 
