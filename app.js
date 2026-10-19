@@ -2024,7 +2024,9 @@
       'You can watch this again at any time: tap HOW TO TAKE A GOOD PHOTO.', after);
   }
   var RECIPE_TOUR = [
-    ['[data-guide="RECIPE TOP"]', 'YOUR RECIPE', 'This is the recipe you are working on. Pick another from SELECT RECIPE, or add a new one. HOW TO MAKE IT \u2605 opens the cooking method (SharperPlus Premium).'],
+    ['[data-guide="RECIPE TOP"]', 'YOUR RECIPE', ['The name of the recipe you\u2019re working on appears here.',
+      'To open a saved recipe, tap the arrow beside SELECT RECIPE and choose from your list. To start a new one, tap + ADD RECIPE.',
+      'Using SharperPlus Premium? Tap HOW TO MAKE IT \u2605 to add or view your cooking method, ready to share with your team.']],
     ['[data-guide="PRODUCT"]', 'PRODUCT', 'Choose whether you sell by units or by weight. Add your ingredients first: SharperPlus then works out the total weight and how many portions the batch makes. Grey figures are worked out for you; type over them if you need to.'],
     ['[data-guide="INGREDIENTS"]', 'INGREDIENTS', 'Type each ingredient, its weight and the price you pay. Every ingredient is remembered, so next time its last price fills in for you.'],
     ['[data-guide="LABOUR"]', 'LABOUR', 'Pick who makes this dish and how long it takes. Their time is costed into every portion.'],
@@ -2038,7 +2040,8 @@
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
     runTour(PAGE_TOURS[key], function (st) { return screens[key] && screens[key].querySelector(st[0]); }, function () {},
-      'You can watch this again at any time: tap USER GUIDE FOR THIS PAGE at the top.');
+      key === 'recipe' ? 'Need a reminder? You can reopen this guide at any time by tapping USER GUIDE FOR THIS PAGE at the top.'
+                       : 'You can watch this again at any time: tap USER GUIDE FOR THIS PAGE at the top.');
   }
   function guideButton(page, key) {
     var b = el('button', 'guidebtn', '\u2753  USER GUIDE FOR THIS PAGE');
