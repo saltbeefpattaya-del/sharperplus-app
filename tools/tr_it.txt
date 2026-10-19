@@ -363,3 +363,22 @@ Totale unità vendute: {0}
 TOTALE: {0}
 HAI SCELTO LE VENDITE IN UNITÀ PER:
 Mese:
+La tua prova gratuita è finita
+Grazie per aver provato SharperPlus. Tutte le tue ricette sono ancora salvate su questo telefono.
+Acquista SharperPlus per continuare, poi tocca CONTROLLA DI NUOVO LA CHIAVE.
+Collegati a internet
+SharperPlus deve controllare la tua chiave. Attiva il Wi-Fi o i dati mobili, poi tocca CONTROLLA DI NUOVO LA CHIAVE.
+Tutte le tue ricette sono ancora salvate su questo telefono.
+Scrivi la tua chiave SharperPlus. La trovi nell'email che ti abbiamo inviato.
+APRI SHARPERPLUS
+CONTROLLA DI NUOVO LA CHIAVE
+ACQUISTA SHARPERPLUS
+OTTIENI UNA CHIAVE GRATUITA DI {0} GIORNI
+SCRIVI UN'ALTRA CHIAVE
+Questa non è una chiave SharperPlus. Inizia con SP seguito da {0} lettere e numeri.
+Impossibile raggiungere SharperPlus. Controlla la connessione.
+Chiave non trovata. Confrontala con la tua email.
+Questa chiave è già aperta su {0} telefono. Scrivi a support@sharperplus.com per spostarla su questo telefono.
+Questa chiave è già aperta su {0} telefoni. Scrivi a support@sharperplus.com per spostarla su questo telefono.
+Questo telefono ha già avuto una prova gratuita. Acquista SharperPlus per continuare.
+Impossibile aprire questa chiave. Scrivi a support@sharperplus.com

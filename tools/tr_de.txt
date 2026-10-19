@@ -363,3 +363,22 @@ Verkaufte Stück gesamt: {0}
 GESAMT: {0}
 SIE HABEN VERKAUFTE STÜCK GEWÄHLT FÜR:
 Monat:
+Ihre kostenlose Testphase ist vorbei
+Danke, dass Sie SharperPlus ausprobiert haben. Alle Ihre Rezepte sind weiter auf diesem Handy gespeichert.
+Kaufen Sie SharperPlus, um weiterzumachen, und tippen Sie dann auf SCHLÜSSEL ERNEUT PRÜFEN.
+Bitte mit dem Internet verbinden
+SharperPlus muss Ihren Schlüssel prüfen. Schalten Sie WLAN oder mobile Daten ein und tippen Sie auf SCHLÜSSEL ERNEUT PRÜFEN.
+Alle Ihre Rezepte sind weiter auf diesem Handy gespeichert.
+Bitte tippen Sie Ihren SharperPlus-Schlüssel ein. Sie finden ihn in unserer E-Mail an Sie.
+SHARPERPLUS ÖFFNEN
+SCHLÜSSEL ERNEUT PRÜFEN
+SHARPERPLUS KAUFEN
+KOSTENLOSEN {0}-TAGE-SCHLÜSSEL HOLEN
+ANDEREN SCHLÜSSEL EINGEBEN
+Das ist kein SharperPlus-Schlüssel. Er beginnt mit SP und hat danach {0} Buchstaben und Zahlen.
+SharperPlus ist nicht erreichbar. Bitte prüfen Sie Ihr Internet.
+Schlüssel nicht gefunden. Bitte mit Ihrer E-Mail vergleichen.
+Dieser Schlüssel ist schon auf {0} Handy geöffnet. Schreiben Sie an support@sharperplus.com, um ihn auf dieses Handy zu übertragen.
+Dieser Schlüssel ist schon auf {0} Handys geöffnet. Schreiben Sie an support@sharperplus.com, um ihn auf dieses Handy zu übertragen.
+Dieses Handy hatte schon eine kostenlose Testphase. Bitte kaufen Sie SharperPlus, um weiterzumachen.
+Dieser Schlüssel lässt sich nicht öffnen. Bitte schreiben Sie an support@sharperplus.com

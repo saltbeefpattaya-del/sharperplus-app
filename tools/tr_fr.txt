@@ -363,3 +363,22 @@ Total des unités vendues : {0}
 TOTAL : {0}
 VOUS AVEZ CHOISI LES VENTES EN UNITÉS POUR :
 Mois :
+Votre essai gratuit est terminé
+Merci d'avoir essayé SharperPlus. Toutes vos recettes sont toujours enregistrées sur ce téléphone.
+Achetez SharperPlus pour continuer, puis touchez VÉRIFIER MA CLÉ.
+Connectez-vous à Internet
+SharperPlus doit vérifier votre clé. Activez le Wi-Fi ou les données mobiles, puis touchez VÉRIFIER MA CLÉ.
+Toutes vos recettes sont toujours enregistrées sur ce téléphone.
+Tapez votre clé SharperPlus. Elle se trouve dans l'e-mail que nous vous avons envoyé.
+OUVRIR SHARPERPLUS
+VÉRIFIER MA CLÉ
+ACHETER SHARPERPLUS
+OBTENIR UNE CLÉ GRATUITE DE {0} JOURS
+TAPER UNE AUTRE CLÉ
+Ce n'est pas une clé SharperPlus. Elle commence par SP suivi de {0} lettres et chiffres.
+Impossible de joindre SharperPlus. Vérifiez votre connexion Internet.
+Clé introuvable. Comparez-la avec votre e-mail.
+Cette clé est déjà ouverte sur {0} téléphone. Écrivez à support@sharperplus.com pour la passer sur ce téléphone.
+Cette clé est déjà ouverte sur {0} téléphones. Écrivez à support@sharperplus.com pour la passer sur ce téléphone.
+Ce téléphone a déjà eu un essai gratuit. Achetez SharperPlus pour continuer.
+Impossible d'ouvrir cette clé. Écrivez à support@sharperplus.com

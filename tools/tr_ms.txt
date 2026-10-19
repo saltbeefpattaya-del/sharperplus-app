@@ -363,3 +363,22 @@ Jumlah unit dijual: {0}
 JUMLAH: {0}
 ANDA MEMILIH JUALAN UNIT UNTUK:
 Bulan:
+Percubaan percuma anda sudah tamat
+Terima kasih kerana mencuba SharperPlus. Semua resipi anda masih disimpan dalam telefon ini.
+Beli SharperPlus untuk teruskan, kemudian ketik SEMAK KUNCI SEMULA.
+Sila sambung ke internet
+SharperPlus perlu menyemak kunci anda. Hidupkan Wi-Fi atau data mudah alih, kemudian ketik SEMAK KUNCI SEMULA.
+Semua resipi anda masih disimpan dalam telefon ini.
+Sila taip kunci SharperPlus anda. Ia ada dalam e-mel yang kami hantar.
+BUKA SHARPERPLUS
+SEMAK KUNCI SEMULA
+BELI SHARPERPLUS
+DAPATKAN KUNCI PERCUMA {0} HARI
+TAIP KUNCI LAIN
+Itu bukan kunci SharperPlus. Ia bermula dengan SP diikuti {0} huruf dan nombor.
+Tidak dapat menghubungi SharperPlus. Sila semak internet anda.
+Kunci tidak dijumpai. Sila semak dengan e-mel anda.
+Kunci ini sudah dibuka pada {0} telefon. E-mel support@sharperplus.com untuk memindahkannya ke telefon ini.
+Kunci ini sudah dibuka pada {0} telefon. E-mel support@sharperplus.com untuk memindahkannya ke telefon ini.
+Telefon ini sudah pernah mendapat percubaan percuma. Sila beli SharperPlus untuk teruskan.
+Kunci ini tidak dapat dibuka. Sila e-mel support@sharperplus.com

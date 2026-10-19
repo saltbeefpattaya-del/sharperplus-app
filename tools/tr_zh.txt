@@ -363,3 +363,22 @@ SharperPlus 帮您省去逐字输入的麻烦！
 合计：{0}
 您选择了按件计的销量，月份：
 月份：
+您的免费试用已结束
+感谢您试用 SharperPlus。您的所有配方仍保存在这部手机上。
+购买 SharperPlus 后即可继续使用，然后点「重新检查密钥」。
+请连接互联网
+SharperPlus 需要检查您的密钥。请打开 Wi-Fi 或移动数据，然后点「重新检查密钥」。
+您的所有配方仍保存在这部手机上。
+请输入您的 SharperPlus 密钥。它在我们发给您的邮件里。
+打开 SHARPERPLUS
+重新检查密钥
+购买 SHARPERPLUS
+获取 {0} 天免费密钥
+输入其他密钥
+这不是 SharperPlus 密钥。密钥以 SP 开头，后面有 {0} 个字母和数字。
+无法连接 SharperPlus。请检查您的网络。
+找不到这个密钥。请对照您的邮件检查。
+这个密钥已在 {0} 部手机上使用。请发邮件到 support@sharperplus.com 转到这部手机。
+这个密钥已在 {0} 部手机上使用。请发邮件到 support@sharperplus.com 转到这部手机。
+这部手机已经用过免费试用。请购买 SharperPlus 继续使用。
+无法打开这个密钥。请发邮件到 support@sharperplus.com
