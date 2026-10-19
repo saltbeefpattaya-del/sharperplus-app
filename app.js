@@ -1932,7 +1932,111 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage, 'CHANGE APPEARANCE': pickLook };
+  // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
+  function welcome() {
+    var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
+    var pic = el('img', 'natbig'); pic.src = 'nat_welcome.png'; pic.alt = ''; box.appendChild(pic);
+    box.appendChild(el('div', 'welcomehead', 'Welcome to SharperPlus!'));
+    var body = el('div', 'welcomebody');
+    ['SharperPlus has been built by a restaurant, for a restaurant.',
+     'We have tried our best to produce a User Guide that will help you navigate through each section of the software.',
+     'As we understand that using SharperPlus for the first time may feel a little overwhelming, we recommend that you view the User Guide first. It will guide you through each section of the software when you open it for the first time.'
+    ].forEach(function (t) { body.appendChild(el('p', '', t)); });
+    body.appendChild(el('p', 'chef', 'From one chef to another...'));
+    body.appendChild(el('p', '', 'Take your time. Don’t rush, and don’t feel that everything has to be added in one day. SharperPlus is not a magic wand, but once it is set up properly, you will truly start to see the rewards. Believe me, I know it takes time. It took me months to set it up for my own restaurant!'));
+    body.appendChild(el('p', '', 'To open the User Guide, click below, or simply continue to the Main Menu.'));
+    box.appendChild(body);
+    var go = el('button', 'gobtn', 'OPEN USER GUIDE');
+    var cont = el('button', 'soft wide', 'CONTINUE');
+    var tick = el('label', 'nevertick');
+    var cb = el('input'); cb.type = 'checkbox'; tick.appendChild(cb); tick.appendChild(el('span', '', "Don't show this again"));
+    function close() {
+      if (cb.checked) { data.settings.welcome_off = 'YES'; save(); }
+      document.body.removeChild(shade);
+    }
+    go.onclick = function () { close(); startTour(); };
+    cont.onclick = function () { close(); setTimeout(billReminder, 300); };
+    box.appendChild(go); box.appendChild(cont); box.appendChild(tick);
+    shade.appendChild(box); document.body.appendChild(shade);
+  }
+
+  var TOUR = [
+    ['MASTER COSTINGS', 'MASTER COSTINGS', 'Start here. Add your electric, gas and rent, and SharperPlus shares them fairly across every dish, so you get a truer cost per dish. Take your time: nothing here is compulsory.'],
+    ['STAFF', 'STAFF', 'Add your staff and their wages here. When you build a recipe, you simply pick who makes it from a drop-down, and their time is costed into the dish.'],
+    ['ADD RECIPE', 'ADD A RECIPE', 'Click here, type the name of your dish, and a new recipe sheet opens for the full details. Every ingredient is remembered, so each new recipe gets faster to fill in.'],
+    ['ADD RECIPE FROM PHOTO', 'TAKE A PHOTO OF RECIPE', 'Let’s be honest: after a hard day in the kitchen, nobody wants to type out recipes. Take a photo of your handwritten recipe and SharperPlus turns it into text. Then just check it, as handwriting is not always read perfectly.'],
+    ['DASHBOARD', 'DASHBOARD', 'All your recipes in one place. Search for a dish, change a price, or open its full recipe sheet. Any dish that falls below the lowest margin you set is highlighted.']
+  ];
+  function startTour() {
+    show('menu');
+    var at = 0, lit = null;
+    var shade = el('div', 'tourshade');
+    var sheet = el('div', 'toursheet');
+    var top = el('div', 'tourtop');
+    var face = el('img', 'natface'); face.src = 'nat_guide.png'; face.alt = '';
+    var heads = el('div', 'tourheads');
+    var stepNo = el('div', 'tourstep'); stepNo.setAttribute('data-notr', '');
+    var name = el('div', 'tourname');
+    heads.appendChild(stepNo); heads.appendChild(name);
+    top.appendChild(face); top.appendChild(heads);
+    var words = el('div', 'tourwords');
+    var later = el('div', 'tourlater', 'You can come back to this guide at any time: click USER GUIDE on the main menu.');
+    var row = el('div', 'tourbtns');
+    var back = el('button', 'soft', 'BACK'), next = el('button', 'gobtn tournext', 'NEXT');
+    row.appendChild(back); row.appendChild(next);
+    var end = el('button', 'tourend', 'END TOUR');
+    [top, words, later, row, end].forEach(function (x) { sheet.appendChild(x); });
+    document.body.appendChild(shade); document.body.appendChild(sheet);
+    document.body.classList.add('touring');
+
+    function stop() {
+      if (lit) lit.classList.remove('spot');
+      document.body.classList.remove('touring');
+      document.body.removeChild(shade); document.body.removeChild(sheet);
+      window.scrollTo(0, 0);
+    }
+    function paint() {
+      var s = TOUR[at];
+      if (lit) lit.classList.remove('spot');
+      lit = document.querySelector('#menu [data-go="' + s[0] + '"]');
+      if (lit) {
+        lit.classList.add('spot');
+        var r = lit.getBoundingClientRect(), room = window.innerHeight - sheet.offsetHeight;
+        window.scrollTo({ top: window.scrollY + r.top - Math.max(12, (room - r.height) / 2), behavior: 'smooth' });
+      }
+      stepNo.textContent = SPT.T('STEP {} OF {}').replace('{}', at + 1).replace('{}', TOUR.length);
+      name.textContent = s[1];
+      words.textContent = s[2];
+      later.hidden = at !== 0;
+      back.style.visibility = at === 0 ? 'hidden' : 'visible';
+      next.textContent = at === TOUR.length - 1 ? 'FINISH' : 'NEXT';
+      end.hidden = at === TOUR.length - 1;
+    }
+    back.onclick = function () { if (at > 0) { at--; paint(); } };
+    next.onclick = function () {
+      if (at < TOUR.length - 1) { at++; paint(); return; }
+      stop(); thankYou();
+    };
+    end.onclick = stop;
+    shade.onclick = function () {};
+    setTimeout(paint, 30);
+  }
+  function thankYou() {
+    var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
+    var pic = el('img', 'natbig'); pic.src = 'nat_welcome.png'; pic.alt = ''; box.appendChild(pic);
+    box.appendChild(el('div', 'welcomehead', 'Thank you for choosing SharperPlus!'));
+    var body = el('div', 'welcomebody');
+    ['We have tried extremely hard to produce our software for ease of use.',
+     'We hope you find SharperPlus as beneficial to your business as it has been to our business, London Beigel and Salt Beef Bar.'
+    ].forEach(function (t) { body.appendChild(el('p', '', t)); });
+    box.appendChild(body);
+    var ok = el('button', 'gobtn', 'OK'); ok.onclick = function () { document.body.removeChild(shade); };
+    box.appendChild(ok);
+    shade.appendChild(box); document.body.appendChild(shade);
+  }
+
+  var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage, 'CHANGE APPEARANCE': pickLook,
+                  'USER GUIDE': startTour };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');
@@ -1943,7 +2047,8 @@
   useLang(data.settings.language || 'ENGLISH'); SPT.start();
   var start = location.hash.replace('#', '');
   if (start && builders[start]) show(start);
-  setTimeout(billReminder, 800);
+  if (data.settings.welcome_off !== 'YES' && !(start && builders[start])) setTimeout(welcome, 400);
+  else setTimeout(billReminder, 800);
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) { reg.update(); }).catch(function () {}); });
