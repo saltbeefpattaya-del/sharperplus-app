@@ -418,3 +418,13 @@ SHARPERPLUS AUF DIESES HANDY HOLEN
 Ihr Schlüssel wurde in den letzten {0} Tagen schon umgezogen und kann noch nicht wieder umziehen. Schreiben Sie an support@sharperplus.com, wir helfen Ihnen.
 SharperPlus auf zwei Handys?
 SEHEN, WAS PREMIUM BIETET
+Mein Rezept übersetzen in
+Ihr Rezept wird übersetzt...
+Das dauert ein paar Sekunden.
+DAS REZEPT KONNTE NICHT ÜBERSETZT WERDEN
+Das Übersetzen Ihres Rezepts gehört zu SharperPlus Premium.
+Das Rezept konnte nicht übersetzt werden.
+Der Übersetzer ist gerade sehr beschäftigt. Bitte warten Sie eine Minute und versuchen Sie es erneut.
+Das sind viele Übersetzungen für einen Tag. Bitte versuchen Sie es morgen wieder.
+Bitte öffnen Sie SharperPlus zuerst mit Ihrem Schlüssel.
+Der Übersetzer ist noch nicht eingerichtet.

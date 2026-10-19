@@ -418,3 +418,13 @@ PASAR SHARPERPLUS A ESTE TELÉFONO
 Su clave cambió de teléfono en los últimos {0} días y aún no puede cambiar otra vez. Escriba a support@sharperplus.com y le ayudaremos.
 ¿Quiere SharperPlus en dos teléfonos?
 VER LO QUE LE DA PREMIUM
+Traducir mi receta al
+Traduciendo su receta...
+Tarda unos segundos.
+NO SE PUDO TRADUCIR LA RECETA
+Traducir su receta es parte de SharperPlus Premium.
+No se pudo traducir la receta.
+El traductor está muy ocupado. Espere un minuto y vuelva a intentarlo.
+Son muchas traducciones para un día. Vuelva a intentarlo mañana.
+Abra primero SharperPlus con su clave.
+El traductor aún no está configurado.

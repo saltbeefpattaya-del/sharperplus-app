@@ -418,3 +418,13 @@ PINDAHKAN SHARPERPLUS KE TELEFON INI
 Kunci anda telah dipindahkan dalam {0} hari lepas, jadi belum boleh dipindah lagi. Sila e-mel support@sharperplus.com dan kami akan bantu.
 Mahu SharperPlus pada dua telefon?
 LIHAT APA YANG PREMIUM BERI
+Terjemah resipi saya ke
+Menterjemah resipi anda...
+Ini mengambil beberapa saat.
+RESIPI TIDAK DAPAT DITERJEMAH
+Menterjemah resipi ialah sebahagian daripada SharperPlus Premium.
+Resipi tidak dapat diterjemah.
+Penterjemah sangat sibuk sekarang. Sila tunggu seminit dan cuba lagi.
+Itu terlalu banyak terjemahan untuk satu hari. Sila cuba lagi esok.
+Sila buka SharperPlus dengan kunci anda dahulu.
+Penterjemah belum disediakan.

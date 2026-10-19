@@ -1703,15 +1703,17 @@
     }
     return attempt(0);
   }
-  function waiting(on) {
+  function waiting(on, head, line) {
     var w = document.getElementById('waitbox');
+    if (w && on && (w.__head || '') !== (head || '')) { if (w.parentNode) w.parentNode.removeChild(w); w = null; }
     if (!w) {
       w = el('div', 'shade'); w.id = 'waitbox';
       var box = el('div', 'notice');
-      box.appendChild(el('div', 'notice-head', 'Reading your recipe...'));
+      w.__head = head || '';
+      box.appendChild(el('div', 'notice-head', head || 'Reading your recipe...'));
       var body = el('div', 'notice-body');
       body.appendChild(el('div', 'spinner'));
-      body.appendChild(el('div', '', 'Handwriting can take a little longer.'));
+      body.appendChild(el('div', '', line || 'Handwriting can take a little longer.'));
       box.appendChild(body); w.appendChild(box);
     }
     if (on) document.body.appendChild(w); else if (w.parentNode) w.parentNode.removeChild(w);
@@ -1864,6 +1866,39 @@
     }
     lines.push('', T('— SENT FROM SHARPERPLUS'));
     return lines.join('\n');
+  }
+  // ---- translate the recipe itself (Premium): the chef's own words, into the language picked
+  var TR_URL = 'https://sharperplus.com/wp-json/sp/v1/translate';
+  var TR_CODES = { 'ENGLISH': 'en', 'ไทย': 'th', 'FRANÇAIS': 'fr', 'DEUTSCH': 'de', 'ITALIANO': 'it', 'ESPAÑOL': 'es', '中文': 'zh', 'עברית': 'he', 'BAHASA MELAYU': 'ms' };
+  function translatedRecipe(r, lang) {          // a copy of the recipe in that language (kept, so it is only paid for once)
+    var code = TR_CODES[lang]; if (!code) return Promise.resolve(r);
+    var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
+    var steps = methodKept(r.method);
+    var texts = [String(r.recipe_name || '')].concat(rows.map(function (x) { return String(x[0]).trim(); }),
+      steps.map(function (st) { return st.text; }), steps.map(function (st) { return st.tip; }));
+    var src = JSON.stringify(texts);
+    r.tr = r.tr || {};
+    var have = r.tr[code];
+    var get = have && have.src === src ? Promise.resolve(have.out) :
+      fetch(TR_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: (data.settings.licence || {}).key || '', to: code, texts: texts.map(function (t) { return t || '-'; }) }) })
+        .then(function (res) { return res.json(); }, function () { throw new Error('No internet connection. Please check your connection and try again.'); })
+        .then(function (a) {
+          if (!a || !a.ok) throw new Error(a && a.error === 'premium' ? 'Translating your recipe is part of SharperPlus Premium.' : ((a && a.error) || 'The recipe could not be translated.'));
+          r.tr[code] = { src: src, out: a.texts }; save(); return a.texts;
+        });
+    return get.then(function (out) {
+      var i = 0, name = out[i++], nameOf = {};
+      var copy = JSON.parse(JSON.stringify(r)); copy.recipe_name = texts[0] ? name : copy.recipe_name;
+      rows.forEach(function (x) { nameOf[String(x[0]).trim()] = out[i++]; });
+      copy.rows = (copy.rows || []).map(function (x) { var k = String(x[0] || '').trim(); return k && nameOf[k] ? [nameOf[k]].concat(x.slice(1)) : x; });
+      var tx = out.slice(i, i + steps.length), tp = out.slice(i + steps.length);
+      copy.method = steps.map(function (st, j) {
+        return Object.assign({}, st, { text: st.text ? tx[j] : '', tip: st.tip ? tp[j] : '',
+          uses: st.uses.map(function (u) { return nameOf[u] || u; }) });
+      });
+      return copy;
+    });
   }
   function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function cardHtml(r) {          // the kitchen card, as the desktop prints it
@@ -2104,21 +2139,32 @@
       box.appendChild(el('div', 'notice-head', 'SEND OR PRINT'));
       var body = el('div', 'notice-body');
       body.appendChild(el('div', '', 'Send the recipe and method to your team.'));
+      var lang = data.settings.language || 'ENGLISH';
+      var trTick = el('label', 'trtick'), trBox = el('input'); trBox.type = 'checkbox'; trBox.checked = lang !== 'ENGLISH';
+      var trWords = el('span', '', 'Translate my recipe into'); var trLang = el('b', ''); trLang.setAttribute('data-notr', ''); trLang.textContent = ' ' + lang;
+      trTick.appendChild(trBox); trTick.appendChild(trWords); trTick.appendChild(trLang); body.appendChild(trTick);
       var note = el('input', 'cream'); note.placeholder = 'NOTE FOR THE TEAM (OPTIONAL)'; body.appendChild(note);
       box.appendChild(body);
       var row = el('div', 'notice-btns col');
       function close() { document.body.removeChild(shade); }
       function open(url) { close(); window.location.href = url; }
-      var subject = (r.recipe_name || 'RECIPE') + ' - HOW TO MAKE IT';
-      var apps = [['WHATSAPP', 'wa', function () { open('https://wa.me/?text=' + encodeURIComponent(shareText(r, note.value))); }],
-        ['LINE', 'line', function () { open('https://line.me/R/share?text=' + encodeURIComponent(shareText(r, note.value))); }],
-        ['EMAIL', 'mail', function () { open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(shareText(r, note.value).replace(/\*/g, ''))); }]];
+      function ready(then) {        // the recipe, translated first when the box is ticked
+        if (!trBox.checked) { then(r); return; }
+        waiting(true, 'Translating your recipe...', 'This takes a few seconds.');
+        translatedRecipe(r, lang).then(function (t) { waiting(false); then(t); }, function (err) {
+          waiting(false); close();
+          if (/Premium/.test(err.message)) premiumBox(err.message); else notice('THE RECIPE COULD NOT BE TRANSLATED', [err.message]);
+        });
+      }
+      var apps = [['WHATSAPP', 'wa', function () { ready(function (t) { open('https://wa.me/?text=' + encodeURIComponent(shareText(t, note.value))); }); }],
+        ['LINE', 'line', function () { ready(function (t) { open('https://line.me/R/share?text=' + encodeURIComponent(shareText(t, note.value))); }); }],
+        ['EMAIL', 'mail', function () { ready(function (t) { open('mailto:?subject=' + encodeURIComponent((t.recipe_name || 'RECIPE') + ' - ' + SPT.T('HOW TO MAKE IT')) + '&body=' + encodeURIComponent(shareText(t, note.value).replace(/\*/g, ''))); }); }]];
       if (navigator.share) apps.push(['MORE APPS (MESSENGER AND OTHERS)', 'more', function () {
-        navigator.share({ title: subject, text: shareText(r, note.value).replace(/\*/g, '') }).catch(function () {}); close(); }]);
+        ready(function (t) { navigator.share({ title: t.recipe_name || 'RECIPE', text: shareText(t, note.value).replace(/\*/g, '') }).catch(function () {}); close(); }); }]);
       apps.push(['PRINT / SAVE AS PDF', 'print', function () {
-        close(); var w = window.open('', '_blank');
+        var w = window.open('', '_blank');
         if (!w) { notice('NOTICE', ['Please allow pop-ups to print.']); return; }
-        w.document.open(); w.document.write(cardHtml(r)); w.document.close();
+        ready(function (t) { close(); w.document.open(); w.document.write(cardHtml(t)); w.document.close(); });
       }]);
       apps.push(['CLOSE', '', close]);
       apps.forEach(function (a) { var b = el('button', 'soft share ' + a[1], a[0]); b.onclick = a[2]; row.appendChild(b); });
@@ -2229,7 +2275,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 16px/1.35 Arial,sans-serif;color:#A66600;margin:2px 0 12px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.trtick{display:flex;align-items:center;gap:10px;justify-content:center;font:bold 18px Arial,sans-serif;margin:10px 0;padding:10px;border:2px solid #000;border-radius:12px;background:#FFF8E0}\n.trtick input{width:26px;height:26px;margin:0}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 16px/1.35 Arial,sans-serif;color:#A66600;margin:2px 0 12px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');

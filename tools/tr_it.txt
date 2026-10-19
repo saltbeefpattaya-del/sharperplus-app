@@ -418,3 +418,13 @@ SPOSTA SHARPERPLUS SU QUESTO TELEFONO
 La tua chiave è stata spostata negli ultimi {0} giorni, quindi non può spostarsi ancora. Scrivi a support@sharperplus.com e ti aiuteremo.
 Vuoi SharperPlus su due telefoni?
 SCOPRI COSA TI DÀ PREMIUM
+Traduci la mia ricetta in
+Traduzione della ricetta...
+Ci vuole qualche secondo.
+IMPOSSIBILE TRADURRE LA RICETTA
+La traduzione della ricetta fa parte di SharperPlus Premium.
+Impossibile tradurre la ricetta.
+Il traduttore è molto occupato. Aspetta un minuto e riprova.
+Sono tante traduzioni per un giorno. Riprova domani.
+Apri prima SharperPlus con la tua chiave.
+Il traduttore non è ancora attivo.
