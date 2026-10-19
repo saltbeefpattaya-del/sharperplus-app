@@ -59,6 +59,125 @@
   }
   function unitsOf(s, line) { return s.data_type === 'SALES' ? line[4] : line[1]; }
 
+  // ---------------------------------------------------------------- PRODUCTION LOG + SALES CSV (as the desktop)
+  var PROD_MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  function prodMonth(d) { d = d || new Date(); return PROD_MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+  function isoDay(d) { d = d || new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function sortMonthLines(s) {        // newest month first, at most 12 (same as Master Costings)
+    var lines = months(s);
+    var all = lines.map(function (l, i) { return { l: l, g: s.gas_history[i] || '', u: s.gas_units_history[i] || '', i: i }; });
+    all.sort(function (a, b) {
+      var pa = SP.parseMonth(a.l[0]), pb = SP.parseMonth(b.l[0]);
+      if (pa && pb) return (pb[0] * 12 + pb[1]) - (pa[0] * 12 + pa[1]) || a.i - b.i;
+      return pa ? -1 : pb ? 1 : a.i - b.i;
+    });
+    all = all.slice(0, SP.HISTORY_ROWS);
+    s.elec_history = all.map(function (x) { var p = SP.parseMonth(x.l[0]); if (p) x.l[0] = SP.monthLabel(p[0], p[1]); return x.l; });
+    s.gas_history = all.map(function (x) { return x.g; });
+    s.gas_units_history = all.map(function (x) { return x.u; });
+  }
+  function monthLine(s, y, m) {       // that month's line in YOUR MONTHS, added if missing
+    var find = function () { return months(s).filter(function (l) { var p = SP.parseMonth(l[0]); return p && p[0] === y && p[1] === m; })[0]; };
+    if (!find()) { months(s).push([SP.monthLabel(y, m), '', '', '', '']); s.gas_history.push(''); s.gas_units_history.push(''); sortMonthLines(s); }
+    return find() || null;
+  }
+  function logProduction(name, qty) { // one line per recipe per day; returns this month's total
+    var log = data.production_log = data.production_log || [];
+    var day = isoDay(), month = prodMonth(), hit = null;
+    log.forEach(function (l) { if (l[0] === day && String(l[1]).trim().toLowerCase() === name.trim().toLowerCase()) hit = l; });
+    if (hit) hit[2] = String(qty); else log.push([day, name, String(qty), month]);
+    return log.filter(function (l) { return l[3] === month; }).reduce(function (a, l) { return a + num(l[2]); }, 0);
+  }
+  function productionMonths() {       // {'2026-10': {recipe: qty}} from the log
+    var out = {};
+    (data.production_log || []).forEach(function (l) {
+      var p = SP.parseMonth(String(l[3]).replace(' ', '-')); if (!p || num(l[2]) <= 0) return;
+      var k = p[0] + '-' + p[1]; out[k] = out[k] || {}; out[k][l[1]] = (out[k][l[1]] || 0) + num(l[2]);
+    });
+    return out;
+  }
+  function monthRollover() {          // a finished month's total goes into its line; the new month starts again
+    var s = data.settings, now = new Date(), thisM = prodMonth(now), changed = false;
+    var logged = productionMonths();
+    if (!s.produced_month) { s.produced_month = thisM; changed = true; }
+    else if (s.produced_month !== thisM) {
+      var last = SP.parseMonth(String(s.produced_month).replace(' ', '-'));
+      if (last && num(s.units_produced) > 0) { var line = monthLine(s, last[0], last[1]); if (line && !String(line[1]).trim()) line[1] = String(num(s.units_produced)); }
+      var so = logged[now.getFullYear() + '-' + (now.getMonth() + 1)] || {};
+      s.units_produced = String(Math.floor(Object.keys(so).reduce(function (a, k) { return a + so[k]; }, 0) + 1e-9));
+      s.produced_month = thisM; changed = true;
+    }
+    Object.keys(logged).forEach(function (k) {
+      var y = +k.split('-')[0], m = +k.split('-')[1];
+      if (y * 12 + m >= now.getFullYear() * 12 + now.getMonth() + 1) return;
+      var line = monthLine(s, y, m), tot = Object.keys(logged[k]).reduce(function (a, r) { return a + logged[k][r]; }, 0);
+      if (line && !String(line[1]).trim()) { line[1] = String(tot); changed = true; }
+    });
+    if (changed) save();
+  }
+  var productsSeen = null;
+  function productionMade(r) {        // TOTAL PRODUCTS on a recipe was changed by the chef: log it for today
+    monthRollover();
+    var s = data.settings, name = String(r.recipe_name || '').trim();
+    var qty = Math.floor(SP.costEverything(r, s).products + 1e-9);
+    if (qty === productsSeen) return;
+    productsSeen = qty;
+    var day = isoDay(), logged = null;
+    (data.production_log || []).forEach(function (l) { if (l[0] === day && String(l[1]).trim().toLowerCase() === name.toLowerCase()) logged = num(l[2]); });
+    if (!name || qty <= 0 || qty === logged) return;
+    var month = prodMonth();
+    var before = (data.production_log || []).filter(function (l) { return l[3] === month; }).reduce(function (a, l) { return a + num(l[2]); }, 0);
+    var after = logProduction(name, qty);
+    var total = Math.floor(num(s.units_produced) + after - before + 1e-9);
+    s.units_produced = String(total); save();
+    var go = s.hide_production_notice ? Promise.resolve(0) : notice('NOTICE', [
+      'This quantity has been added to MONTHLY UNITS PRODUCED in Master Costings.', '',
+      'This gives you a running total of all recipes produced within a month, across all your recipe sheets.', '',
+      'Over time, this becomes your simple stock control system, allowing you to manage both your stock and sales levels.'],
+      ['OK', 'DON\'T SHOW THIS MESSAGE AGAIN']).then(function (a) { if (a === 1) { s.hide_production_notice = 'HIDE'; save(); } });
+    go.then(function () {
+      if (total - num(s.units_sold) < 0)
+        notice('STOCK ALERT', ['SALES HAVE OUTPERFORMED', 'PRODUCTION LEVELS', '', 'PLEASE CHECK YOUR', 'STOCK INVENTORY']);
+    });
+  }
+  var CSV_ITEM_NAMES = ['item name', 'item', 'product', 'product name', 'name', 'menu item', 'description'];
+  var CSV_SOLD_NAMES = ['items sold', 'units', 'units sold', 'sold', 'qty', 'quantity', 'quantity sold', 'qty sold', 'count'];
+  function csvRows(text) {
+    var rows = [], row = [], cell = '', q = false;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+      else if (ch === '"') q = true;
+      else if (ch === ',') { row.push(cell); cell = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += ch;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows;
+  }
+  function salesCsvUnits(rows) {      // total units sold (desktop sales_csv_units); null if not recognised
+    var start = -1, ci = -1, cs = -1;
+    for (var r = 0; r < Math.min(rows.length, 20); r++) {
+      var head = rows[r].slice(0, 20).map(function (c) { return String(c).trim().toLowerCase(); });
+      ci = -1; cs = -1;
+      CSV_ITEM_NAMES.some(function (n) { var k = head.indexOf(n); if (k >= 0) { ci = k; return true; } });
+      CSV_SOLD_NAMES.some(function (n) { var k = head.indexOf(n); if (k >= 0) { cs = k; return true; } });
+      if (ci >= 0 && cs >= 0) { start = r; break; }
+    }
+    if (start < 0) return null;
+    var total = 0;
+    rows.slice(start + 1).forEach(function (row) {
+      if (row.length <= Math.max(ci, cs)) return;
+      var t = String(row[cs]).replace(/,/g, '').trim().toLowerCase();
+      var grams = /kg$/.test(t) ? 1000 : /g$/.test(t) ? 1 : 0;
+      var sold = parseFloat(t.replace(/k?g$/, '').trim()); if (isNaN(sold)) return;
+      if (grams) total += Math.ceil(sold * grams / 150);
+      else if (String(row[ci]).toLowerCase().indexOf('by weight') >= 0) total += Math.ceil(sold / 150);
+      else total += sold;
+    });
+    return total;
+  }
+
   // ---------------------------------------------------------------- little helpers
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -275,6 +394,87 @@
     field(units, 'MONTHLY UNITS SOLD', function () { return s.units_sold; },
           function (v) { s.units_sold = v; });
     out(units, 'TOTAL STOCK HOLDING AFTER MONTHLY SALES', 'stock');
+    units.appendChild(el('div', 'note', 'Every time you change the batch on a recipe, it is added to UNITS PRODUCED for this month.'));
+    buttons(units, [['ADD PRODUCED TO THIS MONTH', function () { unitsToMonth('produced'); }],
+                    ['ADD SOLD TO THIS MONTH', function () { unitsToMonth('sold'); }]]);
+    buttons(units, [['UPLOAD YOUR SALES CSV', uploadCsv], ['VIEW PRODUCTION HISTORY', viewProduction]]);
+
+    function unitsToMonth(key) {      // put MONTHLY UNITS PRODUCED (or SOLD) into this month's line (desktop units_to_month)
+      var v = num(key === 'produced' ? s.units_produced : s.units_sold);
+      var what = key === 'produced' ? 'PRODUCTION' : 'SALES';
+      if (v <= 0) { notice('NOTICE', ['NO ' + what + ' DATA IN SYSTEM.', 'PLEASE ADD MANUALLY TO EACH MONTH']); return; }
+      notice('ADD ' + what + ' DATA FOR ELECTRIC AND GAS COST?', [String(v) + ' UNITS'], ['YES', 'NO']).then(function (a) {
+        if (a !== 0) return;
+        var d = new Date(), lines = months(s);
+        var line = lines.filter(function (l) { var p = SP.parseMonth(l[0]); return p && p[0] === d.getFullYear() && p[1] === d.getMonth() + 1; })[0] || lines[0];
+        if (!line) line = monthLine(s, d.getFullYear(), d.getMonth() + 1);
+        var idx = key === 'produced' ? 1 : 4, old = String(line[idx] || '').trim();
+        var go = old && num(old) !== v
+          ? notice(key === 'produced' ? 'UNITS PRODUCED' : 'UNITS SOLD', [line[0] + ' already has ' + old + '.', '', 'Change it to ' + v + '?'], ['YES', 'NO'])
+          : Promise.resolve(0);
+        go.then(function (b) {
+          if (b !== 0) return;
+          line[idx] = String(v);
+          setView(key === 'sold' ? 'SALES' : 'PRODUCTION');
+          notice(what + ' DATA', [v + (key === 'produced' ? ' PRODUCTION' : ' SALES') + ' UNITS ADDED FOR', String(line[0]).replace('-', ' ').toUpperCase()]);
+        });
+      });
+    }
+    function uploadCsv() {            // desktop upload_csv: total units sold from a POS sales CSV
+      var input = document.createElement('input'); input.type = 'file'; input.accept = '.csv,text/csv';
+      input.onchange = function () {
+        var f = input.files && input.files[0]; if (!f) return;
+        var rd = new FileReader();
+        rd.onload = function () {
+          var total = salesCsvUnits(csvRows(String(rd.result || '').replace(/^\ufeff/, '')));
+          if (total == null) { notice('UPLOAD FAILED', ['CSV format not recognised!', '', 'Please make sure your CSV has an item column', '(Item name or Product) and a sold column', '(Items sold, Units or Qty).']); return; }
+          var d = new Date(), def = SP.monthLabel(d.getFullYear(), d.getMonth() + 1).toUpperCase();
+          ask('SELECT DATA TYPE', ['YOU HAVE SELECTED UNIT SALES, FOR ' + def + '.', 'IF YOU WISH TO ADD THIS TO A DIFFERENT MONTH', 'PLEASE ADD BELOW'], 'MMM-YYYY', def).then(function (text) {
+            if (!text) { notice('CANCELLED', ['Sales upload cancelled.']); return; }
+            var when = SP.parseMonth(text);
+            if (!when) { notice('FORMAT ERROR', ['Could not recognise that month.', 'Please use MMM-YYYY (e.g. FEB-2026)']); return; }
+            var line = monthLine(s, when[0], when[1]), units2 = String(Math.round(total));
+            if (line) line[4] = units2;
+            s.units_sold = units2; save();
+            setView('SALES');
+            refreshers.master();
+            notice('UPLOAD COMPLETE', ['Sales CSV Uploaded!', '', 'Total Units Sold: ' + SP.whole(total), 'Month: ' + SP.monthLabel(when[0], when[1])]);
+          });
+        };
+        rd.readAsText(f);
+      };
+      input.click();
+    }
+    function viewProduction() {       // every month's production, newest first; tap a month to see its recipes
+      monthRollover();
+      var logged = productionMonths(), d = new Date(), nowK = d.getFullYear() + '-' + (d.getMonth() + 1), all = {};
+      months(s).forEach(function (l) { var p = SP.parseMonth(l[0]); if (p) all[p[0] + '-' + p[1]] = num(l[1]); });
+      if (num(s.units_produced) > 0) all[nowK] = num(s.units_produced);
+      Object.keys(logged).forEach(function (k) { if (all[k] == null) all[k] = Object.keys(logged[k]).reduce(function (a, r) { return a + logged[k][r]; }, 0); });
+      var keys = Object.keys(all).sort(function (a, b) { var pa = a.split('-'), pb = b.split('-'); return (pb[0] * 12 + +pb[1]) - (pa[0] * 12 + +pa[1]); });
+      var shade = el('div', 'shade'), box = el('div', 'notice');
+      box.appendChild(el('div', 'notice-head', 'PRODUCTION HISTORY'));
+      var body = el('div', 'notice-body');
+      if (!keys.length) body.appendChild(el('div', '', 'No production yet. Change the batch on a recipe to start.'));
+      keys.forEach(function (k) {
+        var y = +k.split('-')[0], m = +k.split('-')[1];
+        var label = SP.monthLabel(y, m) + (k === nowK ? '  (so far)' : '') + ':   ' + SP.whole(all[k]);
+        if (logged[k]) {
+          var b = el('button', 'soft wide', label + '  \u25b8');
+          b.onclick = function () {
+            var rec = logged[k], lines = Object.keys(rec).sort(function (a, c) { return rec[c] - rec[a]; })
+              .map(function (n) { return n + ':   ' + SP.whole(rec[n]); });
+            lines.push('', 'TOTAL:   ' + SP.whole(Object.keys(rec).reduce(function (a, n) { return a + rec[n]; }, 0)));
+            notice(SP.monthLabel(y, m).toUpperCase() + ' PRODUCTION', lines);
+          };
+          body.appendChild(b);
+        } else body.appendChild(el('div', 'histline', label));
+      });
+      box.appendChild(body);
+      var row = el('div', 'notice-btns'), ok = el('button', 'soft', 'OK');
+      ok.onclick = function () { document.body.removeChild(shade); }; row.appendChild(ok); box.appendChild(row);
+      shade.appendChild(box); document.body.appendChild(shade);
+    }
 
     // ---- electric costing block
     var elec = card('ELECTRIC COSTING BLOCK');
@@ -608,6 +808,7 @@
     drawStaff();
     drawMonths();
     refreshers.master = function () {
+      monthRollover();
       drawStaff();
       inputs.forEach(function (x) { if (document.activeElement !== x.input) x.input.value = x.get() || ''; });
       drawMonths(); refresh();
@@ -894,9 +1095,14 @@
     var weightIn = inRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', function () { return recipeNow().total_weight || ''; },
                          function (v) { recipeNow().total_weight = v; });
     var batchIn = inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
-    inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
+    var sizeIn = inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
     var totIn = inRow(prod, 'TOTAL PRODUCTS', function () { return recipeNow().total_products || ''; },
                       function (v) { recipeNow().total_products = v; });
+    // a change the chef makes to the batch counts as production for today (as the desktop)
+    [weightIn, batchIn, sizeIn, totIn].forEach(function (row) {
+      var inp = row.querySelector('input'); if (inp) inp.addEventListener('change', function () { productionMade(recipeNow()); });
+    });
+    var madeSel = prod.querySelector('select'); if (madeSel) madeSel.addEventListener('change', function () { productionMade(recipeNow()); });
     outRow(prod, 'COST PER PORTION INGREDIENTS', 'portion');
 
     // ---- ingredients
@@ -1294,6 +1500,7 @@
         if (document.activeElement !== b.input) b.input.value = b.get() || '';
       });
       drawIngredients(); drawLabour(); calc();
+      productsSeen = Math.floor(SP.costEverything(r, s).products + 1e-9);
     };
     return page;
   };
@@ -2037,7 +2244,7 @@
     ['[data-guide="YOUR SETTINGS"]', 'YOUR SETTINGS', 'Pick your currency and your weights, and type your local VAT rate. You only do this once, and every recipe follows it.'],
     ['[data-guide="RENT & WORKING TIME"]', 'RENT & WORKING TIME', 'Type how many days you work each month, your hours per day and your monthly rent. SharperPlus works out your rent per day and shares it across every dish.'],
     ['[data-guide="STAFF"]', 'STAFF', 'Type each member of staff and their monthly wage. SharperPlus works out their daily and hourly cost, ready to pick when you build a recipe.'],
-    ['[data-guide="MONTHLY UNITS"]', 'MONTHLY UNITS', 'Roughly how many portions you make and sell in a month. This is how your bills are shared fairly across each dish.'],
+    ['[data-guide="MONTHLY UNITS"]', 'MONTHLY UNITS', 'Every time you change the batch on a recipe, it is added to UNITS PRODUCED for this month by itself. For UNITS SOLD, upload the sales CSV from your till, or type it in. This is how your bills are shared fairly across each dish.'],
     ['[data-guide="ELECTRIC COSTING BLOCK"]', 'ELECTRIC', 'Tap TYPE YOUR BILL HERE to add your electric bill. The split tells SharperPlus how much of your bill is cooking, and how much is lights, AC and fridges.'],
     ['[data-guide="MONTHLY GAS COSTING"]', 'GAS', 'Choose canister or metered gas and type your cost. Then tick the flames you cook on, and every recipe gets a true gas cost per minute.'],
     ['[data-guide="ELECTRIC & GAS MONTHS"]', 'YOUR MONTHS', 'Add your bills here each month. A red figure means you went over your planned bill. After 12 months you can use the yearly average.'],
