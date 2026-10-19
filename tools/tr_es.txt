@@ -382,3 +382,6 @@ Esta clave ya está abierta en {0} teléfono. Escriba a support@sharperplus.com 
 Esta clave ya está abierta en {0} teléfonos. Escriba a support@sharperplus.com para pasarla a este teléfono.
 Este teléfono ya tuvo una prueba gratuita. Compre SharperPlus para seguir.
 No se pudo abrir esta clave. Escriba a support@sharperplus.com
+Su clave de SharperPlus
+Esta es su propia clave de SharperPlus. Guárdela bien: también está en el correo que le enviamos.
+Toque ABRIR SHARPERPLUS para desbloquearla en este teléfono.

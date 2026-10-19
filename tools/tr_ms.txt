@@ -382,3 +382,6 @@ Kunci ini sudah dibuka pada {0} telefon. E-mel support@sharperplus.com untuk mem
 Kunci ini sudah dibuka pada {0} telefon. E-mel support@sharperplus.com untuk memindahkannya ke telefon ini.
 Telefon ini sudah pernah mendapat percubaan percuma. Sila beli SharperPlus untuk teruskan.
 Kunci ini tidak dapat dibuka. Sila e-mel support@sharperplus.com
+Kunci SharperPlus anda
+Ini kunci SharperPlus anda sendiri. Simpan baik-baik: ia juga ada dalam e-mel yang kami hantar.
+Ketik BUKA SHARPERPLUS untuk membukanya pada telefon ini.

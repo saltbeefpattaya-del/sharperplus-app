@@ -382,3 +382,6 @@ Cette clé est déjà ouverte sur {0} téléphone. Écrivez à support@sharperpl
 Cette clé est déjà ouverte sur {0} téléphones. Écrivez à support@sharperplus.com pour la passer sur ce téléphone.
 Ce téléphone a déjà eu un essai gratuit. Achetez SharperPlus pour continuer.
 Impossible d'ouvrir cette clé. Écrivez à support@sharperplus.com
+Votre clé SharperPlus
+Voici votre propre clé SharperPlus. Gardez-la bien : elle est aussi dans l'e-mail que nous vous avons envoyé.
+Touchez OUVRIR SHARPERPLUS pour la débloquer sur ce téléphone.

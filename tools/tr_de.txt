@@ -382,3 +382,6 @@ Dieser Schlüssel ist schon auf {0} Handy geöffnet. Schreiben Sie an support@sh
 Dieser Schlüssel ist schon auf {0} Handys geöffnet. Schreiben Sie an support@sharperplus.com, um ihn auf dieses Handy zu übertragen.
 Dieses Handy hatte schon eine kostenlose Testphase. Bitte kaufen Sie SharperPlus, um weiterzumachen.
 Dieser Schlüssel lässt sich nicht öffnen. Bitte schreiben Sie an support@sharperplus.com
+Ihr SharperPlus-Schlüssel
+Das ist Ihr eigener SharperPlus-Schlüssel. Bewahren Sie ihn gut auf: Er steht auch in unserer E-Mail an Sie.
+Tippen Sie auf SHARPERPLUS ÖFFNEN, um ihn auf diesem Handy freizuschalten.

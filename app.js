@@ -2626,6 +2626,10 @@
       box.appendChild(el('div', 'welcomehead', 'Please connect to the internet'));
       body.appendChild(el('p', '', 'SharperPlus needs to check your key. Please turn on your Wi-Fi or mobile data, then tap CHECK MY KEY AGAIN.'));
       body.appendChild(el('p', '', 'Your recipes are all still saved on this phone.'));
+    } else if (lic.fromLink && lic.key) {
+      box.appendChild(el('div', 'welcomehead', 'Your SharperPlus key'));
+      body.appendChild(el('p', '', 'Here is your own SharperPlus key. Keep it safe: it is also in the email we sent you.'));
+      body.appendChild(el('p', '', 'Tap OPEN SHARPERPLUS to unlock it on this phone.'));
     } else {
       box.appendChild(el('div', 'welcomehead', 'Welcome to SharperPlus!'));
       body.appendChild(el('p', '', 'Please type your SharperPlus key. You will find it in the email we sent you.'));
@@ -2644,7 +2648,7 @@
         var k = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
         if (k.length !== 14 || k.slice(0, 2) !== 'SP') { lockScreen('key', then, 'That does not look like a SharperPlus key. It starts with SP and has 12 letters and numbers after it.'); return; }
         lic.key = 'SP-' + k.slice(2, 6) + '-' + k.slice(6, 10) + '-' + k.slice(10, 14);
-        data.settings.licence = lic; save();
+        lic.typed = true; data.settings.licence = lic; save();
       }
       go.disabled = true; go.textContent = '...';
       checkKey(then, true);
@@ -2654,7 +2658,7 @@
       var buy = el('a', 'soft wide keylink', 'BUY SHARPERPLUS'); buy.href = 'https://sharperplus.com/buy/'; buy.target = '_blank'; buy.rel = 'noopener';
       box.appendChild(buy);
     }
-    if (kind === 'key') {
+    if (kind === 'key' && !lic.fromLink) {
       var trial = el('a', 'soft wide keylink', 'GET A FREE 14-DAY KEY'); trial.href = 'https://sharperplus.com/free-trial/'; trial.target = '_blank'; trial.rel = 'noopener';
       box.appendChild(trial);
     }
@@ -2667,6 +2671,7 @@
   function checkKey(then, typed) {
     var lic = data.settings.licence || {};
     if (!lic.key) { lockScreen('key', then); return; }
+    if (lic.fromLink && !lic.typed) { lockScreen('key', then); return; }   // a key from the scan code: the chef taps to unlock it
     var now = Date.now();
     function offline() {               // no answer from the website: allow a few days
       var allow = (lic.trial ? OFFLINE_DAYS.trial : OFFLINE_DAYS.paid) * DAY;
@@ -2699,7 +2704,7 @@
     var k = decodeURIComponent(m[1]).toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (k.length === 14 && k.slice(0, 2) === 'SP') {
       var lic = data.settings.licence || {}, tidy = 'SP-' + k.slice(2, 6) + '-' + k.slice(6, 10) + '-' + k.slice(10, 14);
-      if (lic.key !== tidy) { data.settings.licence = { key: tidy }; save(); }
+      if (lic.key !== tidy || !lic.ok) { data.settings.licence = { key: tidy, fromLink: true }; save(); }
     }
     try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
   }

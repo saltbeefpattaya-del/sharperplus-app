@@ -382,3 +382,6 @@ SharperPlus 需要检查您的密钥。请打开 Wi-Fi 或移动数据，然后�
 这个密钥已在 {0} 部手机上使用。请发邮件到 support@sharperplus.com 转到这部手机。
 这部手机已经用过免费试用。请购买 SharperPlus 继续使用。
 无法打开这个密钥。请发邮件到 support@sharperplus.com
+您的 SharperPlus 密钥
+这是您专属的 SharperPlus 密钥。请妥善保存，它也在我们发给您的邮件里。
+点「打开 SHARPERPLUS」在这部手机上解锁。
