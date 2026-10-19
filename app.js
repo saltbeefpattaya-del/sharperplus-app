@@ -121,7 +121,13 @@
     if (refreshers[name]) refreshers[name]();
     window.scrollTo(0, 0);
     if (PAGE_TOURS[name] && data.settings['guide_' + name] !== 'SEEN' && !document.querySelector('.toursheet'))
-      setTimeout(function () { pageGuide(name); }, 450);
+      (function wait(n) {           // wait for any popup (RECIPE CREATED etc.) to be closed first
+        setTimeout(function () {
+          if (!screens[name] || screens[name].hidden || document.querySelector('.toursheet')) return;
+          if (document.querySelector('.shade') && n < 400) { wait(n + 1); return; }
+          pageGuide(name);
+        }, 450);
+      })(0);
     if (location.hash !== '#' + name) history.pushState(null, '', name === 'menu' ? '#' : '#' + name);
   }
   window.addEventListener('popstate', function () {
@@ -779,10 +785,11 @@
   builders.recipe = function () {
     var s = data.settings;
     var page = pageTop('RECIPE');
+    guideButton(page, 'recipe');
     var outs = {}, ingList, labourBox;
 
     // ---- which recipe
-    var top = el('div', 'card');
+    var top = el('div', 'card'); top.setAttribute('data-guide', 'RECIPE TOP');
     var nameRow = el('label', 'row'); nameRow.appendChild(el('span', 'lbl', 'RECIPE FOR'));
     var nameIn = el('input', 'cream name'); nameIn.style.width = '62%'; nameIn.style.maxWidth = 'none';
     nameIn.oninput = function () { recipeNow().recipe_name = nameIn.value.toUpperCase(); save(); };
@@ -806,7 +813,7 @@
     }
 
     var bound = [];          // inputs tied to the recipe, refilled when another recipe opens
-    function card(title) { var b = el('div', 'card'); if (title) b.appendChild(el('div', 'cardhead', title)); page.appendChild(b); return b; }
+    function card(title) { var b = el('div', 'card'); if (title) { b.appendChild(el('div', 'cardhead', title)); b.setAttribute('data-guide', title); } page.appendChild(b); return b; }
     function inRow(box, label, get, set, opts) {
       opts = opts || {};
       var row = el('label', 'row'); row.appendChild(el('span', 'lbl', label));
@@ -2016,7 +2023,18 @@
     runTour(PHOTO_TOUR, function () { return null; }, after || function () {},
       'You can watch this again at any time: tap HOW TO TAKE A GOOD PHOTO.', after);
   }
-  var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR };
+  var RECIPE_TOUR = [
+    ['[data-guide="RECIPE TOP"]', 'YOUR RECIPE', 'This is the recipe you are working on. Pick another from SELECT RECIPE, or add a new one. HOW TO MAKE IT \u2605 opens the cooking method (SharperPlus Premium).'],
+    ['[data-guide="PRODUCT"]', 'PRODUCT', 'Choose whether you sell by units or by weight. Add your ingredients first: SharperPlus then works out the total weight and how many portions the batch makes. Grey figures are worked out for you; type over them if you need to.'],
+    ['[data-guide="INGREDIENTS"]', 'INGREDIENTS', 'Type each ingredient, its weight and the price you pay. Every ingredient is remembered, so next time its last price fills in for you.'],
+    ['[data-guide="LABOUR"]', 'LABOUR', 'Pick who makes this dish and how long it takes. Their time is costed into every portion.'],
+    ['[data-guide="ELECTRIC"]', 'ELECTRIC', 'Type how long the dish cooks on electric. Pick the month for the bill, or the 12-month average once you have it.'],
+    ['[data-guide="GAS"]', 'GAS', 'Type how long it cooks on gas. The cost comes from your gas set up in Master Costings.'],
+    ['[data-guide="PACKAGING"]', 'PACKAGING', 'If you sell it in a box or tub, type the cost of the packaging and how many units it holds.'],
+    ['[data-guide="RENT"]', 'RENT', 'Your rent per day comes from Master Costings. The mark up shares a fair part of it to this dish.'],
+    ['[data-guide="COST & SELLING PRICE"]', 'COST & SELLING PRICE', 'Your full cost per portion, with everything added. Type your selling price to see your profit. Set your lowest margin, and any dish below it is highlighted on the Dashboard.']
+  ];
+  var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR };
   function pageGuide(key) {
     data.settings['guide_' + key] = 'SEEN'; save();
     runTour(PAGE_TOURS[key], function (st) { return screens[key] && screens[key].querySelector(st[0]); }, function () {},
