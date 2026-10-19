@@ -1596,13 +1596,18 @@
     function drawNext() {
       next.innerHTML = '';
       var st = setupDone();
-      next.appendChild(el('div', 'nexthead', '\u2605  NEXT STEP'));
-      if (st.recipe && st.master && st.staff) {
-        next.appendChild(el('div', 'nextwords', 'All set up \u2013 you are getting the most out of SharperPlus Premium.'));
-      } else {
-        next.appendChild(el('div', 'nextwords', 'You have your method \u2013 now add your cooking costs.'));
-        next.appendChild(el('div', 'nextsmall', 'Remember, you can fill out your Master Costings and add your staff to get the most out of SharperPlus Premium.'));
-      }
+      next.appendChild(el('div', 'nexthead', '\u2605  WELCOME TO PREMIUM'));
+      var gives = el('div', 'gives');
+      ['Read your recipe and method from one photo',
+       'A step-by-step method for your kitchen',
+       'Tick off your ingredients as you prep',
+       'Send it to your team by WhatsApp, LINE or email, or print it'].forEach(function (t) {
+        var g = el('div', 'give'); g.appendChild(el('span', 'givetick', '\u2714')); g.appendChild(el('span', '', t)); gives.appendChild(g);
+      });
+      next.appendChild(gives);
+      next.appendChild(el('div', 'nextwords', st.recipe && st.master && st.staff
+        ? 'All set up \u2013 you are getting the most out of SharperPlus Premium.'
+        : 'Now add your cooking costs, Master Costings and staff to get the most out of Premium.'));
       [['RECIPE COSTING', 'recipe', 'c-green', st.recipe],
        ['MASTER COSTINGS', 'master', 'c-blue', st.master],
        ['STAFF', 'stafflist', 'c-purple', st.staff]].forEach(function (b) {
@@ -1618,6 +1623,9 @@
         }
         next.appendChild(box);
       });
+      var dash = el('div', 'stepbox c-dash');
+      var dgo = el('button', 'stepgo', 'DASHBOARD'); dgo.onclick = function () { save(); show('dashboard'); };
+      dash.appendChild(dgo); next.appendChild(dash);
     }
 
     function cur() {            // tidy each step in place, so open boxes stay tied to their step
