@@ -2048,7 +2048,9 @@
       'You can add or update your gas details in MASTER COSTINGS.',
       'If this recipe doesn\u2019t use gas, leave both time fields at 0.']],
     ['[data-guide="PACKAGING"]', 'PACKAGING', 'If you sell it in a box or tub, type the cost of the packaging and how many units it holds.'],
-    ['[data-guide="RENT"]', 'RENT', 'Your rent per day comes from Master Costings. The mark up shares a fair part of it to this dish.'],
+    ['[data-guide="RENT"]', 'RENT COSTS', ['Your daily rent is taken automatically from the details entered in MASTER COSTINGS.',
+      'Enter a percentage in MARK UP % to include an allowance for rent in this recipe.',
+      'SharperPlus calculates the allowance and adds it to the cost of each portion, helping you account for rent when setting your selling price.']],
     ['[data-guide="COST & SELLING PRICE"]', 'COST & SELLING PRICE', 'Your full cost per portion, with everything added. Type your selling price to see your profit. Set your lowest margin, and any dish below it is highlighted on the Dashboard.']
   ];
   var PAGE_TOURS = { master: MASTER_TOUR, stafflist: STAFF_TOUR, recipe: RECIPE_TOUR };
