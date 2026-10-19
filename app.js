@@ -1341,7 +1341,7 @@
     var body = el('div', 'notice-body');
     body.appendChild(el('div', '', 'How would you like to add your recipe?'));
     body.appendChild(el('div', '', ' '));
-    body.appendChild(el('div', '', 'If your photo has the method on it too, the recipe and the method are both added.'));
+    body.appendChild(el('div', '', 'If your photo includes both your recipe and your method, both will be added to your Premium account.'));
     box.appendChild(body);
     var row = el('div', 'notice-btns col');
     [['\ud83d\udcf7  TAKE A PHOTO OF RECIPE', photoClicked],
