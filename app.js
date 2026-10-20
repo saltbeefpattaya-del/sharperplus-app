@@ -2278,7 +2278,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.trtick{display:flex;align-items:center;gap:10px;justify-content:center;font:bold 18px Arial,sans-serif;margin:10px 0;padding:10px;border:2px solid #000;border-radius:12px;background:#FFF8E0}\n.trtick input{width:26px;height:26px;margin:0}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 19px/1.35 Arial,sans-serif;color:#000;margin:4px 0 14px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.trtick{display:flex;align-items:center;gap:10px;justify-content:center;font:bold 18px Arial,sans-serif;margin:10px 0;padding:10px;border:2px solid #000;border-radius:12px;background:#FFF8E0}\n.trtick input{width:26px;height:26px;margin:0}\n.syncbtn{display:block;width:100%;margin:0 0 12px;box-sizing:border-box}\n.syncsaid{font:bold 17px/1.35 Arial,sans-serif;color:#8B0000;margin:8px 0 4px;min-height:1em}\n.synclast{font:bold 15px Arial,sans-serif;color:var(--ink);text-align:center;margin:4px 0}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 19px/1.35 Arial,sans-serif;color:#000;margin:4px 0 14px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
@@ -2905,8 +2905,110 @@
     });
   }
 
+  // ---------------------------------------------------------------- SYNC WITH MY COMPUTER
+  // Like push mail: nothing moves until the chef presses SEND. The recipes wait on
+  // sharperplus.com under the key until the computer presses GET MY PHONE RECIPES.
+  var SYNC_URL = 'https://sharperplus.com/wp-json/sharperplus/v1/sync';
+  function syncCall(action, recipes) {
+    var lic = data.settings.licence || {};
+    return fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: lic.key || '', side: 'phone', id: deviceId(), name: phoneName(),
+                             action: action, recipes: recipes || [] }) })
+      .then(function (r) { return r.json(); });
+  }
+  function syncWhy(d) {
+    var r = d && d.reason;
+    if (r === 'trial') return 'Sync comes with a bought SharperPlus key. It is not part of the free trial.';
+    if (r === 'not_this_device' || r === 'unknown') return 'This phone is not opened with your key yet.';
+    if (r === 'busy') return 'Too many tries. Please wait an hour and try again.';
+    if (r === 'too_big') return 'Too many recipes to send in one go. Please email support@sharperplus.com';
+    return 'Please connect to the internet and try again.';
+  }
+  function plainRecipe(r) {                 // a recipe without its photo, to send or to compare
+    var c = JSON.parse(JSON.stringify(r)); c.costs = Object.assign({}, c.costs || {}); c.costs.image = '';
+    delete c.tr; return c;
+  }
+  function syncSend(said) {
+    var list = (data.recipes || []).filter(function (r) { return (r.recipe_name || '').trim(); }).map(plainRecipe);
+    if (!list.length) { said.textContent = 'Add a recipe first, then send it.'; return; }
+    said.textContent = 'Sending...';
+    syncCall('send', list).then(function (d) {
+      if (!d || !d.ok) { said.textContent = syncWhy(d); return; }
+      data.settings.sync_sent = new Date().toLocaleString(); save();
+      said.textContent = '';
+      say('SENT ' + d.sent + ' RECIPES TO YOUR COMPUTER', true);
+      notice('SENT TO YOUR COMPUTER', ['Now open SharperPlus on your computer and click GET MY PHONE RECIPES.'], ['OK']);
+    }).catch(function () { said.textContent = syncWhy(null); });
+  }
+  function syncGet(said, done) {
+    said.textContent = 'Getting...';
+    syncCall('get').then(function (d) {
+      if (!d || !d.ok) { said.textContent = syncWhy(d); return; }
+      said.textContent = '';
+      var come = (d.recipes || []).filter(function (r) { return r && (r.recipe_name || '').trim(); });
+      if (!come.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.'], ['OK']); return; }
+      var mine = {}; (data.recipes || []).forEach(function (r, i) { mine[(r.recipe_name || '').trim().toUpperCase()] = i; });
+      var fresh = [], changed = [];
+      come.forEach(function (r) {
+        var at = mine[(r.recipe_name || '').trim().toUpperCase()];
+        if (at === undefined) fresh.push(r);
+        else if (JSON.stringify(plainRecipe(Object.assign(SP.blankRecipe(), data.recipes[at]))) !==
+                 JSON.stringify(plainRecipe(Object.assign(SP.blankRecipe(), r)))) changed.push([at, r]);
+      });
+      if (!fresh.length && !changed.length) {
+        notice('GET MY COMPUTER RECIPES', ['Your recipes are already the same as your computer.'], ['OK']); return;
+      }
+      var lines = [];
+      if (fresh.length) lines.push(fresh.length + ' NEW RECIPES');
+      if (changed.length) lines.push(changed.length + ' RECIPES ARE DIFFERENT ON YOUR COMPUTER');
+      var btns = changed.length ? ['ADD NEW AND UPDATE CHANGED', 'ADD NEW ONLY', 'CANCEL'] : ['ADD THEM', 'CANCEL'];
+      notice('GET MY COMPUTER RECIPES', lines, btns).then(function (pick) {
+        if (btns[pick] === 'CANCEL') return;
+        fresh.forEach(function (r) { data.recipes.push(Object.assign(SP.blankRecipe(), r)); });
+        if (btns[pick] === 'ADD NEW AND UPDATE CHANGED') {
+          changed.forEach(function (p) {
+            var keep = ((data.recipes[p[0]].costs || {}).image) || '';
+            var next = Object.assign(SP.blankRecipe(), p[1]);
+            next.costs = Object.assign(SP.recipeCosts(), next.costs || {});
+            if (!next.costs.image && keep) next.costs.image = keep;     // keep the photo on this phone
+            data.recipes[p[0]] = next;
+          });
+        }
+        data.settings.sync_got = new Date().toLocaleString();
+        save(); redrawOpen(); say('RECIPES UPDATED');
+        if (done) done();
+      });
+    }).catch(function () { said.textContent = syncWhy(null); });
+  }
+  function syncClicked() {
+    var lic = data.settings.licence || {};
+    if (lic.trial) {
+      notice('SYNC WITH MY COMPUTER', ['Sync comes with a bought SharperPlus key. It is not part of the free trial.'], ['OK']);
+      return;
+    }
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'SYNC WITH MY COMPUTER'));
+    var body = el('div', 'notice-body');
+    body.appendChild(el('div', '', 'Send your recipes to your computer, or get the recipes your computer sent you.'));
+    var said = el('div', 'syncsaid'); body.appendChild(said);
+    box.appendChild(body);
+    var send = el('button', 'gobtn syncbtn', 'SEND TO MY COMPUTER'); send.onclick = function () { syncSend(said); };
+    var get = el('button', 'gobtn syncbtn', 'GET MY COMPUTER RECIPES');
+    get.onclick = function () { syncGet(said, function () { if (shade.parentNode) document.body.removeChild(shade); }); };
+    box.appendChild(send); box.appendChild(get);
+    [['LAST SENT', data.settings.sync_sent], ['LAST GOT', data.settings.sync_got]].forEach(function (w) {
+      if (!w[1]) return;
+      var line = el('div', 'synclast'); line.appendChild(el('span', '', w[0] + ': '));
+      var when = el('span', '', w[1]); when.setAttribute('data-notr', ''); line.appendChild(when); box.appendChild(line);
+    });
+    var row = el('div', 'notice-btns'), close = el('button', 'soft', 'CLOSE');
+    close.onclick = function () { document.body.removeChild(shade); };
+    row.appendChild(close); box.appendChild(row);
+    shade.appendChild(box); document.body.appendChild(shade);
+  }
+
   var actions = { 'ADD RECIPE': newRecipe, 'ADD RECIPE FROM PHOTO': photoClicked, 'LANGUAGE': pickLanguage, 'CHANGE APPEARANCE': pickLook,
-                  'USER GUIDE': startTour };
+                  'USER GUIDE': startTour, 'SYNC': syncClicked };
   document.querySelectorAll('[data-go]').forEach(function (b) {
     b.addEventListener('click', function () {
       var name = b.getAttribute('data-go');

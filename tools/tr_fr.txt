@@ -443,3 +443,30 @@ Appuyez sur + AJOUTER DU PERSONNEL pour ajouter la personne suivante.
 Quelqu'un est parti ? Appuyez sur le ✕ en haut de son nom pour le retirer.
 C'est ce que toute votre équipe vous coûte chaque jour.
 Quand vous calculez une recette, vous choisissez qui la prépare, et SharperPlus ajoute son temps au coût de chaque portion.
+SYNCHRONISER AVEC
+MON ORDINATEUR
+SYNCHRONISER AVEC MON ORDINATEUR
+ENVOYER À MON ORDINATEUR
+RECEVOIR LES RECETTES DE L'ORDINATEUR
+La synchronisation vient avec une clé SharperPlus achetée. Elle ne fait pas partie de l'essai gratuit.
+Ce téléphone n'est pas encore ouvert avec votre clé.
+Trop d'essais. Attendez une heure et réessayez.
+Trop de recettes à envoyer d'un coup. Écrivez à support@sharperplus.com
+Connectez-vous à internet et réessayez.
+Ajoutez d'abord une recette, puis envoyez-la.
+Envoi...
+Réception...
+{0} RECETTES ENVOYÉES À VOTRE ORDINATEUR
+ENVOYÉ À VOTRE ORDINATEUR
+Ouvrez maintenant SharperPlus sur votre ordinateur et cliquez sur RECEVOIR LES RECETTES DU TÉLÉPHONE.
+Votre ordinateur n'a encore rien envoyé.
+Vos recettes sont déjà les mêmes que sur votre ordinateur.
+{0} NOUVELLES RECETTES
+{0} RECETTES SONT DIFFÉRENTES SUR VOTRE ORDINATEUR
+AJOUTER LES NOUVELLES ET METTRE À JOUR
+AJOUTER LES NOUVELLES SEULEMENT
+LES AJOUTER
+RECETTES MISES À JOUR
+Envoyez vos recettes à votre ordinateur, ou recevez celles que votre ordinateur vous a envoyées.
+DERNIER ENVOI :
+DERNIÈRE RÉCEPTION :

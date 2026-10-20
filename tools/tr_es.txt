@@ -443,3 +443,30 @@ Toque + AÑADIR PERSONAL para añadir a la siguiente persona.
 ¿Alguien se fue? Toque la ✕ arriba de su nombre para quitarlo.
 Esto es lo que le cuesta todo su equipo cada día.
 Cuando calcula una receta, elige quién la prepara y SharperPlus suma su tiempo al costo de cada porción.
+SINCRONIZAR CON
+MI COMPUTADORA
+SINCRONIZAR CON MI COMPUTADORA
+ENVIAR A MI COMPUTADORA
+TRAER RECETAS DE LA COMPUTADORA
+La sincronización viene con una clave SharperPlus comprada. No es parte de la prueba gratis.
+Este teléfono aún no está abierto con su clave.
+Demasiados intentos. Espere una hora e inténtelo de nuevo.
+Demasiadas recetas para enviar de una vez. Escriba a support@sharperplus.com
+Conéctese a internet e inténtelo de nuevo.
+Añada primero una receta y luego envíela.
+Enviando...
+Trayendo...
+{0} RECETAS ENVIADAS A SU COMPUTADORA
+ENVIADO A SU COMPUTADORA
+Ahora abra SharperPlus en su computadora y haga clic en TRAER RECETAS DEL TELÉFONO.
+Su computadora todavía no ha enviado nada.
+Sus recetas ya son iguales a las de su computadora.
+{0} RECETAS NUEVAS
+{0} RECETAS SON DIFERENTES EN SU COMPUTADORA
+AÑADIR NUEVAS Y ACTUALIZAR
+SOLO LAS NUEVAS
+AÑADIRLAS
+RECETAS ACTUALIZADAS
+Envíe sus recetas a su computadora, o traiga las que su computadora le envió.
+ÚLTIMO ENVÍO:
+ÚLTIMA RECEPCIÓN:

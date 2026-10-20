@@ -443,3 +443,30 @@ Tocca + AGGIUNGI PERSONALE per aggiungere la persona successiva.
 Qualcuno se n'è andato? Tocca la ✕ in cima al suo nome per toglierlo.
 Questo è quanto ti costa tutta la squadra ogni giorno.
 Quando calcoli una ricetta, scegli chi la prepara e SharperPlus aggiunge il suo tempo al costo di ogni porzione.
+SINCRONIZZA CON
+IL MIO COMPUTER
+SINCRONIZZA CON IL MIO COMPUTER
+INVIA AL MIO COMPUTER
+PRENDI LE RICETTE DAL COMPUTER
+La sincronizzazione arriva con una chiave SharperPlus acquistata. Non fa parte della prova gratuita.
+Questo telefono non è ancora aperto con la tua chiave.
+Troppi tentativi. Aspetta un'ora e riprova.
+Troppe ricette da inviare in una volta. Scrivi a support@sharperplus.com
+Collegati a internet e riprova.
+Aggiungi prima una ricetta, poi inviala.
+Invio...
+Ricezione...
+{0} RICETTE INVIATE AL TUO COMPUTER
+INVIATO AL TUO COMPUTER
+Ora apri SharperPlus sul computer e clicca PRENDI LE RICETTE DAL TELEFONO.
+Il tuo computer non ha ancora inviato niente.
+Le tue ricette sono già uguali a quelle del computer.
+{0} RICETTE NUOVE
+{0} RICETTE SONO DIVERSE SUL TUO COMPUTER
+AGGIUNGI LE NUOVE E AGGIORNA
+SOLO LE NUOVE
+AGGIUNGILE
+RICETTE AGGIORNATE
+Invia le tue ricette al computer, o prendi quelle che il computer ti ha inviato.
+ULTIMO INVIO:
+ULTIMA RICEZIONE:

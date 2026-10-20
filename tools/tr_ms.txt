@@ -443,3 +443,30 @@ Tekan + TAMBAH KAKITANGAN untuk menambah orang seterusnya.
 Ada yang berhenti? Tekan ✕ di atas nama mereka untuk membuangnya.
 Inilah kos seluruh pasukan anda setiap hari.
 Apabila anda mengira kos resipi, anda pilih siapa yang membuatnya, dan SharperPlus menambah masa mereka pada kos setiap hidangan.
+SEGERAK DENGAN
+KOMPUTER SAYA
+SEGERAK DENGAN KOMPUTER SAYA
+HANTAR KE KOMPUTER SAYA
+AMBIL RESIPI DARI KOMPUTER
+Segerak datang dengan kunci SharperPlus yang dibeli. Ia bukan sebahagian daripada percubaan percuma.
+Telefon ini belum dibuka dengan kunci anda.
+Terlalu banyak cubaan. Sila tunggu sejam dan cuba lagi.
+Terlalu banyak resipi untuk dihantar sekali gus. Sila e-mel support@sharperplus.com
+Sila sambung ke internet dan cuba lagi.
+Tambah resipi dahulu, kemudian hantar.
+Sedang menghantar...
+Sedang mengambil...
+{0} RESIPI DIHANTAR KE KOMPUTER ANDA
+DIHANTAR KE KOMPUTER ANDA
+Sekarang buka SharperPlus di komputer dan klik AMBIL RESIPI DARI TELEFON.
+Komputer anda belum menghantar apa-apa.
+Resipi anda sudah sama seperti di komputer.
+{0} RESIPI BARU
+{0} RESIPI BERBEZA DI KOMPUTER ANDA
+TAMBAH BARU DAN KEMAS KINI
+TAMBAH BARU SAHAJA
+TAMBAH
+RESIPI DIKEMAS KINI
+Hantar resipi anda ke komputer, atau ambil resipi yang dihantar oleh komputer.
+TERAKHIR DIHANTAR:
+TERAKHIR DIAMBIL:

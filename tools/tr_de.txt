@@ -443,3 +443,30 @@ Tippen Sie auf + PERSONAL HINZUFÜGEN, um die nächste Person hinzuzufügen.
 Jemand ist gegangen? Tippen Sie auf das ✕ oben am Namen, um die Person zu entfernen.
 So viel kostet Sie Ihr ganzes Team jeden Tag.
 Wenn Sie ein Rezept berechnen, wählen Sie, wer es macht, und SharperPlus rechnet die Zeit zu den Kosten jeder Portion dazu.
+SYNC MIT
+MEINEM COMPUTER
+SYNC MIT MEINEM COMPUTER
+AN MEINEN COMPUTER SENDEN
+REZEPTE VOM COMPUTER HOLEN
+Sync gibt es mit einem gekauften SharperPlus-Schlüssel. Er ist nicht Teil der kostenlosen Testversion.
+Dieses Handy ist noch nicht mit Ihrem Schlüssel geöffnet.
+Zu viele Versuche. Bitte eine Stunde warten und erneut versuchen.
+Zu viele Rezepte auf einmal. Bitte schreiben Sie an support@sharperplus.com
+Bitte mit dem Internet verbinden und erneut versuchen.
+Fügen Sie zuerst ein Rezept hinzu, dann senden.
+Wird gesendet...
+Wird geholt...
+{0} REZEPTE AN IHREN COMPUTER GESENDET
+AN IHREN COMPUTER GESENDET
+Öffnen Sie jetzt SharperPlus am Computer und klicken Sie auf REZEPTE VOM HANDY HOLEN.
+Ihr Computer hat noch nichts gesendet.
+Ihre Rezepte sind schon gleich wie am Computer.
+{0} NEUE REZEPTE
+{0} REZEPTE SIND AM COMPUTER ANDERS
+NEUE HINZUFÜGEN UND GEÄNDERTE AKTUALISIEREN
+NUR NEUE HINZUFÜGEN
+HINZUFÜGEN
+REZEPTE AKTUALISIERT
+Senden Sie Ihre Rezepte an den Computer, oder holen Sie die Rezepte, die der Computer geschickt hat.
+ZULETZT GESENDET:
+ZULETZT GEHOLT:
