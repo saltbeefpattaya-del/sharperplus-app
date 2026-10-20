@@ -475,3 +475,6 @@ HANTAR RESIPI YANG DITANDA
 TANDA UNTUK HANTAR KE KOMPUTER
 TERAKHIR DIHANTAR KE KOMPUTER:
 Komputer anda mesti dibuka dengan kunci yang sama, berakhir dengan:
+Sila beri nama resipi ini dahulu, kemudian hantar.
+Resipi ini sudah ada di komputer anda.
+Mahu kemas kini?

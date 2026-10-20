@@ -475,3 +475,6 @@ INVIA LE RICETTE SPUNTATE
 SPUNTA PER INVIARE AL COMPUTER
 ULTIMO INVIO AL COMPUTER:
 Il computer deve essere aperto con la stessa chiave, che finisce con:
+Dai prima un nome a questa ricetta, poi inviala.
+Questa ricetta è già sul tuo computer.
+Vuoi aggiornarla?

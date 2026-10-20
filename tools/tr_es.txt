@@ -475,3 +475,6 @@ ENVIAR RECETAS MARCADAS
 MARCAR PARA ENVIAR A LA COMPUTADORA
 ÚLTIMO ENVÍO A LA COMPUTADORA:
 Su computadora debe estar abierta con la misma clave, que termina en:
+Primero póngale nombre a esta receta y luego envíela.
+Esta receta ya está en su computadora.
+¿Quiere actualizarla?

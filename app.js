@@ -2958,8 +2958,26 @@
   }
   function sendRecipes(recipes, said, after) {
     if (syncTrial()) return;
-    var list = (recipes || []).filter(function (r) { return r && (r.recipe_name || '').trim(); }).map(plainRecipe);
-    if (!list.length) { notice('SEND TO MY COMPUTER', ['Tick the recipes you want to send first.'], ['OK']); return; }
+    recipes = (recipes || []).filter(function (r) { return r; });
+    if (recipes.some(function (r) { return !(r.recipe_name || '').trim(); })) {
+      notice('SEND TO MY COMPUTER', ['Please give this recipe a name first, then send it.'], ['OK']); return;
+    }
+    if (!recipes.length) { notice('SEND TO MY COMPUTER', ['Tick the recipes you want to send first.'], ['OK']); return; }
+    var marks = data.settings.sync_marks || {}, again = [], fresh = [];
+    recipes.forEach(function (r) { (marks[r.recipe_name.trim().toUpperCase()] ? again : fresh).push(r); });
+    if (!again.length) { sendNow(fresh.map(plainRecipe), said, after); return; }
+    (function ask(k, keep) {                // one question for each recipe already sent
+      if (k >= again.length) {
+        var go = fresh.concat(keep);
+        if (go.length) sendNow(go.map(plainRecipe), said, after);
+        return;
+      }
+      notice(again[k].recipe_name.trim().toUpperCase(),
+             ['This recipe is already on your computer.', 'Do you want to update it?'], ['YES', 'NO'])
+        .then(function (pick) { ask(k + 1, pick === 0 ? keep.concat([again[k]]) : keep); });
+    })(0, []);
+  }
+  function sendNow(list, said, after) {
     if (said) said.textContent = 'Sending...'; else say('Sending...');
     syncCall('send', list).then(function (d) {
       if (said) said.textContent = '';

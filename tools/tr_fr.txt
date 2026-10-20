@@ -475,3 +475,6 @@ ENVOYER LES RECETTES COCHÉES
 COCHER POUR ENVOYER À L'ORDINATEUR
 DERNIER ENVOI À L'ORDINATEUR :
 Votre ordinateur doit être ouvert avec la même clé, qui finit par :
+Donnez d'abord un nom à cette recette, puis envoyez-la.
+Cette recette est déjà sur votre ordinateur.
+Voulez-vous la mettre à jour ?
