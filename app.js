@@ -3029,6 +3029,8 @@
           });
         }
         data.settings.sync_got = new Date().toLocaleString();
+        data.settings.sync_marks = data.settings.sync_marks || {};      // these are on the computer too
+        come.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = new Date().toLocaleDateString(); });
         save(); redrawOpen(); say('RECIPES UPDATED');
         if (done) done();
       });
