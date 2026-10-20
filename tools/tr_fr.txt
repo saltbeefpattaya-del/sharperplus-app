@@ -478,3 +478,15 @@ Votre ordinateur doit être ouvert avec la même clé, qui finit par :
 Donnez d'abord un nom à cette recette, puis envoyez-la.
 Cette recette est déjà sur votre ordinateur.
 Voulez-vous la mettre à jour ?
+DERNIÈRE SYNCHRO :
+HISTORIQUE DE SYNCHRO
+RAPPORT DE SYNCHRO DES PLATS COCHÉS ★
+RAPPORT DE SYNCHRO
+Pas encore synchronisé.
+ENVOYÉ À L'ORDINATEUR
+DE L'ORDINATEUR
+IMPRIMER OU ENVOYER ★
+Cochez d'abord les plats à mettre dans le rapport.
+{0} PLATS
+Imprimer et envoyer le rapport de synchro fait partie de SharperPlus Premium.
+Envoyé depuis SharperPlus

@@ -478,3 +478,15 @@ Ihr Computer muss mit demselben Schlüssel geöffnet sein, der endet auf:
 Geben Sie diesem Rezept zuerst einen Namen und senden Sie es dann.
 Dieses Rezept ist schon auf Ihrem Computer.
 Möchten Sie es aktualisieren?
+LETZTER SYNC:
+SYNC-VERLAUF
+SYNC-BERICHT FÜR ANGEHAKTE GERICHTE ★
+SYNC-BERICHT
+Noch nicht synchronisiert.
+AN DEN COMPUTER GESENDET
+VOM COMPUTER
+DRUCKEN ODER SENDEN ★
+Haken Sie zuerst die Gerichte für den Bericht an.
+{0} GERICHTE
+Drucken und Senden des Sync-Berichts gehört zu SharperPlus Premium.
+Gesendet aus SharperPlus

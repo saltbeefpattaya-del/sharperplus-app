@@ -478,3 +478,15 @@ Il computer deve essere aperto con la stessa chiave, che finisce con:
 Dai prima un nome a questa ricetta, poi inviala.
 Questa ricetta è già sul tuo computer.
 Vuoi aggiornarla?
+ULTIMA SINCRONIZZAZIONE:
+STORICO SINCRONIZZAZIONE
+REPORT DEI PIATTI SPUNTATI ★
+REPORT SINCRONIZZAZIONE
+Non ancora sincronizzato.
+INVIATO AL COMPUTER
+DAL COMPUTER
+STAMPA O INVIA ★
+Spunta prima i piatti da mettere nel report.
+{0} PIATTI
+Stampare e inviare il report fa parte di SharperPlus Premium.
+Inviato da SharperPlus

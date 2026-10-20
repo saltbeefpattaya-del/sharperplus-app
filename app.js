@@ -1636,6 +1636,15 @@
         };
         tickRow.appendChild(tick); tickRow.appendChild(sendT);
         box.appendChild(tickRow);
+        var last = ((data.settings.sync_log || {})[nameKey] || [])[0];
+        var hist = el('div', 'synclastrow');
+        if (last) {
+          var lw = el('div', 'synclastw'); lw.appendChild(el('span', '', 'LAST SYNC: '));
+          var lv = el('span', '', last.t + ' \u00b7 ' + SP.commas(last.qty) + (last.unit === 'g' ? ' g' : '')); lv.setAttribute('data-notr', '');
+          lw.appendChild(lv); if (last.unit !== 'g') lw.appendChild(el('span', '', ' UNITS')); hist.appendChild(lw);
+        }
+        var hb = el('button', 'soft synchbtn', 'SYNC HISTORY'); hb.onclick = function () { syncHistory(nameKey); };
+        hist.appendChild(hb); box.appendChild(hist);
         var btns = el('div', 'btnrow');
         var open = el('button', 'soft', 'OPEN RECIPE'); open.onclick = function () { openRecipe(i); };
         var del = el('button', 'soft danger', 'DELETE'); del.onclick = function () { deleteRecipe(i); };
@@ -1660,7 +1669,12 @@
     var syncSaid = el('div', 'syncsaid');
     var getB = el('button', 'gobtn syncbtn', 'GET MY COMPUTER RECIPES');
     getB.onclick = function () { syncGet(syncSaid, draw); };
-    sync.appendChild(getB); sync.appendChild(syncSaid);
+    var repB = el('button', 'soft syncbtn', 'SYNC REPORT FOR TICKED DISHES \u2605');
+    repB.onclick = function () {
+      syncReport(data.recipes.map(function (r) { return (r.recipe_name || '').trim().toUpperCase(); })
+        .filter(function (n) { return n && syncTicks[n]; }));
+    };
+    sync.appendChild(getB); sync.appendChild(repB); sync.appendChild(syncSaid);
     tools.appendChild(sync);
     page.appendChild(tools);
     var list = el('div', ''); page.appendChild(list);
@@ -2299,7 +2313,7 @@
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
 
-  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.trtick{display:flex;align-items:center;gap:10px;justify-content:center;font:bold 18px Arial,sans-serif;margin:10px 0;padding:10px;border:2px solid #000;border-radius:12px;background:#FFF8E0}\n.trtick input{width:26px;height:26px;margin:0}\n.syncbtn{display:block;width:100%;margin:0 0 12px;box-sizing:border-box}\n.syncrow{border-top:2px solid var(--line);margin-top:12px;padding-top:12px}\n.synctitle{font:bold 15px Arial,sans-serif;color:var(--ink);text-align:center;margin:0 0 10px}\n.syncticklbl{font:bold 13px Arial,sans-serif;color:#FFF8E7;text-align:center;margin:10px 0 4px}\n.synctick{display:flex;align-items:center;gap:14px;padding:0 12px 10px}\n.synctick input{width:32px;height:32px;margin:0;flex-shrink:0}\n.gobtn.syncsend{flex:1;width:auto;margin:0;font-size:19px;padding:10px 8px}\n.syncsaid{font:bold 17px/1.35 Arial,sans-serif;color:#8B0000;margin:8px 0 4px;min-height:1em}\n.synclast{font:bold 15px Arial,sans-serif;color:var(--ink);text-align:center;margin:4px 0}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 19px/1.35 Arial,sans-serif;color:#000;margin:4px 0 14px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
+  (function () { var st = document.createElement('style'); st.textContent = "/* ---- welcome + user guide (phone layout) */\n.guidebtn{display:block;width:100%;margin:0 0 16px;padding:14px 10px;background:#000;color:#F2B705;border:3px solid #F2B705;border-radius:14px;font:bold 19px Arial,sans-serif}\n.welcomeshade{align-items:flex-start;overflow:auto;padding:16px 12px calc(24px + env(safe-area-inset-bottom))}\n.welcomebox{max-width:480px;margin:auto;padding:18px 16px 16px;text-align:center}\n.natbig{display:block;width:72%;max-width:260px;margin:0 auto 10px;border-radius:14px;background:#fff;border:3px solid #000}\n.welcomehead{background:var(--light);color:var(--ink);border:2px solid var(--line);border-radius:10px;\n  font:bold 23px/1.25 Arial,sans-serif;padding:12px 10px;margin:0 0 12px}\n.welcomebody{text-align:start;font:bold 18px/1.45 Arial,sans-serif;color:var(--ink)}\n.welcomebody p{margin:0 0 12px}\n.welcomebody .chef{font-size:21px;font-style:italic;text-align:center;margin:16px 0 10px}\n.welcomebox .gobtn{width:100%;margin:6px 0 12px}\n.welcomebox .soft.wide{margin:0 0 12px}\n.nevertick{display:flex;align-items:center;justify-content:center;gap:12px;font:bold 17px Arial,sans-serif;color:var(--ink);padding:6px}\n.nevertick input{width:28px;height:28px;margin:0}\n.tourshade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:60}\nbody.touring{padding-bottom:62vh}\n.spot{position:relative;z-index:61;pointer-events:none;border-color:#F2B705;border-width:4px;\n  box-shadow:0 0 0 5px #000,0 0 22px 10px #F2B705;animation:glow 1.4s ease-in-out infinite}\n@keyframes glow{50%{box-shadow:0 0 0 5px #000,0 0 30px 16px #FFE27A}}\n.toursheet{position:fixed;left:0;right:0;bottom:0;z-index:62;background:var(--input);border-top:5px solid #F2B705;\n  border-radius:22px 22px 0 0;padding:16px 16px calc(14px + env(safe-area-inset-bottom));max-width:640px;margin:0 auto;\n  box-shadow:0 -8px 24px rgba(0,0,0,.4)}\n.tourtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}\n.natface{width:64px;height:64px;flex-shrink:0}\n.tourheads{flex:1;min-width:0}\n.tourstep{font:bold 15px Arial,sans-serif;color:#A66600;letter-spacing:1px}\n.tourname{font:bold 22px/1.2 Arial,sans-serif;color:var(--ink)}\n.tourwords{font:bold 19px/1.45 Arial,sans-serif;color:var(--ink);max-height:34vh;overflow:auto}\n.tourpara{margin:0 0 10px}\n.keyshade{z-index:80;background:var(--bg)}\n.trtick{display:flex;align-items:center;gap:10px;justify-content:center;font:bold 18px Arial,sans-serif;margin:10px 0;padding:10px;border:2px solid #000;border-radius:12px;background:#FFF8E0}\n.trtick input{width:26px;height:26px;margin:0}\n.syncbtn{display:block;width:100%;margin:0 0 12px;box-sizing:border-box}\n.syncrow{border-top:2px solid var(--line);margin-top:12px;padding-top:12px}\n.synctitle{font:bold 15px Arial,sans-serif;color:var(--ink);text-align:center;margin:0 0 10px}\n.syncticklbl{font:bold 13px Arial,sans-serif;color:#FFF8E7;text-align:center;margin:10px 0 4px}\n.synctick{display:flex;align-items:center;gap:14px;padding:0 12px 10px}\n.synctick input{width:32px;height:32px;margin:0;flex-shrink:0}\n.gobtn.syncsend{flex:1;width:auto;margin:0;font-size:19px;padding:10px 8px}\n.synclastrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 12px 10px}\n.synclastw{font:bold 15px/1.3 Arial,sans-serif;color:var(--ink)}\n.synchbtn{font-size:16px;padding:10px 12px;white-space:nowrap}\n.synchname{font:bold 20px Arial,sans-serif;text-align:center;margin:0 0 8px}\n.synchlist{max-height:50vh;overflow:auto;text-align:start}\n.synchline{border-bottom:1px solid var(--line);padding:8px 2px;font:bold 17px Arial,sans-serif}\n.synchwhen{margin-right:12px}\n.synchhow{font:bold 14px Arial,sans-serif;color:#A66600}\n.sharebtns{flex-direction:column}\n.syncsaid{font:bold 17px/1.35 Arial,sans-serif;color:#8B0000;margin:8px 0 4px;min-height:1em}\n.synclast{font:bold 15px Arial,sans-serif;color:var(--ink);text-align:center;margin:4px 0}\n.premhead{font:bold 20px/1.3 Arial,sans-serif;color:#000;margin:12px 0 6px}\n.premstar{display:inline-block;font:bold 15px Arial,sans-serif;letter-spacing:1px;background:#000;color:#F2B705;border-radius:8px;padding:5px 12px;margin:0 0 10px}\n.premlist{list-style:none;margin:0 0 10px;padding:0}\n.premlist li{position:relative;padding:6px 0 6px 30px;font:bold 18px/1.35 Arial,sans-serif}\n.premlist li:before{content:'\\2714';position:absolute;left:4px;top:6px;color:#1E6B2E}\n.premprice{font:bold 46px Arial,sans-serif;color:#000;margin:6px 0 0}\n.premonce{font:bold 19px/1.35 Arial,sans-serif;color:#000;margin:4px 0 14px}\n.gobtn.premgo{display:block;text-decoration:none;text-align:center;width:100%;margin:0 0 8px;box-sizing:border-box}\n.savekey{display:block;width:100%;margin:0 0 12px;padding:16px 10px;border:3px solid #000;border-radius:14px;background:#F2B705;color:#000;font:bold 21px Arial,sans-serif}\n.savekey.done{background:#D4F5CC;color:#0B5D1E;border-color:#1E6B2E}\n.gobtn.faded{opacity:.35;filter:saturate(.4)}\n.keyin{display:block;width:100% !important;max-width:none !important;box-sizing:border-box;font:bold 24px 'Courier New',monospace;letter-spacing:2px;text-align:center;padding:14px 8px;margin:4px 0 14px;text-transform:uppercase}\n.keysaid{background:#FFE0E0;color:#8B0000;border:2px solid #C00;border-radius:10px;padding:10px;font-size:17px}\n.keylink{display:block;text-align:center;text-decoration:none;margin:0 0 12px}\n.helperbtn{background:#185451;color:#FFF8E7;border-color:#000}\n.setupbox{text-align:center}\n.setupask{font:bold 25px/1.3 Arial,sans-serif;color:var(--ink);margin:14px 4px 10px}\n.setuphelp{font:bold 18px/1.4 Arial,sans-serif;color:var(--ink);margin:0 0 6px}\n.setupchoice{display:block;width:100%;margin:10px 0;padding:16px 10px;border:2px solid #000;border-radius:12px;background:var(--bright);color:var(--ink);font:bold 21px Arial,sans-serif}\n.setupchoice.on{background:#1E6B2E;color:#fff}\n.setupline{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0}\n.setupin{font:bold 32px Arial,sans-serif;width:60%;max-width:240px;text-align:center;padding:10px}\n.setupafter{font:bold 24px Arial,sans-serif;color:var(--ink)}\n.setupwarn{background:#FF0000;color:#fff;font:bold 17px Arial,sans-serif;padding:8px;border-radius:8px;margin:6px 0}\n.setupbtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}\n.setupbtns .soft,.setupbtns .gobtn{flex:1 1 40%;width:auto;margin:0;font-size:18px;padding:14px 8px}\n.setupsum{display:flex;justify-content:space-between;gap:10px;text-align:start;font:bold 16px/1.35 Arial,sans-serif;color:var(--ink);padding:6px 2px;border-bottom:1px solid var(--line)}\n.setupsum b{text-align:end;white-space:nowrap}\n.calc.pos{background:#D4F5CC;color:#0B5D1E}\n.rhead{color:#FFF8E7;font-size:21px;letter-spacing:.5px;border-bottom:3px solid #000}\n.jumpbox{background:var(--cell);border:2px solid var(--line);border-radius:14px;padding:10px;margin:0 0 16px}\n.jumptitle{font:bold 17px Arial,sans-serif;color:var(--ink);margin:0 0 8px 2px}\n.jumpgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}\n.jumpbtn{color:#FFF8E7;border:2px solid #000;border-radius:10px;padding:12px 6px;font:bold 16px/1.2 Arial,sans-serif}\n.jumpbtn:last-child{grid-column:1/-1}\n.card.flash{box-shadow:0 0 0 5px #F2B705;transition:box-shadow .3s}\n.tourhead2{font:bold 20px/1.3 Arial,sans-serif;color:#A66600;margin:4px 0 2px}\n.tourlink{color:#0B5D1E;text-decoration:underline}\n.tourlater{font:bold 15px/1.35 Arial,sans-serif;color:#A66600;margin-top:10px}\n.tourbtns{display:flex;gap:12px;margin-top:14px}\n.tourbtns .soft{flex:1;font-size:19px;padding:14px}\n.tourbtns .gobtn.tournext{flex:1.4;width:auto;margin:0}\n.tourend{display:block;margin:12px auto 0;background:none;border:0;font:bold 17px Arial,sans-serif;color:var(--ink);\n  text-decoration:underline;padding:8px 16px}\n"; document.head.appendChild(st); })();
   // ---------------------------------------------------------------- WELCOME + USER GUIDE (the desktop's words, phone layout)
   function welcome() {
     var shade = el('div', 'shade welcomeshade'), box = el('div', 'notice welcomebox');
@@ -2977,6 +2991,93 @@
         .then(function (pick) { ask(k + 1, pick === 0 ? keep.concat([again[k]]) : keep); });
     })(0, []);
   }
+  // ---- the sync record: every send and get, with the date, time and quantity
+  function syncQty(r) {
+    try {
+      var full = Object.assign(SP.blankRecipe(), r), out = SP.costEverything(full, data.settings);
+      if (String(full.made_by || '').toUpperCase() === 'GRAMS') {
+        return [Math.round(SP.num(full.batch_size) || out.weight || 0), 'g'];
+      }
+      return [SP.num(full.total_products) || out.products || 0, 'UNITS'];
+    } catch (e) { return [0, '']; }
+  }
+  function logSync(r, how) {
+    var name = (r.recipe_name || '').trim().toUpperCase(); if (!name) return;
+    var q = syncQty(r), d = new Date(), pad = function (n) { return ('0' + n).slice(-2); };
+    data.settings.sync_log = data.settings.sync_log || {};
+    var list = data.settings.sync_log[name] = data.settings.sync_log[name] || [];
+    list.unshift({ t: pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()),
+                   qty: q[0], unit: q[1], how: how });
+    if (list.length > 200) list.length = 200;
+  }
+  function syncLines(name) {
+    return ((data.settings.sync_log || {})[name] || []).map(function (e) {
+      return e.t + '   ' + SP.commas(e.qty) + ' ' + (e.unit === 'g' ? 'g' : SPT.T('UNITS')) + '   ' + SPT.T(e.how);
+    });
+  }
+  function reportText(names) {
+    var lines = ['*' + SPT.T('SYNC REPORT') + '*', ''];
+    names.forEach(function (n) {
+      lines.push('*' + n + '*');
+      var l = syncLines(n);
+      lines = lines.concat(l.length ? l : [SPT.T('Not synced yet.')]); lines.push('');
+    });
+    lines.push('\u2014 ' + SPT.T('Sent from SharperPlus'));
+    return lines.join('\n');
+  }
+  function reportHtml(names) {
+    var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    var body = names.map(function (n) {
+      var l = syncLines(n);
+      return '<h2>' + esc(n) + '</h2>' + (l.length ? '<table>' + l.map(function (x) {
+        var p = x.split('   '); return '<tr><td>' + esc(p[0]) + '</td><td>' + esc(p[1] || '') + '</td><td>' + esc(p[2] || '') + '</td></tr>';
+      }).join('') + '</table>' : '<p>' + esc(SPT.T('Not synced yet.')) + '</p>');
+    }).join('');
+    return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(SPT.T('SYNC REPORT')) +
+      '</title><style>body{font:18px Arial,sans-serif;margin:20px;color:#000}h1{font-size:26px}h2{font-size:21px;margin:22px 0 6px;border-bottom:2px solid #000}' +
+      'td{padding:6px 14px 6px 0;font-size:18px}.btn{font:bold 20px Arial;padding:12px 20px;background:#F2B705;border:2px solid #000;border-radius:10px}' +
+      '@media print{.btn{display:none}}</style></head><body><button class="btn" onclick="window.print()">' + esc(SPT.T('PRINT / SAVE AS PDF')) + '</button>' +
+      '<h1>' + esc(SPT.T('SYNC REPORT')) + '</h1>' + body + '</body></html>';
+  }
+  function syncReport(names) {               // PRINT OR SEND the record: SharperPlus Premium
+    if (!isPremium()) { premiumBox('Printing and sending the sync report is part of SharperPlus Premium.'); return; }
+    if (!names.length) { notice('SYNC REPORT', ['Tick the dishes you want in the report first.'], ['OK']); return; }
+    var text = reportText(names);
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'SYNC REPORT'));
+    box.appendChild(el('div', 'notice-body', names.length === 1 ? names[0] : names.length + ' DISHES'));
+    var row = el('div', 'notice-btns sharebtns');
+    var close = function () { if (shade.parentNode) document.body.removeChild(shade); };
+    var go = function (url) { close(); window.location.href = url; };
+    [['WHATSAPP', 'wa', function () { go('https://wa.me/?text=' + encodeURIComponent(text)); }],
+     ['LINE', 'line', function () { go('https://line.me/R/share?text=' + encodeURIComponent(text)); }],
+     ['EMAIL', 'mail', function () { go('mailto:?subject=' + encodeURIComponent(SPT.T('SYNC REPORT')) + '&body=' + encodeURIComponent(text.replace(/\*/g, ''))); }],
+     ['PRINT / SAVE AS PDF', 'print', function () {
+       var w = window.open('', '_blank'); if (!w) { notice('NOTICE', ['Please allow pop-ups to print.']); return; }
+       w.document.open(); w.document.write(reportHtml(names)); w.document.close(); close(); }],
+     ['CLOSE', '', close]].forEach(function (a) { var b = el('button', 'soft share ' + a[1], a[0]); b.onclick = a[2]; row.appendChild(b); });
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+  }
+  function syncHistory(name) {
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'SYNC HISTORY'));
+    var title = el('div', 'synchname', name); title.setAttribute('data-notr', ''); box.appendChild(title);
+    var body = el('div', 'notice-body synchlist'), l = (data.settings.sync_log || {})[name] || [];
+    if (!l.length) body.appendChild(el('div', '', 'Not synced yet.'));
+    l.forEach(function (e) {
+      var line = el('div', 'synchline');
+      var when = el('span', 'synchwhen', e.t); when.setAttribute('data-notr', ''); line.appendChild(when);
+      var q = el('b', '', SP.commas(e.qty) + (e.unit === 'g' ? ' g' : '')); q.setAttribute('data-notr', ''); line.appendChild(q);
+      if (e.unit !== 'g') line.appendChild(el('span', '', ' UNITS'));
+      line.appendChild(el('div', 'synchhow', e.how)); body.appendChild(line);
+    });
+    box.appendChild(body);
+    var row = el('div', 'notice-btns');
+    var rep = el('button', 'soft', 'PRINT OR SEND \u2605'); rep.onclick = function () { document.body.removeChild(shade); syncReport([name]); };
+    var cl = el('button', 'soft', 'CLOSE'); cl.onclick = function () { document.body.removeChild(shade); };
+    row.appendChild(rep); row.appendChild(cl); box.appendChild(row);
+    shade.appendChild(box); document.body.appendChild(shade);
+  }
   function forComputer(r) {                 // the phone's own sums go with it, so the computer agrees
     var c = plainRecipe(r);
     try {
@@ -2993,7 +3094,7 @@
       if (!d || !d.ok) { notice('SEND TO MY COMPUTER', [syncWhy(d)], ['OK']); return; }
       var when = new Date().toLocaleDateString();
       data.settings.sync_marks = data.settings.sync_marks || {};
-      list.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = when; });
+      list.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = when; logSync(r, 'SENT TO COMPUTER'); });
       save();
       say('SENT ' + d.sent + ' RECIPES TO YOUR COMPUTER', true);
       notice('SENT TO YOUR COMPUTER', ['Now open SharperPlus on your computer and click GET MY PHONE RECIPES.',
@@ -3040,6 +3141,8 @@
         data.settings.sync_got = new Date().toLocaleString();
         data.settings.sync_marks = data.settings.sync_marks || {};      // these are on the computer too
         come.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = new Date().toLocaleDateString(); });
+        fresh.forEach(function (r) { logSync(r, 'FROM COMPUTER'); });
+        if (btns[pick] === 'ADD NEW AND UPDATE CHANGED') changed.forEach(function (p) { logSync(p[1], 'FROM COMPUTER'); });
         save(); redrawOpen(); say('RECIPES UPDATED');
         if (done) done();
       });

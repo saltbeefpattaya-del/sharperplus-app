@@ -478,3 +478,15 @@ Komputer anda mesti dibuka dengan kunci yang sama, berakhir dengan:
 Sila beri nama resipi ini dahulu, kemudian hantar.
 Resipi ini sudah ada di komputer anda.
 Mahu kemas kini?
+SEGERAK TERAKHIR:
+SEJARAH SEGERAK
+LAPORAN SEGERAK HIDANGAN DITANDA ★
+LAPORAN SEGERAK
+Belum disegerakkan.
+DIHANTAR KE KOMPUTER
+DARI KOMPUTER
+CETAK ATAU HANTAR ★
+Tanda hidangan untuk laporan dahulu.
+{0} HIDANGAN
+Mencetak dan menghantar laporan segerak ialah sebahagian daripada SharperPlus Premium.
+Dihantar dari SharperPlus
