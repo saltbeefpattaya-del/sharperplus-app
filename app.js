@@ -2346,10 +2346,13 @@
       'We recommend adding as many of your costs as you can, so you get a fuller picture. You do not have to complete everything now. Start with what you know and add the rest as your bills arrive.']]
   ];
   var STAFF_TOUR = [
-    ['.person', 'NAME & MONTHLY WAGE', 'Type the name of each member of staff and their monthly wage, as you pay it.'],
-    ['.wages', 'DAILY WAGE & HOURLY RATE', 'SharperPlus works these out for you: the daily wage is the monthly wage divided by your working days, then the hourly rate. You never type these.'],
-    ['.addstaff', '+ ADD STAFF', 'Tap here to add the next person. The \u2715 at the top of a name removes someone who has left.'],
-    ['[data-guide="STAFF TOTAL"]', 'STAFF COST PER DAY', 'What your whole team costs you each day. When you build a recipe, you pick who makes it, and their time is costed into the dish.']
+    ['.person', 'NAME & MONTHLY WAGE', 'Type the name of each member of staff and the monthly wage you pay them.'],
+    ['.wages', 'DAILY WAGE & HOURLY RATE', ['You don\u2019t need to type these. SharperPlus works them out for you.',
+      'The daily wage is the monthly wage divided by your working days. The hourly rate is the daily wage divided by 8 hours.']],
+    ['.addstaff', '+ ADD STAFF', ['Tap + ADD STAFF to add the next person.',
+      'Someone left? Tap the \u2715 at the top of their name to remove them.']],
+    ['[data-guide="STAFF TOTAL"]', 'STAFF COST PER DAY', ['This is what your whole team costs you each day.',
+      'When you cost a recipe, you choose who makes it, and SharperPlus adds their time to the cost of each portion.']]
   ];
   var PHOTO_TOUR = [
     ['', 'GOT YOUR RECIPE WRITTEN DOWN?', ['SharperPlus takes the hassle out of typing it all in!',

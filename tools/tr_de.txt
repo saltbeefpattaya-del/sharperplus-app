@@ -436,3 +436,10 @@ Wenn dieses Rezept keine Verpackung braucht, lassen Sie beide Felder auf {0}.
 Verkaufspreis schnell ändern? Geben Sie den neuen Preis bei PREIS SCHNELL ÄNDERN ein und tippen Sie auf OK.
 SharperPlus speichert ihn sofort und aktualisiert Gewinn und Marge, ohne dass Sie das ganze Rezept öffnen.
 Das Datum Ihrer letzten Preisänderung steht darunter, so wissen Sie immer, wann zuletzt aktualisiert wurde.
+Geben Sie den Namen jeder Mitarbeiterin und jedes Mitarbeiters und den Monatslohn ein, den Sie zahlen.
+Diese müssen Sie nicht eingeben. SharperPlus rechnet sie für Sie aus.
+Der Tageslohn ist der Monatslohn geteilt durch Ihre Arbeitstage. Der Stundenlohn ist der Tageslohn geteilt durch {0} Stunden.
+Tippen Sie auf + PERSONAL HINZUFÜGEN, um die nächste Person hinzuzufügen.
+Jemand ist gegangen? Tippen Sie auf das ✕ oben am Namen, um die Person zu entfernen.
+So viel kostet Sie Ihr ganzes Team jeden Tag.
+Wenn Sie ein Rezept berechnen, wählen Sie, wer es macht, und SharperPlus rechnet die Zeit zu den Kosten jeder Portion dazu.

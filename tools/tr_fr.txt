@@ -436,3 +436,10 @@ Si cette recette n'utilise pas d'emballage, laissez les deux champs à {0}.
 Besoin de changer vite un prix de vente ? Tapez le nouveau prix dans MISE À JOUR RAPIDE DU PRIX et appuyez sur OK.
 SharperPlus l'enregistre tout de suite et met à jour votre bénéfice et votre marge, sans ouvrir toute la recette.
 La date de votre dernier changement de prix s'affiche en dessous, pour savoir toujours quand il a été mis à jour.
+Tapez le nom de chaque membre du personnel et le salaire mensuel que vous lui versez.
+Vous n'avez pas besoin de les taper. SharperPlus les calcule pour vous.
+Le salaire journalier est le salaire mensuel divisé par vos jours de travail. Le taux horaire est le salaire journalier divisé par {0} heures.
+Appuyez sur + AJOUTER DU PERSONNEL pour ajouter la personne suivante.
+Quelqu'un est parti ? Appuyez sur le ✕ en haut de son nom pour le retirer.
+C'est ce que toute votre équipe vous coûte chaque jour.
+Quand vous calculez une recette, vous choisissez qui la prépare, et SharperPlus ajoute son temps au coût de chaque portion.

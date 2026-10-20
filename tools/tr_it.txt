@@ -436,3 +436,10 @@ Se questa ricetta non usa confezioni, lascia entrambi i campi a {0}.
 Devi cambiare in fretta un prezzo di vendita? Scrivi il nuovo prezzo in AGGIORNA PREZZO RAPIDO e tocca OK.
 SharperPlus lo salva subito e aggiorna profitto e margine, senza aprire tutta la ricetta.
 La data dell'ultimo cambio di prezzo appare sotto, così sai sempre quando è stato aggiornato.
+Scrivi il nome di ogni membro del personale e lo stipendio mensile che gli paghi.
+Non devi scriverli. SharperPlus li calcola per te.
+La paga giornaliera è lo stipendio mensile diviso per i tuoi giorni di lavoro. La paga oraria è la paga giornaliera divisa per {0} ore.
+Tocca + AGGIUNGI PERSONALE per aggiungere la persona successiva.
+Qualcuno se n'è andato? Tocca la ✕ in cima al suo nome per toglierlo.
+Questo è quanto ti costa tutta la squadra ogni giorno.
+Quando calcoli una ricetta, scegli chi la prepara e SharperPlus aggiunge il suo tempo al costo di ogni porzione.

@@ -436,3 +436,10 @@ Jika resipi ini tidak guna pembungkusan, biarkan kedua-dua ruang pada {0}.
 Perlu tukar harga jualan dengan cepat? Taip harga baru dalam KEMAS KINI HARGA PANTAS dan tekan OK.
 SharperPlus simpan serta-merta dan kemas kini untung dan margin anda, tanpa buka resipi penuh.
 Tarikh perubahan harga terakhir ditunjukkan di bawah, jadi anda sentiasa tahu bila ia terakhir dikemas kini.
+Taip nama setiap kakitangan dan gaji bulanan yang anda bayar kepada mereka.
+Anda tidak perlu menaip ini. SharperPlus mengiranya untuk anda.
+Gaji harian ialah gaji bulanan dibahagi dengan hari bekerja anda. Kadar sejam ialah gaji harian dibahagi dengan {0} jam.
+Tekan + TAMBAH KAKITANGAN untuk menambah orang seterusnya.
+Ada yang berhenti? Tekan ✕ di atas nama mereka untuk membuangnya.
+Inilah kos seluruh pasukan anda setiap hari.
+Apabila anda mengira kos resipi, anda pilih siapa yang membuatnya, dan SharperPlus menambah masa mereka pada kos setiap hidangan.

@@ -436,3 +436,10 @@ Si esta receta no usa envase, deje los dos campos en {0}.
 ¿Necesita cambiar rápido un precio de venta? Escriba el nuevo precio en ACTUALIZAR PRECIO RÁPIDO y toque OK.
 SharperPlus lo guarda al momento y actualiza su ganancia y su margen, sin abrir toda la receta.
 La fecha de su último cambio de precio aparece debajo, así siempre sabe cuándo se actualizó.
+Escriba el nombre de cada empleado y el sueldo mensual que le paga.
+No necesita escribir esto. SharperPlus lo calcula por usted.
+El sueldo diario es el sueldo mensual dividido entre sus días de trabajo. La tarifa por hora es el sueldo diario dividido entre {0} horas.
+Toque + AÑADIR PERSONAL para añadir a la siguiente persona.
+¿Alguien se fue? Toque la ✕ arriba de su nombre para quitarlo.
+Esto es lo que le cuesta todo su equipo cada día.
+Cuando calcula una receta, elige quién la prepara y SharperPlus suma su tiempo al costo de cada porción.
