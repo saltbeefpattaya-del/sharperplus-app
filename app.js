@@ -2965,17 +2965,26 @@
     if (!recipes.length) { notice('SEND TO MY COMPUTER', ['Tick the recipes you want to send first.'], ['OK']); return; }
     var marks = data.settings.sync_marks || {}, again = [], fresh = [];
     recipes.forEach(function (r) { (marks[r.recipe_name.trim().toUpperCase()] ? again : fresh).push(r); });
-    if (!again.length) { sendNow(fresh.map(plainRecipe), said, after); return; }
+    if (!again.length) { sendNow(fresh.map(forComputer), said, after); return; }
     (function ask(k, keep) {                // one question for each recipe already sent
       if (k >= again.length) {
         var go = fresh.concat(keep);
-        if (go.length) sendNow(go.map(plainRecipe), said, after);
+        if (go.length) sendNow(go.map(forComputer), said, after);
         return;
       }
       notice(again[k].recipe_name.trim().toUpperCase(),
              ['This recipe is already on your computer.', 'Do you want to update it?'], ['YES', 'NO'])
         .then(function (pick) { ask(k + 1, pick === 0 ? keep.concat([again[k]]) : keep); });
     })(0, []);
+  }
+  function forComputer(r) {                 // the phone's own sums go with it, so the computer agrees
+    var c = plainRecipe(r);
+    try {
+      var out = SP.costEverything(Object.assign(SP.blankRecipe(), r), data.settings);
+      if (!SP.num(c.batch_size) && out.weight) c.batch_size = String(Math.round(out.weight * 100) / 100);
+      c.phone_products = String(out.products || '');
+    } catch (e) {}
+    return c;
   }
   function sendNow(list, said, after) {
     if (said) said.textContent = 'Sending...'; else say('Sending...');
