@@ -490,3 +490,5 @@ Haken Sie zuerst die Gerichte für den Bericht an.
 {0} GERICHTE
 Drucken und Senden des Sync-Berichts gehört zu SharperPlus Premium.
 Gesendet aus SharperPlus
+SYNC-VERLAUF ★
+Der Sync-Verlauf gehört zu SharperPlus Premium.

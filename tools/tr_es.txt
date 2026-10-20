@@ -490,3 +490,5 @@ Marque primero los platos que quiere en el informe.
 {0} PLATOS
 Imprimir y enviar el informe es parte de SharperPlus Premium.
 Enviado desde SharperPlus
+HISTORIAL DE SINCRONIZACIÓN ★
+El historial de sincronización es parte de SharperPlus Premium.

@@ -490,3 +490,5 @@ SharperPlus 会马上保存，并更新您的利润和利润率，不用打开�
 {0} 道菜
 打印和发送同步报告是 SharperPlus 高级版的功能。
 由 SharperPlus 发送
+同步记录 ★
+同步记录是 SharperPlus 高级版的功能。

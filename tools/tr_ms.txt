@@ -490,3 +490,5 @@ Tanda hidangan untuk laporan dahulu.
 {0} HIDANGAN
 Mencetak dan menghantar laporan segerak ialah sebahagian daripada SharperPlus Premium.
 Dihantar dari SharperPlus
+SEJARAH SEGERAK ★
+Rekod segerak ialah sebahagian daripada SharperPlus Premium.

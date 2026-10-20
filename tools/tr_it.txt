@@ -490,3 +490,5 @@ Spunta prima i piatti da mettere nel report.
 {0} PIATTI
 Stampare e inviare il report fa parte di SharperPlus Premium.
 Inviato da SharperPlus
+STORICO SINCRONIZZAZIONE ★
+Lo storico della sincronizzazione fa parte di SharperPlus Premium.

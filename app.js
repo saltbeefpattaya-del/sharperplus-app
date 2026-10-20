@@ -1638,12 +1638,16 @@
         box.appendChild(tickRow);
         var last = ((data.settings.sync_log || {})[nameKey] || [])[0];
         var hist = el('div', 'synclastrow');
-        if (last) {
+        if (last && isPremium()) {
           var lw = el('div', 'synclastw'); lw.appendChild(el('span', '', 'LAST SYNC: '));
           var lv = el('span', '', last.t + ' \u00b7 ' + SP.commas(last.qty) + (last.unit === 'g' ? ' g' : '')); lv.setAttribute('data-notr', '');
           lw.appendChild(lv); if (last.unit !== 'g') lw.appendChild(el('span', '', ' UNITS')); hist.appendChild(lw);
         }
-        var hb = el('button', 'soft synchbtn', 'SYNC HISTORY'); hb.onclick = function () { syncHistory(nameKey); };
+        var hb = el('button', 'soft synchbtn', 'SYNC HISTORY \u2605');
+        hb.onclick = function () {
+          if (!isPremium()) { premiumBox('The sync record is part of SharperPlus Premium.'); return; }
+          syncHistory(nameKey);
+        };
         hist.appendChild(hb); box.appendChild(hist);
         var btns = el('div', 'btnrow');
         var open = el('button', 'soft', 'OPEN RECIPE'); open.onclick = function () { openRecipe(i); };
