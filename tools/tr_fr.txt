@@ -492,3 +492,6 @@ Imprimer et envoyer le rapport de synchro fait partie de SharperPlus Premium.
 Envoyé depuis SharperPlus
 HISTORIQUE DE SYNCHRO ★
 L'historique de synchro fait partie de SharperPlus Premium.
+HISTORIQUE DE SYNCHRO
+RAPPORT DE SYNCHRO DES PLATS COCHÉS
+IMPRIMER OU ENVOYER

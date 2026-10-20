@@ -492,3 +492,6 @@ Mencetak dan menghantar laporan segerak ialah sebahagian daripada SharperPlus Pr
 Dihantar dari SharperPlus
 SEJARAH SEGERAK ★
 Rekod segerak ialah sebahagian daripada SharperPlus Premium.
+SEJARAH SEGERAK
+LAPORAN SEGERAK HIDANGAN DITANDA
+CETAK ATAU HANTAR

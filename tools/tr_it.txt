@@ -492,3 +492,6 @@ Stampare e inviare il report fa parte di SharperPlus Premium.
 Inviato da SharperPlus
 STORICO SINCRONIZZAZIONE ★
 Lo storico della sincronizzazione fa parte di SharperPlus Premium.
+STORICO SINCRONIZZAZIONE
+REPORT DEI PIATTI SPUNTATI
+STAMPA O INVIA
