@@ -428,3 +428,11 @@ Le traducteur est très occupé. Patientez une minute et réessayez.
 Cela fait beaucoup de traductions pour une journée. Réessayez demain.
 Ouvrez d'abord SharperPlus avec votre clé.
 Le traducteur n'est pas encore installé.
+Vous vendez ce plat en boîte, pot, sachet ou emballage ? Ajoutez ici le coût de votre emballage.
+Dans COÛT TOTAL DE L'EMBALLAGE, indiquez ce que vous avez payé pour un lot, par exemple {0} pour un carton de {1} pots.
+Dans TOTAL D'UNITÉS PAR EMBALLAGE, indiquez combien il y en a dans ce lot, par exemple {0}.
+SharperPlus calcule le COÛT D'EMBALLAGE PAR PORTION et l'ajoute au coût de chaque portion.
+Si cette recette n'utilise pas d'emballage, laissez les deux champs à {0}.
+Besoin de changer vite un prix de vente ? Tapez le nouveau prix dans MISE À JOUR RAPIDE DU PRIX et appuyez sur OK.
+SharperPlus l'enregistre tout de suite et met à jour votre bénéfice et votre marge, sans ouvrir toute la recette.
+La date de votre dernier changement de prix s'affiche en dessous, pour savoir toujours quand il a été mis à jour.

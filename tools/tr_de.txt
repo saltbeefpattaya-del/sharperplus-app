@@ -428,3 +428,11 @@ Der Übersetzer ist gerade sehr beschäftigt. Bitte warten Sie eine Minute und v
 Das sind viele Übersetzungen für einen Tag. Bitte versuchen Sie es morgen wieder.
 Bitte öffnen Sie SharperPlus zuerst mit Ihrem Schlüssel.
 Der Übersetzer ist noch nicht eingerichtet.
+Verkaufen Sie dieses Gericht in einer Box, einem Becher, einer Tüte oder Verpackung? Tragen Sie hier die Verpackungskosten ein.
+Bei GESAMTKOSTEN DER VERPACKUNG geben Sie ein, was Sie für eine Packung bezahlt haben, zum Beispiel {0} für einen Karton mit {1} Bechern.
+Bei STÜCK GESAMT PRO VERPACKUNG geben Sie ein, wie viele in dieser Packung sind, zum Beispiel {0}.
+SharperPlus berechnet die VERPACKUNGSKOSTEN PRO PORTION und rechnet sie zu den Kosten jeder Portion dazu.
+Wenn dieses Rezept keine Verpackung braucht, lassen Sie beide Felder auf {0}.
+Verkaufspreis schnell ändern? Geben Sie den neuen Preis bei PREIS SCHNELL ÄNDERN ein und tippen Sie auf OK.
+SharperPlus speichert ihn sofort und aktualisiert Gewinn und Marge, ohne dass Sie das ganze Rezept öffnen.
+Das Datum Ihrer letzten Preisänderung steht darunter, so wissen Sie immer, wann zuletzt aktualisiert wurde.

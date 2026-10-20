@@ -428,3 +428,11 @@ El traductor está muy ocupado. Espere un minuto y vuelva a intentarlo.
 Son muchas traducciones para un día. Vuelva a intentarlo mañana.
 Abra primero SharperPlus con su clave.
 El traductor aún no está configurado.
+¿Vende este plato en caja, tarrina, bolsa o envoltorio? Añada aquí el costo del envase.
+En COSTO TOTAL DEL ENVASE, ponga lo que pagó por un paquete, por ejemplo {0} por una caja de {1} tarrinas.
+En UNIDADES TOTALES POR ENVASE, ponga cuántas trae ese paquete, por ejemplo {0}.
+SharperPlus calcula el COSTO DE ENVASE POR PORCIÓN y lo suma al costo de cada porción.
+Si esta receta no usa envase, deje los dos campos en {0}.
+¿Necesita cambiar rápido un precio de venta? Escriba el nuevo precio en ACTUALIZAR PRECIO RÁPIDO y toque OK.
+SharperPlus lo guarda al momento y actualiza su ganancia y su margen, sin abrir toda la receta.
+La fecha de su último cambio de precio aparece debajo, así siempre sabe cuándo se actualizó.

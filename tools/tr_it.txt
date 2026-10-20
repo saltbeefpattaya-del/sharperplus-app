@@ -428,3 +428,11 @@ Il traduttore è molto occupato. Aspetta un minuto e riprova.
 Sono tante traduzioni per un giorno. Riprova domani.
 Apri prima SharperPlus con la tua chiave.
 Il traduttore non è ancora attivo.
+Vendi questo piatto in scatola, vaschetta, sacchetto o incarto? Aggiungi qui il costo della confezione.
+In COSTO TOTALE DELLA CONFEZIONE, inserisci quanto hai pagato per un pacco, per esempio {0} per una scatola da {1} vaschette.
+In UNITÀ TOTALI PER CONFEZIONE, inserisci quante ce ne sono in quel pacco, per esempio {0}.
+SharperPlus calcola il COSTO DELL'IMBALLAGGIO PER PORZIONE e lo aggiunge al costo di ogni porzione.
+Se questa ricetta non usa confezioni, lascia entrambi i campi a {0}.
+Devi cambiare in fretta un prezzo di vendita? Scrivi il nuovo prezzo in AGGIORNA PREZZO RAPIDO e tocca OK.
+SharperPlus lo salva subito e aggiorna profitto e margine, senza aprire tutta la ricetta.
+La data dell'ultimo cambio di prezzo appare sotto, così sai sempre quando è stato aggiornato.
