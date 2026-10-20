@@ -474,3 +474,4 @@ Haken Sie zuerst die Rezepte an, die Sie senden möchten.
 ANGEHAKTE REZEPTE SENDEN
 ANHAKEN ZUM SENDEN AN DEN COMPUTER
 ZULETZT AN COMPUTER GESENDET:
+Ihr Computer muss mit demselben Schlüssel geöffnet sein, der endet auf:

@@ -2937,6 +2937,7 @@
                              action: action, recipes: recipes || [] }) })
       .then(function (r) { return r.json(); });
   }
+  function keyEnd() { var k = (data.settings.licence || {}).key || ''; return k.slice(-4).toUpperCase(); }
   function syncWhy(d) {
     var r = d && d.reason;
     if (r === 'trial') return 'Sync comes with a bought SharperPlus key. It is not part of the free trial.';
@@ -2968,7 +2969,8 @@
       list.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = when; });
       save();
       say('SENT ' + d.sent + ' RECIPES TO YOUR COMPUTER', true);
-      notice('SENT TO YOUR COMPUTER', ['Now open SharperPlus on your computer and click GET MY PHONE RECIPES.'], ['OK']);
+      notice('SENT TO YOUR COMPUTER', ['Now open SharperPlus on your computer and click GET MY PHONE RECIPES.',
+        '', 'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']);
       if (after) after();
     }).catch(function () { if (said) said.textContent = ''; notice('SEND TO MY COMPUTER', [syncWhy(null)], ['OK']); });
   }
@@ -2979,7 +2981,8 @@
       if (!d || !d.ok) { said.textContent = syncWhy(d); return; }
       said.textContent = '';
       var come = (d.recipes || []).filter(function (r) { return r && (r.recipe_name || '').trim(); });
-      if (!come.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.'], ['OK']); return; }
+      if (!come.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.',
+        '', 'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']); return; }
       var mine = {}; (data.recipes || []).forEach(function (r, i) { mine[(r.recipe_name || '').trim().toUpperCase()] = i; });
       var fresh = [], changed = [];
       come.forEach(function (r) {

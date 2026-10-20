@@ -474,3 +474,4 @@ Cochez d'abord les recettes à envoyer.
 ENVOYER LES RECETTES COCHÉES
 COCHER POUR ENVOYER À L'ORDINATEUR
 DERNIER ENVOI À L'ORDINATEUR :
+Votre ordinateur doit être ouvert avec la même clé, qui finit par :

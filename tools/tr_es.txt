@@ -474,3 +474,4 @@ Marque primero las recetas que quiere enviar.
 ENVIAR RECETAS MARCADAS
 MARCAR PARA ENVIAR A LA COMPUTADORA
 ÚLTIMO ENVÍO A LA COMPUTADORA:
+Su computadora debe estar abierta con la misma clave, que termina en:

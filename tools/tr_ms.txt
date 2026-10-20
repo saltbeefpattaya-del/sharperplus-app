@@ -474,3 +474,4 @@ Tanda resipi yang mahu dihantar dahulu.
 HANTAR RESIPI YANG DITANDA
 TANDA UNTUK HANTAR KE KOMPUTER
 TERAKHIR DIHANTAR KE KOMPUTER:
+Komputer anda mesti dibuka dengan kunci yang sama, berakhir dengan:
