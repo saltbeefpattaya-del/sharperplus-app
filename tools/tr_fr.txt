@@ -470,3 +470,7 @@ RECETTES MISES À JOUR
 Envoyez vos recettes à votre ordinateur, ou recevez celles que votre ordinateur vous a envoyées.
 DERNIER ENVOI :
 DERNIÈRE RÉCEPTION :
+Cochez d'abord les recettes à envoyer.
+ENVOYER LES RECETTES COCHÉES
+COCHER POUR ENVOYER À L'ORDINATEUR
+DERNIER ENVOI À L'ORDINATEUR :

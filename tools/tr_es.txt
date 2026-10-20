@@ -470,3 +470,7 @@ RECETAS ACTUALIZADAS
 Envíe sus recetas a su computadora, o traiga las que su computadora le envió.
 ÚLTIMO ENVÍO:
 ÚLTIMA RECEPCIÓN:
+Marque primero las recetas que quiere enviar.
+ENVIAR RECETAS MARCADAS
+MARCAR PARA ENVIAR A LA COMPUTADORA
+ÚLTIMO ENVÍO A LA COMPUTADORA:

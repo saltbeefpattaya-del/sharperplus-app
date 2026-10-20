@@ -470,3 +470,7 @@ RICETTE AGGIORNATE
 Invia le tue ricette al computer, o prendi quelle che il computer ti ha inviato.
 ULTIMO INVIO:
 ULTIMA RICEZIONE:
+Spunta prima le ricette da inviare.
+INVIA LE RICETTE SPUNTATE
+SPUNTA PER INVIARE AL COMPUTER
+ULTIMO INVIO AL COMPUTER:

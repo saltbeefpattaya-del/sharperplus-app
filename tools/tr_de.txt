@@ -470,3 +470,7 @@ REZEPTE AKTUALISIERT
 Senden Sie Ihre Rezepte an den Computer, oder holen Sie die Rezepte, die der Computer geschickt hat.
 ZULETZT GESENDET:
 ZULETZT GEHOLT:
+Haken Sie zuerst die Rezepte an, die Sie senden möchten.
+ANGEHAKTE REZEPTE SENDEN
+ANHAKEN ZUM SENDEN AN DEN COMPUTER
+ZULETZT AN COMPUTER GESENDET:
