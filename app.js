@@ -1765,6 +1765,20 @@
     input.onchange = function () { if (input.files && input.files.length) got(Array.prototype.slice.call(input.files)); };
     input.click();
   }
+  function photoSource(go) {                      // TAKE PHOTO or CHOOSE FROM PHOTOS
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', '\ud83d\udcf7 METHOD FROM PHOTO'));
+    var body = el('div', 'notice-body');
+    body.appendChild(el('div', '', 'Take a clear photo of your recipe sheet, straight on and in good light.'));
+    box.appendChild(body);
+    var row = el('div', 'notice-btns col');
+    [['\ud83d\udcf7  TAKE PHOTO', true], ['\ud83d\uddbc  CHOOSE FROM PHOTOS', false], ['CANCEL', null]].forEach(function (b) {
+      var x = el('button', 'soft', b[0]);
+      x.onclick = function () { document.body.removeChild(shade); if (b[1] !== null) go(b[1]); };
+      row.appendChild(x);
+    });
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+  }
   function collectPages(first, camera, done) {   // PAGE 1, ADD ANOTHER PAGE, then UPLOAD when happy
     var pages = first.slice(0, MAX_PAGES);
     var shade = el('div', 'shade'), box = el('div', 'notice');
@@ -2207,7 +2221,7 @@
       var t = stepList.querySelectorAll('textarea'); if (t.length) t[t.length - 1].focus();
     };
     fromPhoto.onclick = function () {
-      choosePhoto(false, function (first) { collectPages(first, false, function (files) {
+      photoSource(function (camera) { choosePhoto(camera, function (first) { collectPages(first, camera, function (files) {
         waiting(true);
         var r = cur();
         readPages(files, names()).then(function (answer) {
@@ -2240,7 +2254,7 @@
             notice('METHOD READ', [steps.length + ' steps read from your photo.', '', 'Check the steps against your photo.']);
           });
         }).catch(function (err) { waiting(false); notice('THE PHOTO COULD NOT BE READ', [err.message || 'Please try again.']); });
-      }); });
+      }); }); });
     };
     sendBtn.onclick = function () {
       var r = cur();
