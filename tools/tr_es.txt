@@ -495,3 +495,11 @@ El historial de sincronización es parte de SharperPlus Premium.
 HISTORIAL DE SINCRONIZACIÓN
 INFORME DE LOS PLATOS MARCADOS
 IMPRIMIR O ENVIAR
+LAS PÁGINAS DE SU RECETA
+Añada cada página de la receta y pulse SUBIR.
+📷 AÑADIR OTRA PÁGINA
+SUBIR
+PÁGINA {0}
+PÁGINA {0} DE {1}
+Es el máximo de páginas para una receta.
+No se pudieron leer estas páginas:

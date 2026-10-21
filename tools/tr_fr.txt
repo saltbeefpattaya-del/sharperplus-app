@@ -495,3 +495,11 @@ L'historique de synchro fait partie de SharperPlus Premium.
 HISTORIQUE DE SYNCHRO
 RAPPORT DE SYNCHRO DES PLATS COCHÉS
 IMPRIMER OU ENVOYER
+LES PAGES DE VOTRE RECETTE
+Ajoutez chaque page de la recette, puis appuyez sur ENVOYER.
+📷 AJOUTER UNE PAGE
+ENVOYER
+PAGE {0}
+PAGE {0} SUR {1}
+C’est le maximum de pages pour une recette.
+Ces pages n’ont pas pu être lues :

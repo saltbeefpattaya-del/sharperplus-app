@@ -1744,11 +1744,11 @@
   }
   function waiting(on, head, line) {
     var w = document.getElementById('waitbox');
-    if (w && on && (w.__head || '') !== (head || '')) { if (w.parentNode) w.parentNode.removeChild(w); w = null; }
+    if (w && on && ((w.__head || '') !== (head || '') || (w.__line || '') !== (line || ''))) { if (w.parentNode) w.parentNode.removeChild(w); w = null; }
     if (!w) {
       w = el('div', 'shade'); w.id = 'waitbox';
       var box = el('div', 'notice');
-      w.__head = head || '';
+      w.__head = head || ''; w.__line = line || '';
       box.appendChild(el('div', 'notice-head', head || 'Reading your recipe...'));
       var body = el('div', 'notice-body');
       body.appendChild(el('div', 'spinner'));
@@ -1756,6 +1756,81 @@
       box.appendChild(body); w.appendChild(box);
     }
     if (on) document.body.appendChild(w); else if (w.parentNode) w.parentNode.removeChild(w);
+  }
+  var MAX_PAGES = 6;              // a recipe can be on up to 6 photos (pages)
+  function choosePhoto(camera, got) {            // opens the camera or the photos, gives back the files
+    var input = document.createElement('input');
+    input.type = 'file'; input.accept = 'image/*';
+    if (camera) input.setAttribute('capture', 'environment'); else input.multiple = true;
+    input.onchange = function () { if (input.files && input.files.length) got(Array.prototype.slice.call(input.files)); };
+    input.click();
+  }
+  function collectPages(first, camera, done) {   // PAGE 1, ADD ANOTHER PAGE, then UPLOAD when happy
+    var pages = first.slice(0, MAX_PAGES);
+    var shade = el('div', 'shade'), box = el('div', 'notice');
+    box.appendChild(el('div', 'notice-head', 'YOUR RECIPE PAGES'));
+    var body = el('div', 'notice-body');
+    body.appendChild(el('div', '', 'Add every page of the recipe, then press UPLOAD.'));
+    var list = el('div', 'pagelist');
+    body.appendChild(list);
+    box.appendChild(body);
+    var row = el('div', 'notice-btns col');
+    var more = el('button', 'soft', '📷  ADD ANOTHER PAGE');
+    var up = el('button', 'soft', 'UPLOAD');
+    var stop = el('button', 'soft', 'CANCEL');
+    function draw() {
+      list.innerHTML = '';
+      pages.forEach(function (f, i) {
+        var item = el('div', 'pageitem');
+        var pic = document.createElement('img');
+        pic.src = URL.createObjectURL(f); pic.alt = '';
+        pic.onload = function () { URL.revokeObjectURL(pic.src); };
+        item.appendChild(pic);
+        item.appendChild(el('div', 'pagename', 'PAGE ' + (i + 1)));
+        list.appendChild(item);
+      });
+      var full = pages.length >= MAX_PAGES;
+      more.style.display = full ? 'none' : '';
+      if (full) list.appendChild(el('div', 'pagefull', 'That is the most pages for one recipe.'));
+    }
+    more.onclick = function () {
+      choosePhoto(camera, function (files) { pages = pages.concat(files).slice(0, MAX_PAGES); draw(); });
+    };
+    up.onclick = function () { document.body.removeChild(shade); done(pages); };
+    stop.onclick = function () { document.body.removeChild(shade); };
+    row.appendChild(more); row.appendChild(up); row.appendChild(stop);
+    box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
+    draw();
+  }
+  function readPages(files, names) {             // each page read in turn, then joined into one recipe
+    var answers = [], failed = [], firstError = '';
+    var chain = Promise.resolve();
+    files.forEach(function (f, i) {
+      chain = chain.then(function () {
+        if (files.length > 1) waiting(true, 'Reading your recipe...', 'PAGE ' + (i + 1) + ' OF ' + files.length);
+        return shrink(f).then(function (img) { return readPhotoWith(img, names || []); })
+          .then(function (a) { answers.push(a); }, function (err) { failed.push(i + 1); firstError = firstError || (err && err.message) || ''; });
+      });
+    });
+    return chain.then(function () {
+      if (!answers.length) throw new Error(firstError || 'The photo could not be read.');
+      var joined = { ok: true, steps: [], ingredients: [] }, seen = {};
+      answers.forEach(function (a) {
+        joined.steps = joined.steps.concat(a.steps || []);
+        (a.ingredients || []).forEach(function (x) {
+          var k = String(x.name || '').trim().toLowerCase();
+          if (k && !seen[k]) { seen[k] = 1; joined.ingredients.push(x); }
+        });
+        if (!joined.recipe && a.recipe) joined.recipe = a.recipe;
+        if (!joined.batch && a.batch) joined.batch = a.batch;
+      });
+      joined.failed = failed;
+      return joined;
+    });
+  }
+  function pagesNotRead(answer) {                 // a page that could not be read is named, the rest still go in
+    if (!answer.failed || !answer.failed.length) return Promise.resolve();
+    return notice('NOTICE', ['These pages could not be read:'].concat(answer.failed.map(function (n) { return 'PAGE ' + n; })));
   }
   function addChoice() {          // Premium: photo (recipe, or recipe and method together) or type it in
     var shade = el('div', 'shade'), box = el('div', 'notice');
@@ -1788,11 +1863,8 @@
     box.appendChild(how);
     var row = el('div', 'notice-btns col');
     function pick(camera) {
-      var input = document.createElement('input');
-      input.type = 'file'; input.accept = 'image/*';
-      if (camera) input.setAttribute('capture', 'environment');
-      input.onchange = function () { if (input.files && input.files[0]) gotPhoto(input.files[0]); };
-      document.body.removeChild(shade); input.click();
+      document.body.removeChild(shade);
+      choosePhoto(camera, function (files) { collectPages(files, camera, gotPhoto); });
     }
     [['📷  TAKE PHOTO', function () { pick(true); }],
      ['🖼  CHOOSE FROM PHOTOS', function () { pick(false); }],
@@ -1800,10 +1872,12 @@
       var x = el('button', 'soft', b[0]); x.onclick = b[1]; row.appendChild(x); });
     box.appendChild(row); shade.appendChild(box); document.body.appendChild(shade);
   }
-  function gotPhoto(file) {
+  function gotPhoto(files) {
     waiting(true);
-    shrink(file).then(readPhoto).then(function (answer) {
+    readPages(files, []).then(function (answer) {
       waiting(false);
+      return pagesNotRead(answer).then(function () { return answer; });
+    }).then(function (answer) {
       var ings = (answer.ingredients || []).filter(function (i) { return String(i.name || '').trim(); });
       var steps = (answer.steps || []).filter(function (st) { return String(st.text || '').trim(); });
       if (!ings.length && !steps.length) {
@@ -2133,15 +2207,13 @@
       var t = stepList.querySelectorAll('textarea'); if (t.length) t[t.length - 1].focus();
     };
     fromPhoto.onclick = function () {
-      var input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
-      input.onchange = function () {
-        if (!input.files || !input.files[0]) return;
+      choosePhoto(false, function (first) { collectPages(first, false, function (files) {
         waiting(true);
         var r = cur();
-        shrink(input.files[0]).then(function (img) {
-          return readPhotoWith(img, names());
-        }).then(function (answer) {
+        readPages(files, names()).then(function (answer) {
           waiting(false);
+          return pagesNotRead(answer).then(function () { return answer; });
+        }).then(function (answer) {
           var steps = (answer.steps || []).filter(function (s) { return String(s.text || '').trim(); });
           var ns = names();
           steps = steps.map(function (s) {
@@ -2168,8 +2240,7 @@
             notice('METHOD READ', [steps.length + ' steps read from your photo.', '', 'Check the steps against your photo.']);
           });
         }).catch(function (err) { waiting(false); notice('THE PHOTO COULD NOT BE READ', [err.message || 'Please try again.']); });
-      };
-      input.click();
+      }); });
     };
     sendBtn.onclick = function () {
       var r = cur();

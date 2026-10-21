@@ -495,3 +495,11 @@ Der Sync-Verlauf gehört zu SharperPlus Premium.
 SYNC-VERLAUF
 SYNC-BERICHT FÜR ANGEHAKTE GERICHTE
 DRUCKEN ODER SENDEN
+IHRE REZEPTSEITEN
+Fügen Sie jede Seite des Rezepts hinzu und drücken Sie dann HOCHLADEN.
+📷 WEITERE SEITE
+HOCHLADEN
+SEITE {0}
+SEITE {0} VON {1}
+Mehr Seiten gehen für ein Rezept nicht.
+Diese Seiten konnten nicht gelesen werden:

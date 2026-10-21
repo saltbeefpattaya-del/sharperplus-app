@@ -495,3 +495,11 @@ Rekod segerak ialah sebahagian daripada SharperPlus Premium.
 SEJARAH SEGERAK
 LAPORAN SEGERAK HIDANGAN DITANDA
 CETAK ATAU HANTAR
+HALAMAN RESIPI ANDA
+Tambah setiap halaman resipi, kemudian tekan MUAT NAIK.
+📷 TAMBAH HALAMAN LAGI
+MUAT NAIK
+HALAMAN {0}
+HALAMAN {0} DARIPADA {1}
+Itu jumlah halaman paling banyak untuk satu resipi.
+Halaman ini tidak dapat dibaca:

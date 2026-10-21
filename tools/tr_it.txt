@@ -495,3 +495,11 @@ Lo storico della sincronizzazione fa parte di SharperPlus Premium.
 STORICO SINCRONIZZAZIONE
 REPORT DEI PIATTI SPUNTATI
 STAMPA O INVIA
+LE PAGINE DELLA RICETTA
+Aggiungi ogni pagina della ricetta, poi premi CARICA.
+📷 AGGIUNGI PAGINA
+CARICA
+PAGINA {0}
+PAGINA {0} DI {1}
+Questo è il massimo di pagine per una ricetta.
+Queste pagine non sono state lette:
