@@ -2977,7 +2977,7 @@
     var later = el('button', 'tourend', apple ? 'OK' : 'NOT NOW'); later.onclick = close; box.appendChild(later);
     shade.appendChild(box); document.body.appendChild(shade);
   }
-  // ---------------------------------------------------------------- SHARPERPLUS PREMIUM (not in the free trial)
+  // ---------------------------------------------------------------- SHARPERPLUS PREMIUM (the free trial gets it too, from sharperplus.com)
   function isPremium() { var lic = data.settings.licence || {}; return lic.ok === true && lic.premium === true; }
   var PREMIUM_PRICE = { premium: { THB: '\u0e3f5,800', GBP: '\u00a3130', EUR: '\u20ac160', USD: '$175' },
                         upgrade: { THB: '\u0e3f1,800', GBP: '\u00a340',  EUR: '\u20ac50',  USD: '$55' } };
@@ -3055,9 +3055,7 @@
   }
   var syncTicks = {};                      // the recipes ticked on the dashboard, by name
   function syncTrial() {
-    if (!(data.settings.licence || {}).trial) return false;
-    notice('SYNC WITH MY COMPUTER', ['Sync comes with a bought SharperPlus key. It is not part of the free trial.'], ['OK']);
-    return true;
+    return false;                          // Piece 108: the 14-day free trial can sync too
   }
   function sendRecipes(recipes, said, after) {
     if (syncTrial()) return;
