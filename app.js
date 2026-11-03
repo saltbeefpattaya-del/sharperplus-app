@@ -3225,7 +3225,7 @@
         for (i = 0; i < data.recipes.length; i++) if ((data.recipes[i].recipe_name || '').trim().toUpperCase() === name) return i;
         return undefined;
       }
-      function plainNoId(r) { var c = plainRecipe(Object.assign(SP.blankRecipe(), r)); delete c.uid; return JSON.stringify(c); }
+      function plainNoId(r) { var c = plainRecipe(Object.assign(SP.blankRecipe(), r)); delete c.uid; delete c.pos; return JSON.stringify(c); }
       var fresh = [], changed = [], adopt = false;
       come.forEach(function (r) {
         var at = find(r);
@@ -3236,8 +3236,20 @@
       var goneAt = [];
       gone.forEach(function (r) { var at = find(r); if (at !== undefined && goneAt.indexOf(at) < 0) goneAt.push(at); });
       goneAt.sort(function (a, b) { return b - a; });
+      function sameOrder() {                // the phone keeps the computer's order (newest at the top)
+        var openUid = (data.recipes[data.current] || {}).uid;
+        come.forEach(function (r) { var at = find(r); if (at !== undefined && r.pos !== undefined) data.recipes[at].pos = r.pos; });
+        var listed = data.recipes.map(function (r, i) { return [r, i]; });
+        listed.sort(function (a, b) {
+          var pa = a[0].pos === undefined ? Infinity : a[0].pos, pb = b[0].pos === undefined ? Infinity : b[0].pos;
+          return pa === pb ? a[1] - b[1] : (pa < pb ? -1 : 1);   // made on the phone, not on the computer yet: newest
+        });
+        data.recipes = listed.map(function (x) { return x[0]; });
+        for (var k = 0; k < data.recipes.length; k++) if (data.recipes[k].uid === openUid) data.current = k;
+      }
       if (adopt) save();
       if (!fresh.length && !changed.length && !goneAt.length) {
+        sameOrder(); save(); redrawOpen();
         notice('GET MY COMPUTER RECIPES', ['Your recipes are already the same as your computer.'], ['OK']); return;
       }
       var lines = [];
@@ -3268,7 +3280,7 @@
         come.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = new Date().toLocaleDateString(); });
         fresh.forEach(function (r) { logSync(r, 'FROM COMPUTER'); });
         if (btns[pick] === 'ADD NEW AND UPDATE CHANGED') changed.forEach(function (p) { logSync(p[1], 'FROM COMPUTER'); });
-        save(); redrawOpen(); say('RECIPES UPDATED');
+        sameOrder(); save(); redrawOpen(); say('RECIPES UPDATED');
         if (done) done();
       });
     }).catch(function () { said.textContent = syncWhy(null); });
