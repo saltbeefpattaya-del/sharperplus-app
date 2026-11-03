@@ -927,6 +927,47 @@
     return api;
   }
 
+  builders.history = function () {          // INGREDIENTS HISTORY: every price change, newest at the top
+    var page = pageTop('INGREDIENTS HISTORY');
+    page.appendChild(el('div', 'note', 'Every ingredient you use is kept here with its price and the date it changed, ' +
+      'newest at the top. It is your record of how your prices move.'));
+    var tools = el('div', 'card');
+    var find = el('input', 'cream'); find.placeholder = 'FIND AN INGREDIENT'; find.autocomplete = 'off';
+    var clear = el('button', 'soft', 'CLEAR SEARCH');
+    find.style.width = '100%'; find.style.boxSizing = 'border-box'; clear.style.marginTop = '10px';
+    tools.appendChild(find); tools.appendChild(clear); page.appendChild(tools);
+    var list = el('div', 'card histlist'); page.appendChild(list);
+    function draw() {
+      var want = find.value.trim().toLowerCase();
+      var hist = data.ingredient_history || [];
+      list.innerHTML = '';
+      var shown = 0;
+      hist.forEach(function (line, i) {
+        if (want && String(line[0]).toLowerCase().indexOf(want) < 0) return;
+        shown++;
+        var row = el('div', 'histrow');
+        var left = el('div', 'histname');
+        left.appendChild(el('b', '', line[0]));
+        left.appendChild(el('span', 'histdate', [line[2], line[3]].filter(Boolean).join(' ')));
+        row.appendChild(left);
+        row.appendChild(el('span', 'histprice', num(line[1]) > 0 ? SP.money(num(line[1])) : 'NO PRICE'));
+        var del = el('button', 'del', '✕'); del.setAttribute('aria-label', 'Delete this line');
+        del.onclick = function () {
+          notice('DELETE LINE', ['Delete ' + line[0] + ' (' + (num(line[1]) > 0 ? SP.money(num(line[1])) : 'no price') + ')?'],
+                 ['DELETE', 'CANCEL']).then(function (a) {
+            if (a !== 0) return; hist.splice(i, 1); save(); draw();
+          });
+        };
+        row.appendChild(del); list.appendChild(row);
+      });
+      if (!shown) list.appendChild(el('div', 'empty', want ? 'No ingredient with that name.' : 'No ingredients yet. They are added from your recipes.'));
+    }
+    find.oninput = draw;
+    clear.onclick = function () { find.value = ''; draw(); };
+    refreshers.history = draw;
+    return page;
+  };
+
   builders.stafflist = function () {
     var s = data.settings;
     var page = pageTop('STAFF WAGES');
@@ -2365,7 +2406,8 @@
   }
 
   // ---------------------------------------------------------------- the menu
-  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method' };
+  var targets = { 'MASTER COSTINGS': 'master', 'STAFF': 'stafflist', 'DASHBOARD': 'dashboard', 'PREMIUM': 'method',
+                  'INGREDIENTS HISTORY': 'history' };
   // ---------------------------------------------------------------- CHANGE APPEARANCE (the same ten looks as the computer)
   var LOOKS = ["Classic", "Warm cream", "Soft stone", "Light grey", "Pale sage", "Mist blue", "Slate", "Charcoal", "Deep navy", "Dark olive"];
   var THEMES = {"Warm cream":{"mode":"light","page":"#F1EBDD","surface":"#FFFCF5","label":"#E9DFC8","text":"#383026","muted":"#655A4B","divider":"#D9CEB8","control":"#8A795F","input":"#FFFFFF","calculated":"#F8F2E6","primary":"#715331","on-primary":"#FFFFFF","primary-hover":"#5E4428","primary-pressed":"#4D3721","selected":"#EBDFC7","on-selected":"#383026","focus":"#6C4D2B"},"Soft stone":{"mode":"light","page":"#EAE7E2","surface":"#FAF9F6","label":"#DFDAD2","text":"#33302C","muted":"#625D55","divider":"#D0C8BD","control":"#817566","input":"#FFFFFF","calculated":"#F0EDE8","primary":"#655C50","on-primary":"#FFFFFF","primary-hover":"#534B40","primary-pressed":"#453D34","selected":"#E0D8CC","on-selected":"#33302C","focus":"#5B5144"},"Light grey":{"mode":"light","page":"#E8EBEE","surface":"#F8FAFC","label":"#DAE1E7","text":"#25313B","muted":"#50616F","divider":"#C8D1D9","control":"#6E8091","input":"#FFFFFF","calculated":"#EEF2F6","primary":"#405E75","on-primary":"#FFFFFF","primary-hover":"#344E63","primary-pressed":"#2A4052","selected":"#D6E1EB","on-selected":"#25313B","focus":"#365B78"},"Pale sage":{"mode":"light","page":"#E7EEE3","surface":"#F7F9F5","label":"#DCE7D5","text":"#243329","muted":"#4C6052","divider":"#C4D1BD","control":"#6B7D63","input":"#FFFFFF","calculated":"#EDF3E9","primary":"#3D6247","on-primary":"#FFFFFF","primary-hover":"#31523B","primary-pressed":"#284531","selected":"#D2E2CB","on-selected":"#243329","focus":"#305D3D"},"Mist blue":{"mode":"light","page":"#E4EEF5","surface":"#F6FAFD","label":"#D4E4EF","text":"#233B4B","muted":"#496478","divider":"#C1D4E2","control":"#657F93","input":"#FFFFFF","calculated":"#EAF3F9","primary":"#2D627F","on-primary":"#FFFFFF","primary-hover":"#245169","primary-pressed":"#1C4257","selected":"#CFE3EF","on-selected":"#233B4B","focus":"#245B7C"},"Slate":{"mode":"dark","page":"#343F4B","surface":"#404D5B","label":"#4A5A69","text":"#F4F7FA","muted":"#CED7E0","divider":"#5A6B7D","control":"#B8CADE","input":"#29343E","calculated":"#394755","primary":"#9EBBD3","on-primary":"#142737","primary-hover":"#B2CBDF","primary-pressed":"#8FABCA","selected":"#536E85","on-selected":"#FFFFFF","focus":"#BFD9ED"},"Charcoal":{"mode":"dark","page":"#25282C","surface":"#30343A","label":"#3C434A","text":"#F4F5F6","muted":"#C3CAD1","divider":"#505A65","control":"#A0AEBC","input":"#1D2125","calculated":"#2B3238","primary":"#BAC4CE","on-primary":"#212B35","primary-hover":"#D0D8DF","primary-pressed":"#A6B3BF","selected":"#485766","on-selected":"#FFFFFF","focus":"#D2DCE5"},"Deep navy":{"mode":"dark","page":"#172331","surface":"#223346","label":"#2D4359","text":"#F2F6FA","muted":"#C5D4E3","divider":"#425B73","control":"#93ABC1","input":"#101C28","calculated":"#1C2C3E","primary":"#8FB8DE","on-primary":"#122A40","primary-hover":"#AACDEB","primary-pressed":"#78A4CB","selected":"#355877","on-selected":"#FFFFFF","focus":"#B5D9F7"},"Dark olive":{"mode":"dark","page":"#2B3027","surface":"#363E30","label":"#45503C","text":"#F3F5ED","muted":"#CBD3C0","divider":"#56634A","control":"#B0C399","input":"#21271E","calculated":"#303A2A","primary":"#B5C59D","on-primary":"#26351D","primary-hover":"#CBD8B6","primary-pressed":"#A1B389","selected":"#526644","on-selected":"#FFFFFF","focus":"#D3E2BD"}};
@@ -3072,11 +3114,26 @@
   // Like push mail: nothing moves until the chef presses SEND. The recipes wait on
   // sharperplus.com under the key until the computer presses GET MY PHONE RECIPES.
   var SYNC_URL = 'https://sharperplus.com/wp-json/sharperplus/v1/sync';
-  function syncCall(action, recipes) {
+  function mergeHistory(mine, theirs) {     // the other device's prices, each change kept once, newest first
+    var seen = {}, out = [];
+    (mine || []).concat((theirs || []).filter(Array.isArray)).forEach(function (l) {
+      l = l.concat(['', '', '', '', '', '']).slice(0, 6).map(String);
+      var key = l[0].trim().toLowerCase() + '|' + num(l[1]) + '|' + l[4];
+      if (!l[0].trim() || seen[key]) return;
+      seen[key] = true; out.push(l);
+    });
+    out = out.map(function (l, i) { return [l, i]; });
+    out.sort(function (a, b) { return a[0][4] === b[0][4] ? a[1] - b[1] : (a[0][4] < b[0][4] ? 1 : -1); });
+    out = out.map(function (x) { return x[0]; });
+    var priced = {};
+    out.forEach(function (l) { if (num(l[1]) > 0) priced[l[0].trim().toLowerCase()] = true; });
+    return out.filter(function (l) { return num(l[1]) > 0 || !priced[l[0].trim().toLowerCase()]; });
+  }
+  function syncCall(action, recipes, history) {
     var lic = data.settings.licence || {};
     return fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: lic.key || '', side: 'phone', id: deviceId(), name: phoneName(),
-                             action: action, recipes: recipes || [], sync_v: 2 }) })
+                             action: action, recipes: recipes || [], sync_v: 2, history: history || [] }) })
       .then(function (r) { return r.json(); });
   }
   function keyEnd() { var k = (data.settings.licence || {}).key || ''; return k.slice(-4).toUpperCase(); }
@@ -3215,7 +3272,7 @@
   }
   function sendNow(list, said, after) {
     if (said) said.textContent = 'Sending...'; else say('Sending...');
-    syncCall('send', list).then(function (d) {
+    syncCall('send', list, data.ingredient_history).then(function (d) {
       if (said) said.textContent = '';
       if (!d || !d.ok) { notice('SEND TO MY COMPUTER', [syncWhy(d)], ['OK']); return; }
       var when = new Date().toLocaleDateString();
@@ -3234,9 +3291,11 @@
     syncCall('get').then(function (d) {
       if (!d || !d.ok) { said.textContent = syncWhy(d); return; }
       said.textContent = '';
+      if (d.history && d.history.length) { data.ingredient_history = mergeHistory(data.ingredient_history, d.history); save(); }
       var come = (d.recipes || []).filter(function (r) { return r && (r.recipe_name || '').trim(); });
       var gone = come.filter(function (r) { return r.deleted; });     // deleted on the computer
       come = come.filter(function (r) { return !r.deleted; });
+      if (!come.length && !gone.length && d.history && d.history.length) { notice('GET MY COMPUTER RECIPES', ['Your ingredients history has been updated.'], ['OK']); return; }
       if (!come.length && !gone.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.',
         '', 'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']); return; }
       ensureUids(data.recipes);
