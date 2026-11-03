@@ -2183,6 +2183,9 @@
       r.method.forEach(function (st, i) {
         var box = el('div', 'step');
         var head = el('div', 'stephead');
+        var plus = el('button', 'mv plus', '+'); plus.setAttribute('aria-label', 'Add a new instruction above this step');
+        plus.onclick = function () { addAbove(i); };            // a new step goes in above this one
+        head.appendChild(plus);
         head.appendChild(el('span', 'stepno', String(i + 1)));
         var up = el('button', 'mv', '▲'), dn = el('button', 'mv', '▼'), del = el('button', 'del', '✕');
         up.disabled = i === 0; dn.disabled = i === r.method.length - 1;
@@ -2211,6 +2214,25 @@
         tipRow.appendChild(tip); box.appendChild(tipRow);
         stepList.appendChild(box);
       });
+    }
+    function addAbove(i) {                   // + : type a new instruction, SAVE puts it in above step i
+      var shade = el('div', 'shade'), box = el('div', 'notice');
+      box.appendChild(el('div', 'notice-head', 'A NEW INSTRUCTION'));
+      var body = el('div', 'notice-body');
+      body.appendChild(el('div', '', 'Step ' + (i + 1)));
+      var words = el('textarea', 'cream steptext'); words.placeholder = 'What to do in this step';
+      body.appendChild(words); box.appendChild(body);
+      var row = el('div', 'notice-btns');
+      var ok = el('button', 'soft', 'SAVE'), no = el('button', 'soft', 'CANCEL');
+      ok.onclick = function () {
+        document.body.removeChild(shade);
+        if (!words.value.trim()) return;
+        var st = methodStep(); st.text = words.value.trim();
+        cur().method.splice(i, 0, st); save(); draw();
+      };
+      no.onclick = function () { document.body.removeChild(shade); };
+      row.appendChild(ok); row.appendChild(no); box.appendChild(row);
+      shade.appendChild(box); document.body.appendChild(shade); words.focus();
     }
     function pickUses(st) {
       var all = names();
