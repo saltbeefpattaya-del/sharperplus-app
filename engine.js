@@ -252,13 +252,26 @@
     return normal;
   }
 
+  function isWholeEgg(name) {          // a Whole Egg line is costed per egg, not per kilo
+    var n = String(name || '').trim().toLowerCase();
+    return n === 'whole egg' || n === 'whole eggs';
+  }
+
   function costEverything(recipe, settings) {
     var out = {};
+    var shown = [];
     var lines = (recipe.rows || []).map(function (row) {
       var r = (row.concat(['', '', '', ''])).slice(0, 4);
-      return [num(r[1]), num(r[2]), num(r[3])];
+      if (isWholeEgg(r[0])) {            // eggs x price per egg, the same as the computer
+        var eggs = num(r[1]), each = num(r[2]);
+        shown.push([eggs * each, eggs, each, 0, eggs * each]);
+        return [eggs * E.PER, each, 0];
+      }
+      var l = [num(r[1]), num(r[2]), num(r[3])];
+      shown.push(costRow(l[0], l[1], l[2]));
+      return l;
     });
-    out.lines = lines.map(function (l) { return costRow(l[0], l[1], l[2]); });
+    out.lines = shown;
     var vatPercent = num(settings.vat_percent);
     out.weight_worked = out.lines.reduce(function (a, l) { return a + l[1]; }, 0);   // ingredients added up
     out.weight = num(recipe.total_weight) > 0 ? num(recipe.total_weight) : out.weight_worked;   // or typed by hand
@@ -360,5 +373,6 @@
     monthBill: monthBill, costEverything: costEverything, setUnits: setUnits
   });
   root.SP = E;
+  E.isWholeEgg = isWholeEgg;
   if (typeof module !== 'undefined') module.exports = E;
 })(typeof window !== 'undefined' ? window : globalThis);

@@ -1185,7 +1185,7 @@
           input.oninput = function () { set(input.value); save(); calc(); };
           c2.appendChild(input); grid.appendChild(c2); return input;
         }
-        cell(SP.US ? 'QUANTITY (oz)' : 'QUANTITY (g)', row[1], function (v) { row[1] = v; wasteGrams(row); });
+        var qtyIn = cell(SP.US ? 'QUANTITY (oz)' : 'QUANTITY (g)', row[1], function (v) { row[1] = v; wasteGrams(row); });
         var price = cell('UNIT PRICE ' + (SP.US ? 'PER LB' : 'PER KILO'), tidyPrice(row[2]), function (v) { row[2] = v; watch.pulled = null; });
         price.onfocus = function () { watch.wasPrice = price.value; };
         price.onblur = function () { setTimeout(function () { priceLeft(watch, price); }, 60); };
@@ -1194,7 +1194,8 @@
         var o = el('div', 'ingouts');
         function small(label, cls) { var d = el('div', 'mini' + (cls ? ' ' + cls : '')); d.appendChild(el('span', '', label)); var v = el('b', ''); d.appendChild(v); o.appendChild(d); return v; }
         var outsRow = { gross: small('GROSS COST'), nett: small(SP.US ? 'YIELD (oz)' : 'YIELD (g)'),
-                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO')), total: small('TOTAL COST', 'netcost') };
+                        kilo: small('NET COST ' + (SP.US ? 'PER LB' : 'PER KILO')), total: small('TOTAL COST', 'netcost'),
+                        eggBoxes: [qtyIn, price] };
         box.appendChild(o);
         ingOuts.push(outsRow);
         ingList.appendChild(box);
@@ -1471,6 +1472,8 @@
         var row = r.rows[i] || [];
         var any = row.some(function (c) { return String(c || '').trim(); });
         var l = out.lines[i] || [0, 0, 0, 0, 0];
+        var egg = SP.isWholeEgg(row[0]);   // Whole Egg: deeper yellow, costed per egg
+        o.eggBoxes.forEach(function (b) { b.classList.toggle('eggbox', egg); });
         o.gross.textContent = any ? m(l[0]) : '';
         o.nett.textContent = any ? (SP.US ? SP.commas(l[1], 2) : SP.commas(Math.round(l[1]), 0)) : '';
         o.kilo.textContent = any ? m(l[2]) : '';
