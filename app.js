@@ -18,11 +18,25 @@
     } catch (e) {}
     return SP.newData();
   }
+  function newUid() {                       // a hidden ID that never changes (same as the computer)
+    var a = new Uint8Array(8); (window.crypto || window.msCrypto).getRandomValues(a);
+    return Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+  }
+  function ensureUids(list) {               // every recipe its own ID; a copy gets a new one
+    var seen = {};
+    (list || []).forEach(function (r) {
+      if (!r) return;
+      if (!r.uid || seen[r.uid]) r.uid = newUid();
+      seen[r.uid] = true;
+    });
+  }
   function save() {
+    ensureUids(data.recipes);
     derive(data.settings);
     try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch (e) { return false; }
   }
   data = load();
+  ensureUids(data.recipes);
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
 
   // the figures the desktop works out on save (read_settings)
@@ -3040,7 +3054,7 @@
     var lic = data.settings.licence || {};
     return fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: lic.key || '', side: 'phone', id: deviceId(), name: phoneName(),
-                             action: action, recipes: recipes || [] }) })
+                             action: action, recipes: recipes || [], sync_v: 2 }) })
       .then(function (r) { return r.json(); });
   }
   function keyEnd() { var k = (data.settings.licence || {}).key || ''; return k.slice(-4).toUpperCase(); }
@@ -3199,23 +3213,38 @@
       if (!d || !d.ok) { said.textContent = syncWhy(d); return; }
       said.textContent = '';
       var come = (d.recipes || []).filter(function (r) { return r && (r.recipe_name || '').trim(); });
-      if (!come.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.',
+      var gone = come.filter(function (r) { return r.deleted; });     // deleted on the computer
+      come = come.filter(function (r) { return !r.deleted; });
+      if (!come.length && !gone.length) { notice('GET MY COMPUTER RECIPES', ['Nothing has been sent from your computer yet.',
         '', 'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']); return; }
-      var mine = {}; (data.recipes || []).forEach(function (r, i) { mine[(r.recipe_name || '').trim().toUpperCase()] = i; });
-      var fresh = [], changed = [];
+      ensureUids(data.recipes);
+      function find(r) {                    // the same hidden ID first, then the same name
+        var i;
+        if (r.uid) for (i = 0; i < data.recipes.length; i++) if (data.recipes[i].uid === r.uid) return i;
+        var name = (r.recipe_name || '').trim().toUpperCase();
+        for (i = 0; i < data.recipes.length; i++) if ((data.recipes[i].recipe_name || '').trim().toUpperCase() === name) return i;
+        return undefined;
+      }
+      function plainNoId(r) { var c = plainRecipe(Object.assign(SP.blankRecipe(), r)); delete c.uid; return JSON.stringify(c); }
+      var fresh = [], changed = [], adopt = false;
       come.forEach(function (r) {
-        var at = mine[(r.recipe_name || '').trim().toUpperCase()];
+        var at = find(r);
         if (at === undefined) fresh.push(r);
-        else if (JSON.stringify(plainRecipe(Object.assign(SP.blankRecipe(), data.recipes[at]))) !==
-                 JSON.stringify(plainRecipe(Object.assign(SP.blankRecipe(), r)))) changed.push([at, r]);
+        else if (plainNoId(data.recipes[at]) !== plainNoId(r)) changed.push([at, r]);
+        else if (r.uid && data.recipes[at].uid !== r.uid) { data.recipes[at].uid = r.uid; adopt = true; }   // one ID for both
       });
-      if (!fresh.length && !changed.length) {
+      var goneAt = [];
+      gone.forEach(function (r) { var at = find(r); if (at !== undefined && goneAt.indexOf(at) < 0) goneAt.push(at); });
+      goneAt.sort(function (a, b) { return b - a; });
+      if (adopt) save();
+      if (!fresh.length && !changed.length && !goneAt.length) {
         notice('GET MY COMPUTER RECIPES', ['Your recipes are already the same as your computer.'], ['OK']); return;
       }
       var lines = [];
       if (fresh.length) lines.push(fresh.length + ' NEW RECIPES');
       if (changed.length) lines.push(changed.length + ' RECIPES ARE DIFFERENT ON YOUR COMPUTER');
-      var btns = changed.length ? ['ADD NEW AND UPDATE CHANGED', 'ADD NEW ONLY', 'CANCEL'] : ['ADD THEM', 'CANCEL'];
+      if (goneAt.length) lines.push(goneAt.length + ' RECIPES WERE DELETED ON YOUR COMPUTER');
+      var btns = (changed.length || goneAt.length) ? ['ADD NEW AND UPDATE CHANGED', 'ADD NEW ONLY', 'CANCEL'] : ['ADD THEM', 'CANCEL'];
       notice('GET MY COMPUTER RECIPES', lines, btns).then(function (pick) {
         if (btns[pick] === 'CANCEL') return;
         fresh.forEach(function (r) { data.recipes.push(Object.assign(SP.blankRecipe(), r)); });
@@ -3225,8 +3254,14 @@
             var next = Object.assign(SP.blankRecipe(), p[1]);
             next.costs = Object.assign(SP.recipeCosts(), next.costs || {});
             if (!next.costs.image && keep) next.costs.image = keep;     // keep the photo on this phone
+            if (!next.uid) next.uid = data.recipes[p[0]].uid;          // a new name carries, same ID
             data.recipes[p[0]] = next;
           });
+          goneAt.forEach(function (at) {                                 // deleted on the computer: here too
+            data.recipes.splice(at, 1);
+            if (data.current > at) data.current--; else if (data.current === at) data.current = 0;
+          });
+          if (!data.recipes.length) { data.recipes.push(SP.blankRecipe()); data.current = 0; }
         }
         data.settings.sync_got = new Date().toLocaleString();
         data.settings.sync_marks = data.settings.sync_marks || {};      // these are on the computer too
