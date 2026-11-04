@@ -1096,9 +1096,29 @@
     var top = el('div', 'card'); top.setAttribute('data-guide', 'RECIPE TOP');
     var nameRow = el('label', 'row'); nameRow.appendChild(el('span', 'lbl', 'RECIPE FOR'));
     var nameIn = el('input', 'cream name'); nameIn.style.width = '62%'; nameIn.style.maxWidth = 'none';
-    nameIn.oninput = function () { recipeNow().recipe_name = nameIn.value.toUpperCase(); save(); };
-    nameIn.onblur = function () { nameIn.value = recipeNow().recipe_name; fillPicker(); };
+    nameIn.oninput = function () { if (nameIn.readOnly) return; recipeNow().recipe_name = nameIn.value.toUpperCase(); save(); };
+    nameIn.onblur = function () { nameIn.value = recipeNow().recipe_name; fillPicker(); lockName(); };
     nameRow.appendChild(nameIn); top.appendChild(nameRow);
+    // a named recipe is locked: EDIT NAME asks first, so a name is never changed by mistake
+    var editRow = el('div', 'btnrow');
+    var editBtn = el('button', 'soft editname', 'EDIT NAME');
+    editBtn.onclick = function () {
+      var r = recipeNow(), was = (r.recipe_name || '').trim();
+      if (!was) { nameIn.readOnly = false; nameIn.focus(); return; }
+      notice('EDIT NAME', ['Do you want to change the name', was + '?'], ['YES', 'NO']).then(function (a) {
+        if (a !== 0) return;
+        ask('EDIT NAME', ['Type the new name for', was], 'NEW NAME', was).then(function (typed) {
+          var name = String(typed || '').trim().toUpperCase();
+          if (!name || name === was.toUpperCase()) return;
+          var taken = data.recipes.some(function (x) { return x !== r && (x.recipe_name || '').trim().toUpperCase() === name; });
+          if (taken) { notice('EDIT NAME', ['There is already a recipe called', name + '.', '', 'Please pick another name.'], ['OK']); return; }
+          r.recipe_name = name; save(); nameIn.value = name; fillPicker();
+          say('NAME CHANGED TO ' + name);
+        });
+      });
+    };
+    editRow.appendChild(editBtn); top.appendChild(editRow);
+    function lockName() { nameIn.readOnly = !!(recipeNow().recipe_name || '').trim(); }
     var pickRow = el('label', 'row'); pickRow.appendChild(el('span', 'lbl', 'SELECT RECIPE'));
     var picker = el('select', 'cream'); picker.setAttribute('data-names', ''); picker.style.width = '62%'; picker.style.maxWidth = 'none';
     picker.onchange = function () { save(); data.current = parseInt(picker.value, 10); save(); refreshers.recipe(); window.scrollTo(0, 0); };
@@ -1578,7 +1598,7 @@
       var r = recipeNow();
       SP.setUnits(s);
       fillPicker();
-      if (document.activeElement !== nameIn) nameIn.value = r.recipe_name;
+      if (document.activeElement !== nameIn) { nameIn.value = r.recipe_name; lockName(); }
       bound.forEach(function (b) {
         if (b.values) setOptions(b.input, b.values);
         if (document.activeElement !== b.input) b.input.value = b.get() || '';
