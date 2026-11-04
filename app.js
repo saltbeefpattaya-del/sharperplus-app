@@ -1623,15 +1623,22 @@
       notice('RECIPE CREATED', ["'" + name.toUpperCase() + "' CREATED SUCCESSFULLY."]);
     });
   }
+  function noteDeleted(r) {
+    if (!r || !(r.recipe_name || '').trim()) return;
+    var notes = data.settings.deleted_out = data.settings.deleted_out || [];
+    notes.push({ uid: r.uid || '', recipe_name: (r.recipe_name || '').trim().toUpperCase(), deleted: true });
+  }
   function deleteRecipe(i) {
     var name = String(data.recipes[i].recipe_name || '(NO NAME)').toUpperCase();
     notice('DELETE RECIPE', ['Are you sure you want to DELETE the recipe:', '', name, '',
       'This will permanently delete the recipe sheet and remove it from the directory.', '',
-      'THIS CANNOT BE UNDONE!'], ['OK', 'CANCEL']).then(function (a) {
+      'It will also be deleted from all your devices on your next sync.', '',
+      'THIS CANNOT BE UNDONE!'], ['YES', 'NO']).then(function (a) {
       if (a !== 0) return;
       return notice('FINAL WARNING', [name, '', 'Once this has been deleted the deletion cannot be undone!'], ['OK', 'CANCEL'])
         .then(function (b) {
           if (b !== 0) return;
+          noteDeleted(data.recipes[i]);            // the other devices delete it on the next sync
           data.recipes.splice(i, 1);
           if (!data.recipes.length) data.recipes.push(SP.blankRecipe());
           if (data.current >= data.recipes.length || data.current === i) data.current = 0;
@@ -3300,9 +3307,11 @@
   }
   function sendNow(list, said, after, everything) {
     if (said) said.textContent = 'Sending...'; else say('Sending...');
-    syncCall('send', list, data.ingredient_history, everything).then(function (d) {
+    var notes = (data.settings.deleted_out || []).slice();
+    syncCall('send', list.concat(notes), data.ingredient_history, everything).then(function (d) {
       if (said) said.textContent = '';
       if (!d || !d.ok) { notice('SEND TO MY COMPUTER', [syncWhy(d)], ['OK']); return; }
+      if (notes.length) data.settings.deleted_out = [];
       var when = new Date().toLocaleDateString();
       data.settings.sync_marks = data.settings.sync_marks || {};
       list.forEach(function (r) { data.settings.sync_marks[r.recipe_name.trim().toUpperCase()] = when; logSync(r, 'SENT TO COMPUTER'); });
@@ -3365,6 +3374,12 @@
       if (fresh.length) lines.push(fresh.length + ' NEW RECIPES');
       if (changed.length) lines.push(changed.length + ' RECIPES ARE DIFFERENT ON YOUR COMPUTER');
       if (goneAt.length) lines.push(goneAt.length + ' RECIPES WERE DELETED ON YOUR COMPUTER');
+      var mineNames = data.recipes.map(function (x) { return (x.recipe_name || '').trim().toUpperCase(); });
+      fresh.forEach(function (r) {                // a new name that looks like one you already have
+        var n = (r.recipe_name || '').trim().toUpperCase();
+        var like = closeMatch(n, mineNames.filter(function (m) { return m && m !== n; }));
+        if (like) lines.push('', 'CHECK THE NAME: ' + n, 'LOOKS LIKE ' + like);
+      });
       var btns = (changed.length || goneAt.length) ? ['ADD NEW AND UPDATE CHANGED', 'ADD NEW ONLY', 'CANCEL'] : ['ADD THEM', 'CANCEL'];
       notice('GET MY COMPUTER RECIPES', lines, btns).then(function (pick) {
         if (btns[pick] === 'CANCEL') return;
@@ -3379,6 +3394,7 @@
             data.recipes[p[0]] = next;
           });
           goneAt.forEach(function (at) {                                 // deleted on the computer: here too
+            noteDeleted(data.recipes[at]);                               // and passed on to your other computer
             data.recipes.splice(at, 1);
             if (data.current > at) data.current--; else if (data.current === at) data.current = 0;
           });
