@@ -1736,7 +1736,14 @@
       syncReport(data.recipes.map(function (r) { return (r.recipe_name || '').trim().toUpperCase(); })
         .filter(function (n) { return n && syncTicks[n]; }));
     };
-    sync.appendChild(getB); sync.appendChild(repB); sync.appendChild(syncSaid);
+    var allB = el('button', 'gobtn syncbtn sendall', 'SEND ALL RECIPES TO MY COMPUTER');   // one tap, every recipe
+    allB.onclick = function () {
+      save();
+      var every = data.recipes.filter(function (r) { return r && (r.recipe_name || '').trim(); });
+      if (!every.length) { notice('SEND ALL RECIPES TO MY COMPUTER', ['Add a recipe first, then come back here.'], ['OK']); return; }
+      sendNow(every.map(forComputer), syncSaid, draw, true);
+    };
+    sync.appendChild(getB); sync.appendChild(allB); sync.appendChild(repB); sync.appendChild(syncSaid);
     tools.appendChild(sync);
     page.appendChild(tools);
     var list = el('div', ''); page.appendChild(list);
@@ -3129,11 +3136,11 @@
     out.forEach(function (l) { if (num(l[1]) > 0) priced[l[0].trim().toLowerCase()] = true; });
     return out.filter(function (l) { return num(l[1]) > 0 || !priced[l[0].trim().toLowerCase()]; });
   }
-  function syncCall(action, recipes, history) {
+  function syncCall(action, recipes, history, everything) {
     var lic = data.settings.licence || {};
     return fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key: lic.key || '', side: 'phone', id: deviceId(), name: phoneName(),
-                             action: action, recipes: recipes || [], sync_v: 2, history: history || [] }) })
+                             action: action, recipes: recipes || [], sync_v: 2, history: history || [], all: !!everything }) })
       .then(function (r) { return r.json(); });
   }
   function keyEnd() { var k = (data.settings.licence || {}).key || ''; return k.slice(-4).toUpperCase(); }
@@ -3270,9 +3277,9 @@
     } catch (e) {}
     return c;
   }
-  function sendNow(list, said, after) {
+  function sendNow(list, said, after, everything) {
     if (said) said.textContent = 'Sending...'; else say('Sending...');
-    syncCall('send', list, data.ingredient_history).then(function (d) {
+    syncCall('send', list, data.ingredient_history, everything).then(function (d) {
       if (said) said.textContent = '';
       if (!d || !d.ok) { notice('SEND TO MY COMPUTER', [syncWhy(d)], ['OK']); return; }
       var when = new Date().toLocaleDateString();
