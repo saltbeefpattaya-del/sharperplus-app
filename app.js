@@ -2040,8 +2040,9 @@
       return [s.text, s.minutes, s.temp, s.tip].some(function (v) { return v.trim(); });
     });
   }
-  function methodQty(q) {
+  function methodQty(q, name) {
     var v = num(q); if (!v) return String(q || '').trim();
+    if (name && SP.isWholeEgg(name)) return String(Math.round(v * 10) / 10);     // eggs: a count, no g
     var r = function (x, p) { return String(Math.round(x * Math.pow(10, p)) / Math.pow(10, p)); };
     if (SP.US) return v >= 16 ? r(v / 16, 2) + ' lb' : r(v, 2) + ' oz';
     return v >= 1000 ? r(v / 1000, 3) + ' kg' : r(v, 1) + ' g';
@@ -2062,7 +2063,7 @@
     var rows = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); });
     if (rows.length) {
       lines.push('', '*' + T('INGREDIENTS') + '*');
-      rows.forEach(function (x) { var q = String(x[1] || '').trim() ? methodQty(x[1]) : ''; lines.push('• ' + (q ? q + '  ' : '') + String(x[0]).trim()); });
+      rows.forEach(function (x) { var q = String(x[1] || '').trim() ? methodQty(x[1], x[0]) : ''; lines.push('• ' + (q ? q + '  ' : '') + String(x[0]).trim()); });
     }
     var kept = methodKept(r.method);
     if (kept.length) {
@@ -2116,7 +2117,7 @@
   function cardHtml(r) {          // the kitchen card, as the desktop prints it
     var deg = SP.US ? '°F' : '°C', T = SPT.T;
     var ing = (r.rows || []).filter(function (x) { return String(x[0] || '').trim(); }).map(function (x) {
-      return '<tr><td class="q">' + esc(String(x[1] || '').trim() ? methodQty(x[1]) : '') + '</td><td>' + esc(x[0]) + '</td></tr>';
+      return '<tr><td class="q">' + esc(String(x[1] || '').trim() ? methodQty(x[1], x[0]) : '') + '</td><td>' + esc(x[0]) + '</td></tr>';
     }).join('');
     var steps = methodKept(r.method).map(function (st) {
       var bits = [];
@@ -2238,9 +2239,9 @@
       if (!rows.length) ingList.appendChild(el('div', 'empty', 'No ingredients yet. Add them on the recipe page.'));
       rows.forEach(function (x) {
         var n = String(x[0]).trim();
-        var b = el('button', 'tick' + (ticks[key][n] ? ' done' : ''));
+        var b = el('button', 'tick' + (ticks[key][n] ? ' done' : '') + (SP.isWholeEgg(n) ? ' eggline' : ''));
         b.appendChild(el('span', 'box', ticks[key][n] ? '✔' : ''));
-        b.appendChild(el('span', 'qty', String(x[1] || '').trim() ? methodQty(x[1]) : ''));
+        b.appendChild(el('span', 'qty', String(x[1] || '').trim() ? methodQty(x[1], n) : ''));
         b.appendChild(el('span', 'nm', n));
         b.onclick = function () { ticks[key][n] = !ticks[key][n]; draw(); };
         ingList.appendChild(b);
