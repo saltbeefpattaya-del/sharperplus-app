@@ -99,7 +99,7 @@
     var nett = qty - waste;
     var perKilo = nett === 0 ? 0 : price * qty / nett;
     var perGram = perKilo / E.PER;
-    var total = (perKilo / E.PER) * qty;
+    var total = (perKilo / E.PER) * nett;          // what you paid, once (waste not charged twice)
     return [gross, nett, perKilo, perGram, total];
   }
 
