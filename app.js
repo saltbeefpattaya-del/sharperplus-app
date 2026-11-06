@@ -1225,6 +1225,7 @@
       var names = ingList.querySelectorAll('input.ingname'); names[names.length - 1].focus();
     };
     addIng.appendChild(addIngBtn); ing.appendChild(addIng);
+    ing.appendChild(el('div', 'note consnote', 'CONSUMABLES (TIN FOIL, BAKING PAPER, GLOVES) CAN ONLY BE ADDED ON THE COMPUTER. ADD THEM THERE, THEN SYNC THE RECIPE TO YOUR PHONE.'));   // PIECE 136
     outRow(ing, 'SUB TOTAL', 'sub');
     var vatRow = outRow(ing, 'VAT', 'vat');
     outRow(ing, 'TOTAL', 'total', true);
