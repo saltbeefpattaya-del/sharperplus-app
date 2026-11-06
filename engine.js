@@ -257,12 +257,18 @@
     return n === 'whole egg' || n === 'whole eggs';
   }
 
+  function consKind(recipe, name) {    // PIECE 136: 'CM' or 'EACH' when the line is a consumable (tin foil, gloves)
+    var items = recipe && recipe.cons_items;
+    if (!items || typeof items !== 'object') return '';
+    return String(items[String(name || '').trim().toLowerCase()] || '').toUpperCase();
+  }
+
   function costEverything(recipe, settings) {
     var out = {};
     var shown = [];
     var lines = (recipe.rows || []).map(function (row) {
       var r = (row.concat(['', '', '', ''])).slice(0, 4);
-      if (isWholeEgg(r[0])) {            // eggs x price per egg, the same as the computer
+      if (isWholeEgg(r[0]) || consKind(recipe, r[0])) {   // eggs x price per egg (and cm x cost of 1 cm), the same as the computer
         var eggs = num(r[1]), each = num(r[2]);
         shown.push([eggs * each, eggs, each, 0, eggs * each]);
         return [eggs * E.PER, each, 0];
@@ -374,5 +380,6 @@
   });
   root.SP = E;
   E.isWholeEgg = isWholeEgg;
+  E.consKind = consKind;
   if (typeof module !== 'undefined') module.exports = E;
 })(typeof window !== 'undefined' ? window : globalThis);

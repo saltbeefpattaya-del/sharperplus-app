@@ -1261,7 +1261,7 @@
           c2.appendChild(input); grid.appendChild(c2); return input;
         }
         var qtyIn = cell(SP.US ? 'QUANTITY (oz)' : 'QUANTITY (g)', row[1], function (v) { row[1] = v; wasteGrams(row); });
-        var price = cell('UNIT PRICE ' + (SP.US ? 'PER LB' : 'PER KILO'), tidyPrice(row[2]), function (v) { row[2] = v; watch.pulled = null; });
+        var price = cell('UNIT PRICE ' + (SP.US ? 'PER LB' : 'PER KILO'), SP.consKind(r, row[0]) ? String(row[2] || '') : tidyPrice(row[2]), function (v) { row[2] = v; watch.pulled = null; });
         price.onfocus = function () { watch.wasPrice = price.value; };
         price.onblur = function () { setTimeout(function () { priceLeft(watch, price); }, 60); };
         cell('WASTE %', wastePct(row), function (v) { row[4] = String(v).replace('%', '').trim(); wasteGrams(row); });
@@ -1548,9 +1548,11 @@
         var any = row.some(function (c) { return String(c || '').trim(); });
         var l = out.lines[i] || [0, 0, 0, 0, 0];
         var egg = SP.isWholeEgg(row[0]);   // Whole Egg: deeper yellow, costed per egg
-        o.eggBoxes.forEach(function (b) { b.classList.toggle('eggbox', egg); });
+        var cons = SP.consKind(r, row[0]); // PIECE 136: a consumable - pale blue, cm or each
+        o.eggBoxes.forEach(function (b) { b.classList.toggle('eggbox', egg); b.classList.toggle('consbox', !!cons); });
         o.gross.textContent = any ? m(l[0]) : '';
-        o.nett.textContent = any ? (SP.US ? SP.commas(l[1], 2) : SP.commas(Math.round(l[1]), 0)) : '';
+        o.nett.textContent = any ? (cons ? String(Math.round(l[1] * 10) / 10) + (cons === 'CM' ? ' CM' : '')
+                                   : (SP.US ? SP.commas(l[1], 2) : SP.commas(Math.round(l[1]), 0))) : '';
         o.kilo.textContent = any ? m(l[2]) : '';
         o.total.textContent = any ? m(l[4]) : '';
       });
@@ -2050,6 +2052,8 @@
   function methodQty(q, name) {
     var v = num(q); if (!v) return String(q || '').trim();
     if (name && SP.isWholeEgg(name)) return String(Math.round(v * 10) / 10);     // eggs: a count, no g
+    var kind = name ? SP.consKind(recipeNow(), name) : '';                          // PIECE 136: a consumable
+    if (kind) return String(Math.round(v * 10) / 10) + (kind === 'CM' ? ' cm' : '');
     var r = function (x, p) { return String(Math.round(x * Math.pow(10, p)) / Math.pow(10, p)); };
     if (SP.US) return v >= 16 ? r(v / 16, 2) + ' lb' : r(v, 2) + ' oz';
     return v >= 1000 ? r(v / 1000, 3) + ' kg' : r(v, 1) + ' g';
@@ -2246,7 +2250,7 @@
       if (!rows.length) ingList.appendChild(el('div', 'empty', 'No ingredients yet. Add them on the recipe page.'));
       rows.forEach(function (x) {
         var n = String(x[0]).trim();
-        var b = el('button', 'tick' + (ticks[key][n] ? ' done' : '') + (SP.isWholeEgg(n) ? ' eggline' : ''));
+        var b = el('button', 'tick' + (ticks[key][n] ? ' done' : '') + (SP.isWholeEgg(n) ? ' eggline' : '') + (SP.consKind(r, n) ? ' consline' : ''));
         b.appendChild(el('span', 'box', ticks[key][n] ? '✔' : ''));
         b.appendChild(el('span', 'qty', String(x[1] || '').trim() ? methodQty(x[1], n) : ''));
         b.appendChild(el('span', 'nm', n));
