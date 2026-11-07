@@ -33,6 +33,7 @@
   function save() {
     ensureUids(data.recipes);
     derive(data.settings);
+    stampParts(data.settings);
     try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch (e) { return false; }
   }
   data = load();
@@ -326,6 +327,7 @@
     var s = data.settings, c = s.costs;
     var page = pageTop('OVERHEADS & COSTING FACTORS');
     guideButton(page, 'master');
+    syncBar(page, 'master');
     var helperBtn = el('button', 'guidebtn helperbtn', '\u270e  SET-UP HELPER: ANSWER A FEW QUESTIONS');
     helperBtn.onclick = function () { setupHelper(); }; page.appendChild(helperBtn);
     jumpBox(page, MASTER_HEADS);
@@ -972,6 +974,7 @@
     var s = data.settings;
     var page = pageTop('STAFF WAGES');
     guideButton(page, 'stafflist');
+    syncBar(page, 'staff');
     page.appendChild(el('div', 'note', 'Type each member of staff and their monthly wage. ' +
       'The daily wage is the monthly wage \u00f7 your working days, and the hourly rate is the daily wage \u00f7 8.'));
     var holder = el('div'); page.appendChild(holder);
@@ -3168,6 +3171,114 @@
     var priced = {};
     out.forEach(function (l) { if (num(l[1]) > 0) priced[l[0].trim().toLowerCase()] = true; });
     return out.filter(function (l) { return num(l[1]) > 0 || !priced[l[0].trim().toLowerCase()]; });
+  }
+  // ---- STAFF WAGES and MASTER COSTINGS sync (matches the computer, Piece 137)
+  var MASTER_SYNC_KEYS = ['vat_percent', 'costs', 'elec_history', 'gas_history', 'gas_units_history',
+    'units_produced', 'units_sold', 'data_type', 'elec_average', 'gas_type', 'rent_method', 'produced_month'];
+  var PART_TITLE = { staff: 'STAFF WAGES', master: 'MASTER COSTINGS' };
+  function staffPart(st) {
+    return (st.staff || []).filter(function (p) {
+      return Array.isArray(p) && (String(p[0] || '').trim() || String(p[1] || '').trim() || String(p[2] || '').trim());
+    }).map(function (p) { return p.concat(['', '', '']).slice(0, 3).map(function (v) { return String(v == null ? '' : v); }); });
+  }
+  function masterPart(st) {
+    var out = {};
+    MASTER_SYNC_KEYS.forEach(function (k) { if (st[k] !== undefined) out[k] = JSON.parse(JSON.stringify(st[k])); });
+    return out;
+  }
+  function partSig(x) {                     // a short fingerprint, to see when something changed
+    var t = JSON.stringify(x), h = 5381;
+    for (var i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0;
+    return String(h) + ':' + t.length;
+  }
+  function stampParts(st) {                 // note when Staff Wages or Master Costings last changed here
+    [['staff', staffPart], ['master', masterPart]].forEach(function (x) {
+      var sig = partSig(x[1](st));
+      if (st[x[0] + '_sig'] && st[x[0] + '_sig'] !== sig) st[x[0] + '_changed'] = String(Math.floor(Date.now() / 1000));
+      st[x[0] + '_sig'] = sig;
+    });
+  }
+  function syncWhen(stamp) {
+    stamp = Number(stamp) || 0;
+    if (stamp <= 0) return 'NOT KNOWN';
+    var d = new Date(stamp * 1000), pad = function (n) { return ('0' + n).slice(-2); };
+    return d.getDate() + ' ' + ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()] +
+      ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+  function partsCall(action, part, value) {
+    var lic = data.settings.licence || {};
+    var body = { key: lic.key || '', side: 'phone', id: deviceId(), name: phoneName(),
+                 action: action, recipes: [], sync_v: 2 };
+    if (part) body[part] = value;
+    return fetch(SYNC_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json(); });
+  }
+  function partSend(part, btn) {
+    save();
+    var title = PART_TITLE[part], was = btn.textContent;
+    btn.textContent = 'SENDING...'; btn.disabled = true;
+    partsCall('send', part, part === 'staff' ? staffPart(data.settings) : masterPart(data.settings)).then(function (d) {
+      btn.textContent = was; btn.disabled = false;
+      if (!d || !d.ok) { notice(title, [syncWhy(d)], ['OK']); return; }
+      notice('SENT TO YOUR COMPUTER', [title + ' SENT TO YOUR COMPUTER', '',
+        'On your computer, open ' + title + ' and click GET FROM MY PHONE.', '',
+        'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']);
+    }).catch(function () { btn.textContent = was; btn.disabled = false; notice(title, [syncWhy(null)], ['OK']); });
+  }
+  function partGet(part, btn) {
+    save();
+    var title = PART_TITLE[part], st = data.settings, was = btn.textContent;
+    btn.textContent = 'GETTING...'; btn.disabled = true;
+    partsCall('get').then(function (d) {
+      btn.textContent = was; btn.disabled = false;
+      if (!d || !d.ok) { notice(title, [syncWhy(d)], ['OK']); return; }
+      var come = d[part];
+      if (part === 'staff' ? !Array.isArray(come) : !(come && typeof come === 'object' && !Array.isArray(come))) {
+        notice(title, ['Nothing has been sent from your computer yet.', '',
+          'Your computer must be opened with the same key, ending in:', '\u2026' + keyEnd()], ['OK']); return;
+      }
+      var same;
+      if (part === 'staff') {
+        come = staffPart({ staff: come });
+        same = JSON.stringify(come) === JSON.stringify(staffPart(st));
+      } else {
+        var keep = {};
+        Object.keys(come).forEach(function (k) { if (MASTER_SYNC_KEYS.indexOf(k) >= 0) keep[k] = come[k]; });
+        come = keep;
+        var mine = masterPart(st), after = JSON.parse(JSON.stringify(mine));
+        Object.keys(come).forEach(function (k) { after[k] = k === 'costs' ? Object.assign({}, after.costs || {}, come.costs || {}) : come[k]; });
+        same = JSON.stringify(after) === JSON.stringify(mine);
+      }
+      if (same) { notice(title, ['Your ' + title + ' are already the same as your computer.'], ['OK']); return; }
+      var sentAt = Number(d[part + '_at']) || 0, changed = Number(st[part + '_changed']) || 0;
+      var lines = ['SENT FROM YOUR COMPUTER: ' + syncWhen(sentAt), 'LAST CHANGED ON THIS PHONE: ' + syncWhen(changed)];
+      if (changed && sentAt && changed > sentAt) lines.push('', '\u26a0 THIS PHONE IS NEWER THAN YOUR COMPUTER');
+      lines.push('', 'This will update all the ' + title + ' on your phone.', 'Please confirm.');
+      notice(title, lines, ['YES', 'NO']).then(function (pick) {
+        if (pick !== 0) return;
+        if (part === 'staff') st.staff = come;
+        else Object.keys(come).forEach(function (k) {
+          if (k === 'costs') { st.costs = st.costs || {}; Object.assign(st.costs, come.costs || {}); }
+          else st[k] = JSON.parse(JSON.stringify(come[k]));
+        });
+        st[part + '_sig'] = '';                         // the new figures count as unchanged here
+        save();
+        st[part + '_changed'] = String(sentAt || Math.floor(Date.now() / 1000));
+        save();
+        ['master', 'stafflist'].forEach(function (k) { if (refreshers[k] && screens[k]) refreshers[k](); });
+        notice(title, [title + ' UPDATED FROM YOUR COMPUTER'], ['OK']);
+      });
+    }).catch(function () { btn.textContent = was; btn.disabled = false; notice(title, [syncWhy(null)], ['OK']); });
+  }
+  function syncBar(page, part) {
+    var box = el('div', 'card partsync');
+    box.appendChild(el('div', 'synctitle', 'SYNC WITH MY COMPUTER'));
+    var send = el('button', 'gobtn syncbtn', 'SEND TO MY COMPUTER');
+    var get = el('button', 'soft syncbtn', 'GET FROM MY COMPUTER');
+    send.onclick = function () { partSend(part, send); };
+    get.onclick = function () { partGet(part, get); };
+    box.appendChild(send); box.appendChild(get);
+    page.appendChild(box);
   }
   function syncCall(action, recipes, history, everything) {
     var lic = data.settings.licence || {};
