@@ -3504,9 +3504,7 @@
       if (adopt) save();
       var olderLines = [];
       if (older.length) {
-        olderLines = ['', older.length + ' RECIPES ON YOUR COMPUTER ARE OLDER', 'THIS PHONE IS NEWER - YOURS ARE KEPT:'];
-        older.slice(0, 6).forEach(function (p) { olderLines.push(' ' + (p[1].recipe_name || '').trim().toUpperCase()); });
-        if (older.length > 6) olderLines.push(' + ' + (older.length - 6) + ' MORE');
+        olderLines = ['', older.length + ' RECIPES ON YOUR COMPUTER ARE OLDER', 'THIS PHONE IS NEWER - YOURS ARE KEPT'];
       }
       if (!fresh.length && !changed.length && !goneAt.length) {
         sameOrder(); save(); redrawOpen();
@@ -3515,11 +3513,12 @@
       var lines = [];
       if (fresh.length) lines.push(fresh.length + ' NEW RECIPES');
       if (changed.length) lines.push(changed.length + ' RECIPES ARE DIFFERENT ON YOUR COMPUTER');
-      changed.slice(0, 6).forEach(function (p) {            // Piece 139: both dates, so you can see
-        lines.push('', (p[1].recipe_name || '').trim().toUpperCase(),
-          ' COMPUTER: ' + syncWhen(changedAt(p[1])) + '   THIS PHONE: ' + syncWhen(changedAt(data.recipes[p[0]])));
+      var dated = changed.filter(function (p) { return changedAt(p[1]) || changedAt(data.recipes[p[0]]); });
+      dated.slice(0, 3).forEach(function (p) {            // Piece 139: both dates, short, only when known
+        lines.push((p[1].recipe_name || '').trim().toUpperCase().slice(0, 22) +
+          ' - COMPUTER: ' + syncWhen(changedAt(p[1])) + ' / PHONE: ' + syncWhen(changedAt(data.recipes[p[0]])));
       });
-      if (changed.length > 6) lines.push(' + ' + (changed.length - 6) + ' MORE');
+      if (dated.length > 3) lines.push('+ ' + (dated.length - 3) + ' MORE');
       lines = lines.concat(olderLines);
       if (goneAt.length) lines.push(goneAt.length + ' RECIPES WERE DELETED ON YOUR COMPUTER');
       var mineNames = data.recipes.map(function (x) { return (x.recipe_name || '').trim().toUpperCase(); });
