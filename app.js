@@ -30,8 +30,24 @@
       seen[r.uid] = true;
     });
   }
+  // PIECE 139: each recipe knows when it was last changed, so sync never puts an older copy over a newer one
+  var recipeBase = new WeakMap();
+  function recipeSig(r) {
+    var c = plainRecipe(Object.assign(SP.blankRecipe(), r));
+    c.costs = Object.assign(SP.recipeCosts(), c.costs || {}); c.costs.image = '';
+    delete c.uid; delete c.pos; delete c.changed; return JSON.stringify(c);
+  }
+  function stampRecipe() {
+    var r = data.recipes && data.recipes[data.current];
+    if (!r) return;
+    var sig = recipeSig(r), was = recipeBase.get(r);
+    if (was !== undefined && was !== sig) r.changed = String(Math.floor(Date.now() / 1000));
+    recipeBase.set(r, sig);
+  }
+  function changedAt(r) { return Number((r || {}).changed) || 0; }
   function save() {
     ensureUids(data.recipes);
+    try { stampRecipe(); } catch (e) {}
     derive(data.settings);
     stampParts(data.settings);
     try { localStorage.setItem(KEY, JSON.stringify(data)); return true; } catch (e) { return false; }
@@ -1060,6 +1076,7 @@
     r.costs = Object.assign(SP.recipeCosts(), r.costs || {});
     r.rows = r.rows || []; r.labour = r.labour || [];
     while (r.labour.length < 4) r.labour.push(['', '', '']);
+    if (!recipeBase.has(r)) { try { recipeBase.set(r, recipeSig(r)); } catch (e) {} }
     return r;
   }
   function nameTaken(name) {
@@ -3459,12 +3476,15 @@
         for (i = 0; i < data.recipes.length; i++) if ((data.recipes[i].recipe_name || '').trim().toUpperCase() === name) return i;
         return undefined;
       }
-      function plainNoId(r) { var c = plainRecipe(Object.assign(SP.blankRecipe(), r)); delete c.uid; delete c.pos; return JSON.stringify(c); }
-      var fresh = [], changed = [], adopt = false;
+      function plainNoId(r) { var c = plainRecipe(Object.assign(SP.blankRecipe(), r)); delete c.uid; delete c.pos; delete c.changed; return JSON.stringify(c); }
+      var fresh = [], changed = [], adopt = false, older = [];
       come.forEach(function (r) {
         var at = find(r);
         if (at === undefined) fresh.push(r);
-        else if (plainNoId(data.recipes[at]) !== plainNoId(r)) changed.push([at, r]);
+        else if (plainNoId(data.recipes[at]) !== plainNoId(r)) {
+          if (changedAt(data.recipes[at]) > changedAt(r)) older.push([at, r]);   // Piece 139: yours is newer, keep it
+          else changed.push([at, r]);
+        }
         else if (r.uid && data.recipes[at].uid !== r.uid) { data.recipes[at].uid = r.uid; adopt = true; }   // one ID for both
       });
       var goneAt = [];
@@ -3482,13 +3502,25 @@
         for (var k = 0; k < data.recipes.length; k++) if (data.recipes[k].uid === openUid) data.current = k;
       }
       if (adopt) save();
+      var olderLines = [];
+      if (older.length) {
+        olderLines = ['', older.length + ' RECIPES ON YOUR COMPUTER ARE OLDER', 'THIS PHONE IS NEWER - YOURS ARE KEPT:'];
+        older.slice(0, 6).forEach(function (p) { olderLines.push(' ' + (p[1].recipe_name || '').trim().toUpperCase()); });
+        if (older.length > 6) olderLines.push(' + ' + (older.length - 6) + ' MORE');
+      }
       if (!fresh.length && !changed.length && !goneAt.length) {
         sameOrder(); save(); redrawOpen();
-        notice('GET MY COMPUTER RECIPES', ['Your recipes are already the same as your computer.'], ['OK']); return;
+        notice('GET MY COMPUTER RECIPES', older.length ? olderLines.slice(1) : ['Your recipes are already the same as your computer.'], ['OK']); return;
       }
       var lines = [];
       if (fresh.length) lines.push(fresh.length + ' NEW RECIPES');
       if (changed.length) lines.push(changed.length + ' RECIPES ARE DIFFERENT ON YOUR COMPUTER');
+      changed.slice(0, 6).forEach(function (p) {            // Piece 139: both dates, so you can see
+        lines.push('', (p[1].recipe_name || '').trim().toUpperCase(),
+          ' COMPUTER: ' + syncWhen(changedAt(p[1])) + '   THIS PHONE: ' + syncWhen(changedAt(data.recipes[p[0]])));
+      });
+      if (changed.length > 6) lines.push(' + ' + (changed.length - 6) + ' MORE');
+      lines = lines.concat(olderLines);
       if (goneAt.length) lines.push(goneAt.length + ' RECIPES WERE DELETED ON YOUR COMPUTER');
       var mineNames = data.recipes.map(function (x) { return (x.recipe_name || '').trim().toUpperCase(); });
       fresh.forEach(function (r) {                // a new name that looks like one you already have
