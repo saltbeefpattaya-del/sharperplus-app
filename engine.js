@@ -257,10 +257,28 @@
     return n === 'whole egg' || n === 'whole eggs';
   }
 
+  var CONS_BOOK = {};                  // PIECE 141: every consumable in any recipe - name: {kind, one}
+  function consBookFrom(recipes) {
+    var book = {};
+    (recipes || []).slice().sort(function (a, b) {        // the newest recipe's price wins
+      return (Number((b || {}).changed) || 0) - (Number((a || {}).changed) || 0);
+    }).forEach(function (r) {
+      var items = r && r.cons_items;
+      if (!items || typeof items !== 'object') return;
+      (r.rows || []).forEach(function (row) {
+        var k = String((row || [])[0] || '').trim().toLowerCase();
+        var kind = String(items[k] || '').toUpperCase();
+        if (k && kind && !(k in book)) book[k] = { kind: kind === 'EACH' ? 'EACH' : 'CM', one: num(row[2]) };
+      });
+    });
+    CONS_BOOK = book; E.CONS_BOOK = book;
+    return book;
+  }
   function consKind(recipe, name) {    // PIECE 136: 'CM' or 'EACH' when the line is a consumable (tin foil, gloves)
+    var key = String(name || '').trim().toLowerCase();
     var items = recipe && recipe.cons_items;
-    if (!items || typeof items !== 'object') return '';
-    return String(items[String(name || '').trim().toLowerCase()] || '').toUpperCase();
+    if (items && typeof items === 'object' && items[key]) return String(items[key]).toUpperCase();
+    return CONS_BOOK[key] ? CONS_BOOK[key].kind : '';   // PIECE 141: known from any other recipe
   }
 
   function costEverything(recipe, settings) {
@@ -381,5 +399,7 @@
   root.SP = E;
   E.isWholeEgg = isWholeEgg;
   E.consKind = consKind;
+  E.consBookFrom = consBookFrom;
+  E.CONS_BOOK = CONS_BOOK;
   if (typeof module !== 'undefined') module.exports = E;
 })(typeof window !== 'undefined' ? window : globalThis);

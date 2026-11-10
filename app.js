@@ -47,6 +47,7 @@
   function changedAt(r) { return Number((r || {}).changed) || 0; }
   function save() {
     ensureUids(data.recipes);
+    try { SP.consBookFrom(data.recipes); } catch (e) {}   // PIECE 141
     try { stampRecipe(); } catch (e) {}
     derive(data.settings);
     stampParts(data.settings);
@@ -54,6 +55,7 @@
   }
   data = load();
   ensureUids(data.recipes);
+  try { SP.consBookFrom(data.recipes); } catch (e) {}     // PIECE 141: consumables known in every recipe
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
 
   // the figures the desktop works out on save (read_settings)
@@ -1043,6 +1045,14 @@
     if (names.indexOf(name.toUpperCase()) < 0) names.push(name.toUpperCase());
     return names.join(', ');
   }
+  function consPrice(name, p) {             // PIECE 141: a consumable keeps its exact price (0.013, not 0.01)
+    var k = String(name || '').trim().toLowerCase(), book = SP.CONS_BOOK || {};
+    if (book[k]) {
+      var r = recipeNow(); r.cons_items = r.cons_items || {}; r.cons_items[k] = book[k].kind;
+      return book[k].one > 0 ? String(+book[k].one.toFixed(6)) : String(p || '');
+    }
+    return tidyPrice(p);
+  }
   function tidyPrice(t) {
     t = String(t).trim();
     if (t.indexOf('.') >= 0 && t.split('.')[1].length > 2 && num(t)) return num(t).toFixed(2);
@@ -1336,8 +1346,9 @@
     function typedPrice(watch, price) {
       var p = lastPrice(data.ingredient_history, watch.row[0]);
       if (!p) p = priceInRecipes(watch.row[0]);
-      if (p && price.value !== tidyPrice(p) && (num(price.value) === 0 || num(price.value) === num(watch.pulled))) {
-        price.value = tidyPrice(p); watch.row[2] = price.value; watch.wasPrice = price.value; watch.pulled = price.value; save();
+      var shownP = consPrice(watch.row[0], p);
+      if (shownP && price.value !== shownP && (num(price.value) === 0 || num(price.value) === num(watch.pulled))) {
+        price.value = shownP; watch.row[2] = price.value; watch.wasPrice = price.value; watch.pulled = price.value; save();
       }
     }
     function priceInRecipes(name) {
@@ -1382,7 +1393,7 @@
       }).then(function (go) {
         if (go) {
           var p = lastPrice(history, name);
-          if (p && !num(price.value)) { price.value = tidyPrice(p); watch.row[2] = price.value; watch.wasPrice = price.value; save(); }
+          if (p && !num(price.value)) { price.value = consPrice(name, p); watch.row[2] = price.value; watch.wasPrice = price.value; save(); }
         }
         asking = false; calc();
       });
