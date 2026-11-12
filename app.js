@@ -1215,22 +1215,55 @@
     }
 
     // ---- product
+    // PIECE 148 (as the desktop): two rows - the row the chef fills decides grams or units
     var prod = card('PRODUCT');
-    pickRow2(prod, 'PRODUCT MADE BY UNITS OR GRAMS', function () {
-      return SP.US ? [['UNITS', 'UNITS'], ['GRAMS', 'OZ'], ['LB', 'LB']] : [['UNITS', 'UNITS'], ['GRAMS', 'GRAMS']];
-    }, function () { return recipeNow().made_by || 'UNITS'; }, function (v) { recipeNow().made_by = v; });
     prod.appendChild(el('div', 'note', 'WE RECOMMEND YOU ADD YOUR INGREDIENTS FIRST, SO YOU CAN GET YOUR BATCH SIZE'));
     var weightIn = inRow(prod, 'TOTAL WEIGHT OF YOUR INGREDIENTS (USABLE)', function () { return recipeNow().total_weight || ''; },
                          function (v) { recipeNow().total_weight = v; });
-    var batchIn = inRow(prod, 'BATCH SIZE', function () { return recipeNow().batch_size; }, function (v) { recipeNow().batch_size = v; });
-    var sizeIn = inRow(prod, 'PRODUCT SIZE', function () { return recipeNow().product_size; }, function (v) { recipeNow().product_size = v; });
+    var rowsMem = { r: null };
+    function rowsNow() {                 // the two rows, read from the recipe when it opens
+      var r = recipeNow();
+      if (rowsMem.r !== r) {
+        var made = String(r.made_by || 'UNITS').toUpperCase(), grams = made === 'GRAMS' || made === 'LB';
+        var batch = String(r.batch_size || ''), size = String(r.product_size || '');
+        if (made === 'LB' && num(batch)) batch = String(num(batch) * 16);
+        rowsMem = { r: r, g_batch: grams ? batch : '', g_size: grams && num(size) > 0 && !(num(size) === 1) ? size : '',
+                    u_batch: grams ? '' : batch, u_size: grams || num(size) <= 1 ? '' : size };
+        if (avgHint) avgHint.hidden = num(rowsMem.g_size) > 0 || num(rowsMem.u_batch) > 0;
+      }
+      return rowsMem;
+    }
+    function rowsTyped(key, v) {
+      var m = rowsNow(), r = recipeNow(); m[key] = v;
+      if (num(m.u_batch) > 0) { r.made_by = 'UNITS'; r.batch_size = m.u_batch; r.product_size = m.u_size || '1'; }
+      else if (num(m.g_batch) > 0) { r.made_by = 'GRAMS'; r.batch_size = m.g_batch; r.product_size = m.g_size; }
+      else { r.batch_size = ''; }
+    }
+    var wt = SP.US ? 'OZ' : 'GRAMS', wtShort = SP.US ? 'oz' : 'g';
+    prod.appendChild(el('div', 'cardhead subhead', 'PRODUCTION MADE BY ' + wt));
+    var batchIn = inRow(prod, 'BATCH SIZE (' + wtShort + ')', function () { return rowsNow().g_batch; }, function (v) { rowsTyped('g_batch', v); });
+    var sizeIn = inRow(prod, 'PORTION SIZE (' + wtShort + ')', function () { return rowsNow().g_size; }, function (v) { rowsTyped('g_size', v); });
+    var avgHint = el('div', 'note', 'PORTION SIZE LEFT EMPTY? WE USE YOUR AVERAGE PORTION SIZE FROM MASTER COSTINGS');
+    prod.appendChild(avgHint);
+    prod.appendChild(el('div', 'cardhead subhead', 'PRODUCTION MADE BY UNITS'));
+    var uBatchIn = inRow(prod, 'BATCH SIZE (UNITS)', function () { return rowsNow().u_batch; }, function (v) { rowsTyped('u_batch', v); });
+    var uSizeIn = inRow(prod, 'PORTION SIZE', function () { return rowsNow().u_size; }, function (v) { rowsTyped('u_size', v); });
+    function rowsCheck() {               // both rows filled: say which one is used
+      var m = rowsNow();
+      avgHint.hidden = num(m.g_size) > 0 || num(m.u_batch) > 0;
+      if (num(m.u_batch) > 0 && num(m.g_batch) > 0 && rowsMem.warned !== m.r) {
+        rowsMem.warned = m.r;
+        notice('PLEASE CHECK', ['You have filled BY ' + wt + ' and BY UNITS.', '', 'We are using UNITS for this recipe.', '', 'Clear the row you do not need.']);
+      }
+    }
     var totIn = inRow(prod, 'TOTAL PRODUCTS', function () { return recipeNow().total_products || ''; },
                       function (v) { recipeNow().total_products = v; });
     // a change the chef makes to the batch counts as production for today (as the desktop)
-    [weightIn, batchIn, sizeIn, totIn].forEach(function (row) {
-      var inp = row.querySelector('input'); if (inp) inp.addEventListener('change', function () { productionMade(recipeNow()); });
+    [weightIn, batchIn, sizeIn, uBatchIn, uSizeIn, totIn].forEach(function (row) {
+      var inp = row.querySelector('input');
+      if (inp) inp.addEventListener('change', function () { rowsCheck(); productionMade(recipeNow()); });
+      if (inp) inp.addEventListener('input', function () { avgHint.hidden = num(rowsNow().g_size) > 0 || num(rowsNow().u_batch) > 0; });
     });
-    var madeSel = prod.querySelector('select'); if (madeSel) madeSel.addEventListener('change', function () { productionMade(recipeNow()); });
     var again = el('button', 'jump', '\u2714  WE MADE ANOTHER BATCH TODAY');
     again.onclick = function () { save(); addBatch(recipeNow()); };
     prod.appendChild(again);
