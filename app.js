@@ -122,7 +122,7 @@
     var out = {};
     (data.production_log || []).forEach(function (l) {
       var p = SP.parseMonth(String(l[3]).replace(' ', '-')); if (!p || num(l[2]) <= 0) return;
-      var k = p[0] + '-' + p[1]; out[k] = out[k] || {}; out[k][l[1]] = (out[k][l[1]] || 0) + num(l[2]);
+      var k = p[0] + '-' + p[1]; out[k] = out[k] || {}; out[k][l[1]] = (out[k][l[1]] || 0) + unitsOf(l[1], num(l[2]));
     });
     return out;
   }
@@ -148,20 +148,44 @@
   // PIECE 154/157 (as the desktop): closing a recipe asks once what was really made.
   // A recipe costed on 120 beigels but made 20 at a time: NO asks HOW MANY, and it is remembered.
   var askedOpen = false;
+  // PIECE 147 (as the desktop): a grams recipe goes into production as grams, a units recipe as units;
+  // grams are turned into units with the recipe's own portion size (or the average portion)
+  function recipeByName(name) {
+    var k = String(name || '').trim().toLowerCase();
+    return (data.recipes || []).filter(function (r) { return String(r.recipe_name || '').trim().toLowerCase() === k; })[0];
+  }
+  function isGrams(r) { var m = String((r && r.made_by) || 'UNITS').toUpperCase(); return m === 'GRAMS' || m === 'LB'; }
+  function portionOf(r) {
+    var size = num(r && r.product_size);
+    if (size > 1 || (size > 0 && !isGrams(r))) return size;
+    return num(data.settings.avg_portion) || (SP.US ? 4 : 100);
+  }
+  function unitsOf(name, qty) {
+    var r = recipeByName(name);
+    return isGrams(r) ? Math.floor(qty / portionOf(r) + 1e-9) : qty;
+  }
+  function logAmount(r) {
+    var m = String(r.made_by || 'UNITS').toUpperCase(), batch = num(r.batch_size);
+    if (m === 'LB') return Math.round(batch * 16 * 100) / 100;
+    if (m === 'GRAMS') return Math.round(batch * 100) / 100;
+    return Math.floor(batch + 1e-9);
+  }
+  function wtOf(r) { return isGrams(r) ? (SP.US ? 'oz' : 'g') : 'units'; }
   function usualAmount(name, full) {
     var u = data.settings.made_usual || {}, got = num(u[String(name).trim().toLowerCase()]);
     return got > 0 ? got : full;
   }
   function askMade(title, r, amount, full, before) {
-    var name = String(r.recipe_name || '').trim();
+    var name = String(r.recipe_name || '').trim(), wt = wtOf(r);
     var lines = [name.toUpperCase(), ''].concat(before);
     if (before.length) lines.push('');
-    lines.push('Did you make ' + (before.length ? 'ANOTHER ' : '') + SP.whole(amount) + ' units?');
-    if (amount !== full) lines.push('', 'This recipe is costed on ' + SP.whole(full) + ' units.');
+    lines.push('Did you make ' + (before.length ? 'ANOTHER ' : '') + SP.whole(amount) + ' ' + wt + '?');
+    if (isGrams(r)) lines.push('(about ' + SP.whole(Math.floor(amount / portionOf(r) + 1e-9)) + ' portions of ' + portionOf(r) + ' ' + wt + ')');
+    if (amount !== full) lines.push('', 'This recipe is costed on ' + SP.whole(full) + ' ' + wt + '.');
     return notice(title, lines, ['YES', 'NO']).then(function (i) {
       if (i === 0) return amount;
-      return ask('HOW MANY DID YOU MAKE?', [name.toUpperCase(), '', 'Type how many units you made today.',
-                 'Only this goes into your stock.', '(CANCEL = none made)'], 'e.g. 20', '').then(function (v) {
+      return ask('HOW MANY DID YOU MAKE?', [name.toUpperCase(), '', 'Type how many ' + wt + ' you made today.',
+                 'Only this goes into your stock.', '(CANCEL = none made)'], isGrams(r) ? 'e.g. 5000' : 'e.g. 20', '').then(function (v) {
         var n = num(v); if (!(n > 0)) return null;
         var u = data.settings.made_usual = data.settings.made_usual || {}, k = name.toLowerCase();
         if (n === full) delete u[k]; else u[k] = String(n);
@@ -172,28 +196,28 @@
   function madeCheck(r, force) {      // leaving the recipe (or WE MADE ANOTHER BATCH TODAY)
     if (!r || (askedOpen && !force)) return;
     askedOpen = true;
-    var s = data.settings, name = String(r.recipe_name || '').trim();
-    var full = Math.floor(SP.costEverything(r, s).products + 1e-9);
+    var name = String(r.recipe_name || '').trim();
+    var full = logAmount(r);
     if (!name || full <= 0) {
-      if (force) notice('NOTICE', ['Please fill in the batch first, so SharperPlus knows how many portions it makes.']);
+      if (force) notice('NOTICE', ['Please fill in the batch size first, so SharperPlus knows how much it makes.']);
       return;
     }
     var today = isoDay(), done = 0;
     (data.production_log || []).forEach(function (l) { if (l[0] === today && l[1] === name) done += num(l[2]); });
     var amount = usualAmount(name, full);
     var go = done > 0
-      ? askMade('EXTRA BATCH?', r, amount, full, ['You have already added ' + SP.whole(done) + ' units today.'])
+      ? askMade('EXTRA BATCH?', r, amount, full, ['You have already added ' + SP.whole(done) + ' ' + wtOf(r) + ' today.'])
       : askMade('ADD TO PRODUCTION?', r, amount, full, []);
-    go.then(function (n) { if (n) addAmount(name, n); });
+    go.then(function (n) { if (n) addAmount(r, name, n); });
   }
-  function addAmount(name, qty) {
+  function addAmount(r, name, qty) {
     monthRollover();
-    var s = data.settings;
+    var s = data.settings, units = unitsOf(name, qty);
     logProduction(name, qty);
-    var total = Math.floor(num(s.units_produced) + qty + 1e-9);
+    var total = Math.floor(num(s.units_produced) + units + 1e-9);
     s.units_produced = String(total); save();
-    notice('BATCH ADDED', [SP.whole(qty) + ' ' + name.toUpperCase(), 'Added to today\u2019s production.', '',
-      'THIS MONTH SO FAR:  ' + SP.whole(total)]).then(function () {
+    notice('BATCH ADDED', [SP.whole(qty) + ' ' + wtOf(r) + '  ' + name.toUpperCase() + (isGrams(r) ? '  (' + SP.whole(units) + ' units)' : ''),
+      'Added to today\u2019s production.', '', 'THIS MONTH SO FAR:  ' + SP.whole(total) + ' UNITS']).then(function () {
       if (num(s.units_produced) - num(s.units_sold) < 0)
         notice('STOCK ALERT', ['SALES HAVE OUTPERFORMED', 'PRODUCTION LEVELS', '', 'PLEASE CHECK YOUR', 'STOCK INVENTORY']);
     });
