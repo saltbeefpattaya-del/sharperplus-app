@@ -145,40 +145,56 @@
     });
     if (changed) save();
   }
-  var productsSeen = null;
-  function productionMade(r) {        // the chef changed the batch on a recipe: that batch is made today
-    var qty = Math.floor(SP.costEverything(r, data.settings).products + 1e-9);
-    if (qty === productsSeen) return;
-    productsSeen = qty;
-    addBatch(r);
+  // PIECE 154/157 (as the desktop): closing a recipe asks once what was really made.
+  // A recipe costed on 120 beigels but made 20 at a time: NO asks HOW MANY, and it is remembered.
+  var askedOpen = false;
+  function usualAmount(name, full) {
+    var u = data.settings.made_usual || {}, got = num(u[String(name).trim().toLowerCase()]);
+    return got > 0 ? got : full;
   }
-  function addBatch(r) {              // one batch of this recipe made today; whole portions (grams / portion size)
-    monthRollover();
+  function askMade(title, r, amount, full, before) {
+    var name = String(r.recipe_name || '').trim();
+    var lines = [name.toUpperCase(), ''].concat(before);
+    if (before.length) lines.push('');
+    lines.push('Did you make ' + (before.length ? 'ANOTHER ' : '') + SP.whole(amount) + ' units?');
+    if (amount !== full) lines.push('', 'This recipe is costed on ' + SP.whole(full) + ' units.');
+    return notice(title, lines, ['YES', 'NO']).then(function (i) {
+      if (i === 0) return amount;
+      return ask('HOW MANY DID YOU MAKE?', [name.toUpperCase(), '', 'Type how many units you made today.',
+                 'Only this goes into your stock.', '(CANCEL = none made)'], 'e.g. 20', '').then(function (v) {
+        var n = num(v); if (!(n > 0)) return null;
+        var u = data.settings.made_usual = data.settings.made_usual || {}, k = name.toLowerCase();
+        if (n === full) delete u[k]; else u[k] = String(n);
+        save(); return n;
+      });
+    });
+  }
+  function madeCheck(r, force) {      // leaving the recipe (or WE MADE ANOTHER BATCH TODAY)
+    if (!r || (askedOpen && !force)) return;
+    askedOpen = true;
     var s = data.settings, name = String(r.recipe_name || '').trim();
-    var qty = Math.floor(SP.costEverything(r, s).products + 1e-9);
-    if (!name || qty <= 0) { notice('NOTICE', ['Please fill in the batch first, so SharperPlus knows how many portions it makes.']); return; }
+    var full = Math.floor(SP.costEverything(r, s).products + 1e-9);
+    if (!name || full <= 0) {
+      if (force) notice('NOTICE', ['Please fill in the batch first, so SharperPlus knows how many portions it makes.']);
+      return;
+    }
+    var today = isoDay(), done = 0;
+    (data.production_log || []).forEach(function (l) { if (l[0] === today && l[1] === name) done += num(l[2]); });
+    var amount = usualAmount(name, full);
+    var go = done > 0
+      ? askMade('EXTRA BATCH?', r, amount, full, ['You have already added ' + SP.whole(done) + ' units today.'])
+      : askMade('ADD TO PRODUCTION?', r, amount, full, []);
+    go.then(function (n) { if (n) addAmount(name, n); });
+  }
+  function addAmount(name, qty) {
+    monthRollover();
+    var s = data.settings;
     logProduction(name, qty);
     var total = Math.floor(num(s.units_produced) + qty + 1e-9);
     s.units_produced = String(total); save();
-    function undo() {
-      var log = data.production_log || [];
-      for (var i = log.length - 1; i >= 0; i--) if (log[i][1] === name && num(log[i][2]) === qty) { log.splice(i, 1); break; }
-      s.units_produced = String(Math.max(0, num(s.units_produced) - qty)); save();
-      notice('UNDONE', [qty + ' ' + name.toUpperCase(), 'Taken off this month.']);
-    }
-    var lines = [qty + ' ' + name.toUpperCase(), 'Added to today\u2019s production.', '',
-      'THIS MONTH SO FAR:  ' + SP.whole(total)];
-    var go = s.hide_production_notice
-      ? notice('BATCH ADDED', lines, ['OK', 'UNDO']).then(function (a) { if (a === 1) { undo(); return 'undone'; } })
-      : notice('BATCH ADDED', lines.concat(['',
-          'Every batch you make is added to MONTHLY UNITS PRODUCED in Master Costings, giving you a running total of everything your kitchen makes each month.', '',
-          'Over time, this becomes your simple stock control system, allowing you to manage both your stock and sales levels.']),
-          ['OK', 'UNDO', 'DON\'T SHOW THIS MESSAGE AGAIN']).then(function (a) {
-            if (a === 1) { undo(); return 'undone'; }
-            if (a === 2) { s.hide_production_notice = 'HIDE'; save(); }
-          });
-    go.then(function (x) {
-      if (x !== 'undone' && num(s.units_produced) - num(s.units_sold) < 0)
+    notice('BATCH ADDED', [SP.whole(qty) + ' ' + name.toUpperCase(), 'Added to today\u2019s production.', '',
+      'THIS MONTH SO FAR:  ' + SP.whole(total)]).then(function () {
+      if (num(s.units_produced) - num(s.units_sold) < 0)
         notice('STOCK ALERT', ['SALES HAVE OUTPERFORMED', 'PRODUCTION LEVELS', '', 'PLEASE CHECK YOUR', 'STOCK INVENTORY']);
     });
   }
@@ -274,6 +290,7 @@
   function show(name) {
     if (name === 'method' && !isPremium()) { premiumBox(); return; }
     var now = Object.keys(screens).filter(function (k) { return !screens[k].hidden; })[0];
+    if (now === 'recipe' && name !== 'recipe' && name !== 'method') madeCheck(recipeNow());
     if (now === 'dashboard' && (name === 'recipe' || name === 'method')) fromDash = true;
     if (name !== 'recipe' && name !== 'method') fromDash = false;
     if (!screens[name] && builders[name]) screens[name] = builders[name]();
@@ -294,6 +311,7 @@
   }
   window.addEventListener('popstate', function () {
     var name = location.hash.replace('#', '') || 'menu';
+    if (screens.recipe && !screens.recipe.hidden && name !== 'recipe' && name !== 'method') madeCheck(recipeNow());
     Object.keys(screens).forEach(function (k) { screens[k].hidden = k !== name; });
     if (!screens[name]) screens.menu.hidden = false;
   });
@@ -1261,11 +1279,11 @@
     // a change the chef makes to the batch counts as production for today (as the desktop)
     [weightIn, batchIn, sizeIn, uBatchIn, uSizeIn, totIn].forEach(function (row) {
       var inp = row.querySelector('input');
-      if (inp) inp.addEventListener('change', function () { rowsCheck(); productionMade(recipeNow()); });
+      if (inp) inp.addEventListener('change', function () { rowsCheck(); });
       if (inp) inp.addEventListener('input', function () { avgHint.hidden = num(rowsNow().g_size) > 0 || num(rowsNow().u_batch) > 0; });
     });
     var again = el('button', 'jump', '\u2714  WE MADE ANOTHER BATCH TODAY');
-    again.onclick = function () { save(); addBatch(recipeNow()); };
+    again.onclick = function () { save(); madeCheck(recipeNow(), true); };
     prod.appendChild(again);
     outRow(prod, 'COST PER PORTION INGREDIENTS', 'portion');
 
@@ -1671,13 +1689,12 @@
         if (document.activeElement !== b.input) b.input.value = b.get() || '';
       });
       drawIngredients(); drawLabour(); calc();
-      productsSeen = Math.floor(SP.costEverything(r, s).products + 1e-9);
     };
     return page;
   };
 
   // ---------------------------------------------------------------- DASHBOARD
-  function openRecipe(i) { data.current = i; save(); if (screens.recipe) refreshers.recipe(); show('recipe'); }
+  function openRecipe(i) { askedOpen = false; data.current = i; save(); if (screens.recipe) refreshers.recipe(); show('recipe'); }
   function copyRecipe() {
     var src = data.recipes[data.current];
     if (!src) return;
